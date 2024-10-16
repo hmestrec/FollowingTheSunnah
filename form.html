@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="app.css">
+    <title>Contact Us</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script src="index.js"></script>
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init("fkSqrZuRax9W_a--f");
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="container border mt-3 bg-light">
+      <div class="row">
+        <div class="col-md-6 p-5 bg-primary text-white">
+          <h1>Following the Sunnah</h1>
+          <h4>
+            Any questions, concerns and/or suggestion?
+          </h4>
+        </div>
+        <div class="col-md-6 border-left py-3">
+          <h1>Contacting us</h1>
+          <div class="form-group">
+            <h5 for="name">Name</h5>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Enter name"
+            />
+          </div>
+          <div class="form-group">
+            <h5 for="email">Email</h5>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Enter email"
+            />
+          <div class="form-group">
+            <h5 for="subject">Subject</h5>
+            <input
+              type="text"
+              class="form-control"
+              id="subject"
+              placeholder="Subject"
+            />
+          </div>
+          </div>
+          <div class="form-group">
+            <h5 for="message">Message</h5>
+            <textarea class="form-control" id="message" rows="3"></textarea>
+          </div>
+          <a href="index.html" class="button-link-form">Back to Home</a> <!-- Link to go back to the main page -->
+          <button class="btn-primary" onclick="sendMail()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
