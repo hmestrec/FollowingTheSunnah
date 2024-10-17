@@ -1,102 +1,79 @@
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
 
 const FormPage = () => {
-  const [formState, setFormState] = useState({
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
     message: ''
   });
 
-  // Handler for form inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: value
-    }));
+    setFormData({ ...formData, [name]: value });
   };
 
-  // Function to send the email
-  const sendMail = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    const { name, email, subject, message } = formState;
-
-    // Parameters for emailjs
-    const params = {
-      name,
-      email,
-      subject,
-      message,
-    };
-
-    // Replace these with your actual EmailJS service and template IDs
-    const serviceID = 'service_8okqasb';
-    const templateID = 'template_wxu98pd';
-
-    emailjs.send(serviceID, templateID, params, 'fkSqrZuRax9W_a--f')
-      .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
-        alert('Your message has been sent successfully!');
-        setFormState({ name: '', email: '', subject: '', message: '' }); // Clear the form
-      })
-      .catch((err) => {
-        console.error('Failed to send the message', err);
-        alert('Failed to send the message. Please try again.');
-      });
+    console.log('Form submitted:', formData);
+    // Logic to handle form submission will be added here
+    setFormData({
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    });
   };
 
   return (
-    <div>
+    <div className="contact-form-container">
       <h1>Contact Us</h1>
-      <form onSubmit={sendMail}>
-        <div>
-          <label htmlFor="name">Name:</label>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Name</label>
           <input
             type="text"
             id="name"
             name="name"
-            value={formState.name}
+            value={formData.name}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label htmlFor="email">Email:</label>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
             name="email"
-            value={formState.email}
+            value={formData.email}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label htmlFor="subject">Subject:</label>
+        <div className="form-group">
+          <label htmlFor="subject">Subject</label>
           <input
             type="text"
             id="subject"
             name="subject"
-            value={formState.subject}
+            value={formData.subject}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label htmlFor="message">Message:</label>
+        <div className="form-group">
+          <label htmlFor="message">Message</label>
           <textarea
             id="message"
             name="message"
             rows="4"
-            value={formState.message}
+            value={formData.message}
             onChange={handleChange}
             required
-          ></textarea>
+          />
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit">Send</button>
       </form>
     </div>
   );
