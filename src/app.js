@@ -1,4 +1,3 @@
-import './app.css';
 
 // Change messages on home page periodically
 const messages = [

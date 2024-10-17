@@ -28,56 +28,5 @@
             <p>Edit your content here...</p>
         </div>
     </main>
-
-    <script>
-        // Simple log to ensure that the script is running
-        console.log("JavaScript is running...");
-
-        // Amplify Configuration
-        Amplify.configure({
-            Auth: {
-                region: 'us-east-1',
-                userPoolId: 'us-east-1_jcjKwG4JA',
-                userPoolWebClientId: '38bb82epf2rmhpvbnhck7uoa6b',
-                oauth: {
-                    domain: 'followingsunnahlogin.auth.us-east-1.amazoncognito.com',
-                    scope: ['email', 'openid', 'aws.cognito.signin.user.admin'],
-                    redirectSignIn: 'https://followingsunnah.net/editing.html',
-                    redirectSignOut: 'https://followingsunnah.net/',
-                    responseType: 'code'
-                }
-            }
-        });
-
-        // Confirm that Amplify is configured
-        console.log("Amplify configured...");
-
-        // Authentication Check
-        async function checkAuth() {
-            console.log("Checking authentication...");
-
-            try {
-                const user = await Amplify.Auth.currentAuthenticatedUser();
-                console.log('User is authenticated:', user);
-                document.body.style.display = 'block'; // Show the content
-            } catch (error) {
-                console.error('Error in authentication check:', error);
-                console.log('No user is authenticated, redirecting to custom login.');
-                window.location.href = 'https://followingsunnah.net/login.html'; // Custom login page
-            }
-        }
-
-        // Execute on window load
-        window.onload = function() {
-            console.log('Window loaded. Running checkAuth...');
-            checkAuth();
-        };
-
-        // Execute command for text formatting
-        function execCmd(command) {
-            document.execCommand(command, false, null);
-        }
-    </script>
-
 </body>
 </html>
