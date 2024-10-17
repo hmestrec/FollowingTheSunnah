@@ -10,6 +10,11 @@
       "StackName": "amplify-followingthesunnah-dev-fec21",
       "StackId": "arn:aws:cloudformation:us-east-1:730335296670:stack/amplify-followingthesunnah-dev-fec21/87f1c7a0-8c4b-11ef-af6a-0affe81e5395",
       "AmplifyAppId": "dffhg70xrkskl"
+    },
+    "categories": {
+      "auth": {
+        "followingthesunnah4235cdc8": {}
+      }
     }
   }
 }
