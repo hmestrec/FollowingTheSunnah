@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Editor</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-amplify/4.3.13/aws-amplify.min.js"></script>
-    <style>
-        body {
-            display: none; /* Hide the body until authenticated */
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/aws-amplify@latest/dist/aws-amplify.min.js"></script>
 </head>
 <body>
 
@@ -64,7 +59,7 @@
             } catch (error) {
                 console.error('Error in authentication check:', error);
                 console.log('No user is authenticated, redirecting to login.');
-                window.location.href = 'https://followingsunnahlogin.auth.us-east-1.amazoncognito.com/login?client_id=38bb82epf2rmhpvbnhck7uoa6b&response_type=code&scope=aws.cognito.signin.user.admin&redirect_uri=https%3A%2F%2Ffollowingsunnah.net%2Fediting.html';
+                window.location.href = 'https://followingsunnahlogin.auth.us-east-1.amazoncognito.com/login?client_id=38bb82epf2rmhpvbnhck7uoa6b&response_type=code&scope=aws.cognito.signin.user.admin%20openid&redirect_uri=https%3A%2F%2Ffollowingsunnah.net%2Fediting.html';
             }
         }
 
