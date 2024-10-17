@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Editor</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Ensure that the latest version of Amplify is loaded -->
     <script src="https://cdn.jsdelivr.net/npm/aws-amplify@latest/dist/aws-amplify.min.js"></script>
 </head>
 <body>
@@ -29,7 +30,8 @@
     </main>
 
     <script>
-        console.log("Starting script...");
+        // Simple log to ensure that the script is running
+        console.log("JavaScript is running...");
 
         // Amplify Configuration
         Amplify.configure({
@@ -47,39 +49,31 @@
             }
         });
 
+        // Confirm that Amplify is configured
         console.log("Amplify configured...");
 
-        // Check if the user is authenticated or process the authorization code
+        // Authentication Check
         async function checkAuth() {
             console.log("Checking authentication...");
+
             try {
-                // Try getting the current authenticated user
                 const user = await Amplify.Auth.currentAuthenticatedUser();
                 console.log('User is authenticated:', user);
-                document.body.style.display = 'block'; // Show content
+                document.body.style.display = 'block'; // Show the content
             } catch (error) {
                 console.error('Error in authentication check:', error);
-
-                // If no user is authenticated, check if we are receiving an authorization code in the URL
-                const currentUrl = window.location.href;
-                if (currentUrl.includes("?code=")) {
-                    console.log('Authorization code found in URL, processing...');
-                    // This will handle the code exchange
-                    Amplify.Auth.federatedSignIn();
-                } else {
-                    console.log('No user is authenticated and no authorization code found, redirecting to login.');
-                    window.location.href = 'https://followingsunnahlogin.auth.us-east-1.amazoncognito.com/login?client_id=38bb82epf2rmhpvbnhck7uoa6b&response_type=code&scope=aws.cognito.signin.user.admin%20openid&redirect_uri=https%3A%2F%2Ffollowingsunnah.net%2Fediting.html';
-                }
+                console.log('No user is authenticated, redirecting to custom login.');
+                window.location.href = 'https://followingsunnah.net/login.html'; // Custom login page
             }
         }
 
-        // Run the authentication check when the page loads
+        // Execute on window load
         window.onload = function() {
             console.log('Window loaded. Running checkAuth...');
             checkAuth();
         };
 
-        // Execute command for editor formatting
+        // Execute command for text formatting
         function execCmd(command) {
             document.execCommand(command, false, null);
         }
