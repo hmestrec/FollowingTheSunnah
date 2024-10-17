@@ -34,9 +34,9 @@
         // Amplify Configuration
         Amplify.configure({
             Auth: {
-                region: 'us-east-1', // Your region
-                userPoolId: 'us-east-1_jcjKwG4JA', // Your Cognito User Pool ID
-                userPoolWebClientId: '38bb82epf2rmhpvbnhck7uoa6b', // Your Cognito App Client ID
+                region: 'us-east-1',
+                userPoolId: 'us-east-1_jcjKwG4JA',
+                userPoolWebClientId: '38bb82epf2rmhpvbnhck7uoa6b',
                 oauth: {
                     domain: 'followingsunnahlogin.auth.us-east-1.amazoncognito.com',
                     scope: ['email', 'openid', 'aws.cognito.signin.user.admin'],
@@ -49,17 +49,27 @@
 
         console.log("Amplify configured...");
 
-        // Check if the user is authenticated
+        // Check if the user is authenticated or process the authorization code
         async function checkAuth() {
             console.log("Checking authentication...");
             try {
+                // Try getting the current authenticated user
                 const user = await Amplify.Auth.currentAuthenticatedUser();
                 console.log('User is authenticated:', user);
                 document.body.style.display = 'block'; // Show content
             } catch (error) {
                 console.error('Error in authentication check:', error);
-                console.log('No user is authenticated, redirecting to login.');
-                window.location.href = 'https://followingsunnahlogin.auth.us-east-1.amazoncognito.com/login?client_id=38bb82epf2rmhpvbnhck7uoa6b&response_type=code&scope=aws.cognito.signin.user.admin%20openid&redirect_uri=https%3A%2F%2Ffollowingsunnah.net%2Fediting.html';
+
+                // If no user is authenticated, check if we are receiving an authorization code in the URL
+                const currentUrl = window.location.href;
+                if (currentUrl.includes("?code=")) {
+                    console.log('Authorization code found in URL, processing...');
+                    // This will handle the code exchange
+                    Amplify.Auth.federatedSignIn();
+                } else {
+                    console.log('No user is authenticated and no authorization code found, redirecting to login.');
+                    window.location.href = 'https://followingsunnahlogin.auth.us-east-1.amazoncognito.com/login?client_id=38bb82epf2rmhpvbnhck7uoa6b&response_type=code&scope=aws.cognito.signin.user.admin%20openid&redirect_uri=https%3A%2F%2Ffollowingsunnah.net%2Fediting.html';
+                }
             }
         }
 
