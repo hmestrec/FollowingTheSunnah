@@ -1,3 +1,5 @@
+import './app.css';
+
 // Change messages on home page periodically
 const messages = [
     '"O you who believe, obey Allah and obey the Messenger..."',
