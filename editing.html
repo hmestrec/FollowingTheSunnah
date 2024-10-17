@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Editor</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-amplify/4.3.13/aws-amplify.min.js"></script>
 </head>
 <body>
 
@@ -21,16 +22,42 @@
             <button onclick="execCmd('justifyCenter')">Center Align</button>
             <button onclick="execCmd('justifyRight')">Right Align</button>
         </div>
-        
+
         <div id="editor" contenteditable="true">
             <p>Edit your content here...</p>
         </div>
     </main>
 
     <script>
+        // Amplify Configuration (Replace with your actual configuration)
+        Amplify.configure({
+            Auth: {
+                region: 'us-east-1', // Your region
+                userPoolId: 'us-east-1_jcjKwG4JA', // Your Cognito User Pool ID
+                userPoolWebClientId: '38bb82epf2rmhpvbnhck7uoa6b', // Your Cognito App Client ID
+            }
+        });
+
+        // Check if user is authenticated
+        async function checkAuth() {
+            try {
+                const user = await Amplify.Auth.currentAuthenticatedUser();
+                console.log('User is authenticated:', user);
+            } catch (error) {
+                console.log('No user is authenticated, redirecting to login.');
+                window.location.href = 'https://followingsunnahlogin.auth.us-east-1.amazoncognito.com/login?client_id=38bb82epf2rmhpvbnhck7uoa6b&response_type=code&scope=aws.cognito.signin.user.admin&redirect_uri=https%3A%2F%2Ffollowingsunnah.net%2Fediting.html'; // Redirect to your login page
+            }
+        }
+
+        // Execute command for editor formatting
         function execCmd(command) {
             document.execCommand(command, false, null);
         }
+
+        // Run the auth check when the page loads
+        window.onload = function() {
+            checkAuth();
+        };
     </script>
 
 </body>
