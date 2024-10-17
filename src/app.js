@@ -1,17 +1,27 @@
 
-// Change messages on home page periodically
-const messages = [
-    '"O you who believe, obey Allah and obey the Messenger..."',
-    '"And whosoever fears Allah... He will make a way for him to get out..."',
-    '"Verily, with hardship, there is relief."',
-    '"Indeed, the prayer prohibits immorality and wrongdoing..."',
-    '"And speak to people good [words]."'
-];
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-let currentIndex = 0;
-function changeMessage() {
-    const messageElement = document.getElementById('dynamicMessage');
-    currentIndex = (currentIndex + 1) % messages.length;
-    messageElement.textContent = messages[currentIndex];
+// Import the components for each page
+import PodcastPage from './components/PodcastPage';
+import TopicsPage from './components/TopicsPage';
+import FormPage from './components/FormPage';
+import LoginPage from './components/LoginPage';
+import HomePage from './components/HomePage';
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/podcast" component={PodcastPage} />
+        <Route path="/topics" component={TopicsPage} />
+        <Route path="/form" component={FormPage} />
+        <Route path="/login" component={LoginPage} />
+        <Route exact path="/" component={HomePage} />
+      </Switch>
+    </Router>
+  );
 }
-setInterval(changeMessage, 10000); // Change message every 10 seconds
+
+export default App;
