@@ -1,24 +1,6 @@
-function sendMail() {
-    var params = {
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
-      subject: document.getElementById("subject").value,
-      message: document.getElementById("message").value,
-    };
-  
-    const serviceID = "service_8okqasb";
-    const templateID = "template_wxu98pd";
-  
-      emailjs.send(serviceID, templateID, params)
-      .then(res=>{
-          document.getElementById("name").value = "";
-          document.getElementById("email").value = "";
-          document.getElementById("subject").value = "";
-          document.getElementById("message").value = "";
-          console.log(res);
-          alert("Your message sent successfully!!")
-  
-      })
-      .catch(err=>console.log(err));
-  
-  }
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import "./App.css";  // Import global styles
+
+ReactDOM.render(<App />, document.getElementById("root"));
