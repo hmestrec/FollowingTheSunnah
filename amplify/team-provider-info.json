@@ -13,9 +13,6 @@
       "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-followingthesunnah-dev-fec21-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
-      "auth": {
-        "followingthesunnah4235cdc8": {}
-      },
       "function": {
         "FollowingSunnahSaver": {
           "deploymentBucketName": "amplify-followingthesunnah-dev-fec21-deployment",
@@ -34,6 +31,9 @@
       },
       "api": {
         "saver": {}
+      },
+      "auth": {
+        "followingthesunnahddd32ec8": {}
       }
     }
   }
