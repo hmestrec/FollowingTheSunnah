@@ -9,11 +9,29 @@
       "UnauthRoleName": "amplify-followingthesunnah-dev-fec21-unauthRole",
       "StackName": "amplify-followingthesunnah-dev-fec21",
       "StackId": "arn:aws:cloudformation:us-east-1:730335296670:stack/amplify-followingthesunnah-dev-fec21/87f1c7a0-8c4b-11ef-af6a-0affe81e5395",
-      "AmplifyAppId": "dffhg70xrkskl"
+      "AmplifyAppId": "dffhg70xrkskl",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-followingthesunnah-dev-fec21-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "followingthesunnah4235cdc8": {}
+      },
+      "function": {
+        "FollowingSunnahSaver": {
+          "deploymentBucketName": "amplify-followingthesunnah-dev-fec21-deployment",
+          "s3Key": "amplify-builds/FollowingSunnahSaver-4c556b73727534483639-build.zip"
+        },
+        "FollowingSunnahComments": {
+          "deploymentBucketName": "amplify-followingthesunnah-dev-fec21-deployment",
+          "s3Key": "amplify-builds/FollowingSunnahComments-315074497572677a332b-build.zip"
+        }
+      },
+      "storage": {
+        "EditorContent": {},
+        "Comments": {}
+      },
+      "api": {
+        "saver": {}
       }
     }
   }

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './App.css'; 
 import App from './App'; 
 import { Amplify } from 'aws-amplify';
 import awsExports from './aws-exports'; 
+
 
 // Configure Amplify
 Amplify.configure(awsExports);

@@ -1,131 +1,112 @@
-import React, { useState } from 'react';
-import { signIn, signUp, confirmSignUp } from '@aws-amplify/auth'; // Import methods from Amplify
+import React, { useRef } from 'react';
+import { Authenticator } from '@aws-amplify/ui-react'; // Import the Authenticator
+import { post } from '@aws-amplify/api-rest'; // Import post from api-rest
+import { Amplify } from 'aws-amplify'; // Import Amplify to configure it
+import awsconfig from '../aws-exports'; // Ensure this file is in the correct path
 
-const LoginPage = () => {
-  const [username, setUsername] = useState(''); // Manage email locally
-  const [password, setPassword] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false); // Toggle between sign-up and login
-  const [isVerification, setIsVerification] = useState(false); // Toggle for verification form
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+// Configure Amplify
+Amplify.configure(awsconfig);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+function EditorPage() {
+  const editorRef = useRef(null); // Use a ref to manage the editor area
 
-  if (isSignUp) {
-    // Handle sign-up
+  // Function to save content to DynamoDB via Lambda and API Gateway
+  const saveContent = async () => {
+    const editorContent = editorRef.current.innerHTML; // Get the content from the editor
+    const id = Date.now().toString(); // Generate a unique ID based on the timestamp
+
     try {
-      await signUp({
-        username, // Using email as username for sign-up
-        password,
-        attributes: { email: username }, // Ensure you're passing the correct attribute
+      // Ensure that 'saver' is the correct API name and '/editor' is the correct path
+      await post('saver', '/editor', {
+        body: { id, content: editorContent },
       });
-      setMessage('Sign-up successful. Please check your email for verification.');
-      setError('');
-      setIsVerification(true); // Show verification form after sign-up
-    } catch (err) {
-      console.error('Error signing up:', err);
-      setError(`Sign-up failed: ${err.message}`);
-    }
-  } else {
-    // Handle login
-    try {
-      await signIn(username, password);
-      setMessage('Login successful.');
-      setError('');
-      // Handle successful login (e.g., redirect to dashboard)
-    } catch (err) {
-      console.error('Error signing in:', err);
-      setError(`Login failed: ${err.message}`);
-    }
-  }
-};
-
-  const handleVerificationSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!username) {
-      setError("Email is missing. Please sign up first.");
-      return;
-    }
-
-    try {
-      await confirmSignUp(username, verificationCode); // Use email for confirmation
-      setMessage('Verification successful! You can now log in.');
-      setIsVerification(false); // Hide verification form after success
-      setIsSignUp(false); // Switch back to login
-      setError('');
-    } catch (err) {
-      console.error('Error confirming sign-up:', err);
-      setError(`Failed to verify code: ${err.message}`);
+      alert('Content saved successfully!');
+    } catch (error) {
+      console.error('Error saving content:', error);
     }
   };
 
   return (
-    <div className="login-container">
-      <h1>{isVerification ? 'Verify Your Account' : isSignUp ? 'Sign Up' : 'Login'}</h1>
-      {!isVerification ? (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="username">Email</label>
-            <input
-              type="email"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)} // Store email locally
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit">{isSignUp ? 'Sign Up' : 'Login'}</button>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          {message && <p style={{ color: 'green' }}>{message}</p>}
-        </form>
-      ) : (
-        <form onSubmit={handleVerificationSubmit}>
-          <div>
-            <label htmlFor="verificationCode">Verification Code</label>
-            <input
-              type="text"
-              id="verificationCode"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit">Verify</button>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          {message && <p style={{ color: 'green' }}>{message}</p>}
-        </form>
-      )}
+    <div>
+      <header>
+        <h1>Following the Sunnah</h1>
+      </header>
 
-      {!isVerification && (
-        <p>
-          {isSignUp ? (
-            <>
-              Already have an account?{' '}
-              <button onClick={() => setIsSignUp(false)}>Login here</button>
-            </>
-          ) : (
-            <>
-              Don't have an account?{' '}
-              <button onClick={() => setIsSignUp(true)}>Sign up here</button>
-            </>
-          )}
-        </p>
-      )}
+      <Authenticator>
+        {({ signOut, user }) => (
+          <div>
+            <h2>Hello {user.username}</h2>
+            <button onClick={signOut}>Sign Out</button>
+
+            <div style={styles.container}>
+              <h1 style={styles.title}>Simple Word Document-like Editor</h1>
+
+              {/* Toolbar */}
+              {/* Add your toolbar buttons here */}
+
+              {/* Editable Document Area */}
+              <div
+                ref={editorRef}
+                contentEditable="true"
+                style={styles.editor}
+                suppressContentEditableWarning={true}
+              >
+                <p>This is an editable area. Start typing here...</p>
+              </div>
+
+              {/* Save Button */}
+              <div style={{ marginTop: '20px' }}>
+                <button onClick={saveContent} style={styles.saveButton}>Save Content</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </Authenticator>
+
+      <footer>
+        &copy; 2024 Following the Sunnah. All rights reserved.
+      </footer>
     </div>
   );
-};
+}
 
-export default LoginPage;
+export default EditorPage;
+
+// Styles used for the editor
+const styles = {
+  container: {
+    maxWidth: '800px',
+    margin: '0 auto',
+    padding: '20px',
+    backgroundColor: '#f4f4f9',
+    borderRadius: '8px',
+    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+    fontFamily: 'Arial, sans-serif',
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: '20px',
+  },
+  toolbar: {
+    display: 'flex',
+    gap: '10px',
+    marginBottom: '10px',
+    justifyContent: 'center',
+  },
+  editor: {
+    border: '1px solid #ddd',
+    padding: '20px',
+    minHeight: '300px',
+    backgroundColor: 'white',
+    overflowY: 'auto',
+    borderRadius: '4px',
+  },
+  saveButton: {
+    padding: '10px',
+    backgroundColor: '#007BFF',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+};

@@ -10,6 +10,8 @@ import WhyBeard from './components/WhyBeard';
 import WakingUpEarly from './components/WakingUpEarly';
 import EditingPage from './components/EditingPage';
 import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute
+import './App.css'; 
+
 
 function App() {
   return (

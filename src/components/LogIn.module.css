@@ -1,0 +1,147 @@
+/* LogIn.css */
+
+/* General Page Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e9f1f7;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Header Styling */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #0056D2;
+    color: white;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  
+  header h1 {
+    margin: 0;
+  }
+  
+  nav {
+    display: flex;
+    gap: 15px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    background-color: #0d6efd;
+    border-radius: 20px;
+    font-size: 1em;
+    font-weight: bold;
+  }
+  
+  nav a:hover {
+    background-color: #0043b4;
+  }
+  
+  /* Centering the Form */
+  .form-container {
+    background-color: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    margin: auto;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Input Fields */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  form label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  form input {
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  form input:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.2);
+  }
+  
+  /* Buttons */
+  form button {
+    background-color: #0d6efd;
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.1em;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: #0043b4;
+  }
+  
+  .toggle-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .toggle-buttons button {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 10px;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  
+  .toggle-buttons button.active {
+    background-color: #0d6efd;
+    color: white;
+  }
+  
+  .toggle-buttons button:hover {
+    background-color: #ccc;
+  }
+  
+  /* Footer Styling */
+  footer {
+    background-color: #0056D2;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-top: 30px;
+  }
+  
