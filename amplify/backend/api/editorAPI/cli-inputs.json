@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/editorAPI": {
+      "name": "/editorAPI",
+      "lambdaFunction": "Hello",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

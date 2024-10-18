@@ -1,7 +1,0 @@
-{
-    "apiName": "editorAPI",
-    "path": "/dev",
-    "invokeUrl": "https://flzvxo9n8h.execute-api.us-east-1.amazonaws.com/dev",
-    "stage": "dev"
-  }
-  

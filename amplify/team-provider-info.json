@@ -25,7 +25,8 @@
           "deploymentBucketName": "amplify-followingthesunnah-dev-fec21-deployment",
           "s3Key": "amplify-builds/FollowingSunnahComments-315074497572677a332b-build.zip"
         },
-        "followingthesunnahd879e6d8": {}
+        "followingthesunnahd879e6d8": {},
+        "Hello": {}
       },
       "storage": {
         "EditorContent": {},
