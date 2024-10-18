@@ -28,27 +28,7 @@
       "service": "Cognito"
     }
   },
-  "function": {
-    "editorFunction": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributeEnvMap": {
-            "Arn": "TABLE_ARN",
-            "Name": "TABLE_NAME"
-          },
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "storage",
-          "resourceName": "editorcontent"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
+  "function": {},
   "parameters": {
     "AMPLIFY_function_FollowingSunnahComments_deploymentBucketName": {
       "usedBy": [
@@ -81,28 +61,7 @@
           "resourceName": "FollowingSunnahSaver"
         }
       ]
-    },
-    "AMPLIFY_function_editorFunction_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "editorFunction"
-        }
-      ]
-    },
-    "AMPLIFY_function_editorFunction_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "editorFunction"
-        }
-      ]
     }
   },
-  "storage": {
-    "editorcontent": {
-      "providerPlugin": "awscloudformation",
-      "service": "DynamoDB"
-    }
-  }
+  "storage": {}
 }
