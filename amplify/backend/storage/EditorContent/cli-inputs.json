@@ -1,6 +1,6 @@
 {
-  "resourceName": "EditorContent",
-  "tableName": "EditorContent-main",
+  "resourceName": "editorcontent",
+  "tableName": "editorcontent",
   "partitionKey": {
     "fieldName": "id",
     "fieldType": "string"

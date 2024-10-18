@@ -16,13 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "storageEditorContentName": {
+    "storageeditorcontentName": {
       "Type": "String",
-      "Default": "storageEditorContentName"
+      "Default": "storageeditorcontentName"
     },
-    "storageEditorContentArn": {
+    "storageeditorcontentArn": {
       "Type": "String",
-      "Default": "storageEditorContentArn"
+      "Default": "storageeditorcontentArn"
     }
   },
   "Conditions": {
@@ -55,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "Hello",
+            "editorFunction",
             {
               "Fn::Join": [
                 "",
                 [
-                  "Hello",
+                  "editorFunction",
                   "-",
                   {
                     "Ref": "env"
@@ -97,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "followingthesunnahLambdaRoleae07466c",
+            "followingthesunnahLambdaRole20eca8f9",
             {
               "Fn::Join": [
                 "",
                 [
-                  "followingthesunnahLambdaRoleae07466c",
+                  "followingthesunnahLambdaRole20eca8f9",
                   "-",
                   {
                     "Ref": "env"
@@ -182,14 +182,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storageEditorContentArn"
+                  "Ref": "storageeditorcontentArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storageEditorContentArn"
+                        "Ref": "storageeditorcontentArn"
                       },
                       "index/*"
                     ]

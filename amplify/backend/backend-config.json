@@ -8,7 +8,7 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "Hello"
+          "resourceName": "editorFunction"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -44,7 +44,7 @@
     }
   },
   "function": {
-    "Hello": {
+    "editorFunction": {
       "build": true,
       "dependsOn": [
         {
@@ -57,7 +57,7 @@
             "Arn"
           ],
           "category": "storage",
-          "resourceName": "EditorContent"
+          "resourceName": "editorcontent"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -96,10 +96,26 @@
           "resourceName": "FollowingSunnahSaver"
         }
       ]
+    },
+    "AMPLIFY_function_editorFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "editorFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_editorFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "editorFunction"
+        }
+      ]
     }
   },
   "storage": {
-    "EditorContent": {
+    "editorcontent": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     }
