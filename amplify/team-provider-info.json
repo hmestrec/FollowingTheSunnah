@@ -23,14 +23,20 @@
           "s3Key": "amplify-builds/FollowingSunnahComments-315074497572677a332b-build.zip"
         },
         "followingthesunnahd879e6d8": {},
-        "Hello": {}
+        "Hello": {},
+        "editorFunction": {
+          "deploymentBucketName": "amplify-followingthesunnah-dev-fec21-deployment",
+          "s3Key": "amplify-builds/editorFunction-582b5052314a704f366f-build.zip"
+        }
       },
       "storage": {
         "EditorContent": {},
-        "Comments": {}
+        "Comments": {},
+        "editorcontent": {}
       },
       "api": {
-        "saver": {}
+        "saver": {},
+        "editorAPI": {}
       },
       "auth": {
         "followingthesunnahddd32ec8": {}

@@ -1,4 +1,20 @@
 {
+  "api": {
+    "editorAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "editorFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "followingthesunnahddd32ec8": {
       "customAuth": false,
@@ -25,6 +41,27 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "editorFunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "editorcontent"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -59,6 +96,28 @@
           "resourceName": "FollowingSunnahSaver"
         }
       ]
+    },
+    "AMPLIFY_function_editorFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "editorFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_editorFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "editorFunction"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "editorcontent": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
     }
   }
 }
