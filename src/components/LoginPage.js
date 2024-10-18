@@ -17,7 +17,7 @@ function EditorPage() {
 
         // Construct the request body to match the successful format
         const body = {
-            TableName: "EditorContent-main-dev",
+            TableName: "editorcontent-dev",
             Item: {
                 id: {
                     S: id // Set id in the correct format
@@ -32,7 +32,7 @@ function EditorPage() {
 
         try {
             // Use post to save content
-            const response = await post('editorAPI', '/editorAPI', { body });
+            const response = await post('editorAPI', '/editor', { body });
             console.log('Response from API:', response); // Log the API response
             alert('Content saved successfully!');
         } catch (error) {
