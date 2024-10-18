@@ -19,7 +19,7 @@
       "function": {
         "FollowingSunnahSaver": {
           "deploymentBucketName": "amplify-followingthesunnah-dev-fec21-deployment",
-          "s3Key": "amplify-builds/FollowingSunnahSaver-4c556b73727534483639-build.zip"
+          "s3Key": "amplify-builds/FollowingSunnahSaver-5064417946396b556476-build.zip"
         },
         "FollowingSunnahComments": {
           "deploymentBucketName": "amplify-followingthesunnah-dev-fec21-deployment",
