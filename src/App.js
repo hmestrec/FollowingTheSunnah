@@ -9,7 +9,7 @@ import HomePage from './components/HomePage';
 import WhyBeard from './components/WhyBeard';
 import WakingUpEarly from './components/WakingUpEarly';
 import EditingPage from './components/EditingPage';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute
 
 function App() {
   return (
