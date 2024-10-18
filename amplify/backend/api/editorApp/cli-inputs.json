@@ -1,8 +1,8 @@
 {
   "version": 1,
   "paths": {
-    "/editorcontent": {
-      "name": "/editorcontent",
+    "/editor": {
+      "name": "/editor",
       "lambdaFunction": "editorFunction",
       "permissions": {
         "setting": "open"

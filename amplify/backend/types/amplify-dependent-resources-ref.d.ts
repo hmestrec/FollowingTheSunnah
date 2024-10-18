@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
   "api": {
-    "editorAPI": {
+    "editorApp": {
       "ApiId": "string",
       "ApiName": "string",
       "RootUrl": "string"
