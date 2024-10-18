@@ -38,8 +38,7 @@
         "editorcontent": {}
       },
       "api": {
-        "saver": {},
-        "editorAPI": {}
+        "saver": {}
       }
     }
   }

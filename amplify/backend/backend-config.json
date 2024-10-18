@@ -1,20 +1,5 @@
 {
-  "api": {
-    "editorAPI": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "editorFunction"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "API Gateway"
-    }
-  },
+  "api": {},
   "auth": {
     "followingthesunnah4235cdc8": {
       "customAuth": false,
