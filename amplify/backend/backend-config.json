@@ -1,5 +1,4 @@
 {
-  "api": {},
   "auth": {
     "followingthesunnah4235cdc8": {
       "customAuth": false,
@@ -28,7 +27,6 @@
       "service": "Cognito"
     }
   },
-  "function": {},
   "parameters": {
     "AMPLIFY_function_FollowingSunnahComments_deploymentBucketName": {
       "usedBy": [
@@ -62,6 +60,5 @@
         }
       ]
     }
-  },
-  "storage": {}
+  }
 }
