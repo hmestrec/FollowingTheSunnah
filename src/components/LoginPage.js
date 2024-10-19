@@ -1,109 +1,124 @@
-import React, { useRef } from 'react';
-import { Authenticator } from '@aws-amplify/ui-react';
-import { Amplify } from 'aws-amplify'; // Use Amplify from the core package
-import awsconfig from '../aws-exports';
+import React, { useState, useEffect } from 'react';
+import { Authenticator } from '@aws-amplify/ui-react'; // Import Authenticator from Amplify
+import { Amplify } from 'aws-amplify'; // Import Amplify for configuration
+import awsconfig from '../aws-exports'; // Import your Amplify configuration
 
 // Configure Amplify
 Amplify.configure(awsconfig);
 
-function EditorPage() {
-    const editorRef = useRef(null);
+function SimpleApiTest() {
+    const [content, setContent] = useState(''); // State to store the content
+    const [id, setId] = useState(''); // State to store the ID input
+    const [records, setRecords] = useState([]); // State to store records from DynamoDB
 
-    // Function to save content to DynamoDB via API Gateway
-    const saveContent = async () => {
-        console.log('Save button clicked');
-        const editorContent = editorRef.current.innerHTML;
-        const id = Date.now().toString();
-    
-        const body = {
-            id: id,
-            content: editorContent
-        };
-    
-        console.log('Request Body:', body);
-    
+    // Function to fetch all records from DynamoDB
+    const fetchRecords = async () => {
         try {
-            console.log('Sending API request...');
-            const response = await Amplify.API.post('editorAPI', '/editor', { body });
-            console.log('API response received:', response);
+            // Replace with your actual API Gateway endpoint for GET
+            const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+            });
+            const data = await response.json();
+            setRecords(data); // Set fetched records to state
+        } catch (error) {
+            console.error('Error fetching records:', error);
+            alert('Failed to fetch records.');
+        }
+    };
+
+    // Function to handle saving new or edited content
+    const handleSaveContent = async (e) => {
+        e.preventDefault(); // Prevent form refresh
+
+        const body = JSON.stringify({ id, content });
+
+        console.log('Request Body:', body);
+
+        try {
+            // Replace with your actual API Gateway endpoint for POST/PUT
+            const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: body,
+            });
+
+            const result = await response.json();
+            console.log('Response from API:', result);
             alert('Content saved successfully!');
+            fetchRecords(); // Refresh records after saving
         } catch (error) {
             console.error('Error saving content:', error);
+            alert('Failed to save content.');
         }
-    };    
+    };
+
+    // Function to load content for editing
+    const handleEdit = (record) => {
+        setId(record.id); // Set ID for editing
+        setContent(record.content); // Load content into the textarea for editing
+    };
+
+    // Fetch records on initial load
+    useEffect(() => {
+        fetchRecords();
+    }, []);
 
     return (
-        <div>
-            <header>
-                <h1>Following the Sunnah</h1>
-            </header>
+        <Authenticator>
+            {({ signOut, user }) => (
+                <div>
+                    <h1>Simple API Test</h1>
+                    <p>Welcome, {user.username}!</p>
 
-            <Authenticator>
-                {({ signOut, user }) => (
-                    <div>
-                        <h2>Hello {user.username}</h2>
-                        <button onClick={signOut}>Sign Out</button>
+                    <form onSubmit={handleSaveContent}>
+                        <label htmlFor="id">Enter ID:</label>
+                        <input
+                            id="id"
+                            value={id}
+                            onChange={(e) => setId(e.target.value)} // Update state when input changes
+                            style={{ width: '100%', padding: '10px', marginTop: '10px' }}
+                        />
 
-                        <div style={styles.container}>
-                            <h1 style={styles.title}>Simple Word Document-like Editor</h1>
+                        <label htmlFor="content" style={{ marginTop: '20px' }}>Enter Content:</label>
+                        <textarea
+                            id="content"
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)} // Update state when input changes
+                            rows="5"
+                            style={{ width: '100%', padding: '10px', marginTop: '10px' }}
+                        />
 
-                            {/* Editable Document Area */}
-                            <div
-                                ref={editorRef}
-                                contentEditable="true"
-                                style={styles.editor}
-                                suppressContentEditableWarning={true}
-                            >
-                                <p>This is an editable area. Start typing here...</p>
-                            </div>
+                        <button type="submit" style={{ marginTop: '20px', padding: '10px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }}>
+                            Save Content
+                        </button>
+                    </form>
 
-                            {/* Save Button */}
-                            <div style={{ marginTop: '20px' }}>
-                                <button onClick={saveContent} style={styles.saveButton}>Save Content</button>
-                            </div>
-                        </div>
+                    {/* Records List */}
+                    <div style={{ marginTop: '40px' }}>
+                        <h3>Saved Records:</h3>
+                        <ul>
+                            {records.map((record) => (
+                                <li key={record.id}>
+                                    <strong>ID:</strong> {record.id} | <strong>Content:</strong> {record.content}
+                                    <button onClick={() => handleEdit(record)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '3px' }}>
+                                        Edit
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-                )}
-            </Authenticator>
 
-            <footer>
-                &copy; 2024 Following the Sunnah. All rights reserved.
-            </footer>
-        </div>
+                    <button onClick={signOut} style={{ marginTop: '20px', padding: '10px', backgroundColor: '#FF0000', color: 'white', border: 'none', borderRadius: '5px' }}>
+                        Sign Out
+                    </button>
+                </div>
+            )}
+        </Authenticator>
     );
 }
 
-export default EditorPage;
-
-// Styles used for the editor
-const styles = {
-    container: {
-        maxWidth: '800px',
-        margin: '0 auto',
-        padding: '20px',
-        backgroundColor: '#f4f4f9',
-        borderRadius: '8px',
-        boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-        fontFamily: 'Arial, sans-serif',
-    },
-    title: {
-        textAlign: 'center',
-        marginBottom: '20px',
-    },
-    editor: {
-        border: '1px solid #ddd',
-        padding: '20px',
-        minHeight: '300px',
-        backgroundColor: 'white',
-        overflowY: 'auto',
-        borderRadius: '4px',
-    },
-    saveButton: {
-        padding: '10px',
-        backgroundColor: '#007BFF',
-        color: 'white',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-    },
-};
+export default SimpleApiTest;

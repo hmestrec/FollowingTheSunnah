@@ -25,10 +25,20 @@ app.use(function (req, res, next) {
   next();
 });
 
+// Middleware to check for authenticated user identity
+const checkUserAuth = (req, res, next) => {
+  if (req.apiGateway.event.requestContext.identity.cognitoIdentityId) {
+    req.userId = req.apiGateway.event.requestContext.identity.cognitoIdentityId;
+    next();
+  } else {
+    return res.status(403).json({ error: 'User not authenticated.' });
+  }
+};
+
 /************************************
  * HTTP Get method to retrieve all items
  ************************************/
-app.get('/editor', async function (req, res) {
+app.get('/editor', checkUserAuth, async function (req, res) {
   const params = {
     TableName: tableName,
     Select: 'ALL_ATTRIBUTES',
@@ -45,7 +55,7 @@ app.get('/editor', async function (req, res) {
 /************************************
  * HTTP Get method to retrieve a single item by ID
  ************************************/
-app.get('/editor/:id', async function (req, res) {
+app.get('/editor/:id', checkUserAuth, async function (req, res) {
   const params = {
     TableName: tableName,
     Key: {
@@ -68,7 +78,7 @@ app.get('/editor/:id', async function (req, res) {
 /************************************
  * HTTP Post method to insert a new item
  ************************************/
-app.post('/editor', async function (req, res) {
+app.post('/editor', checkUserAuth, async function (req, res) {
   const { id, content } = req.body; // Expecting id and content in the request body
 
   if (!id || !content) {
@@ -80,6 +90,7 @@ app.post('/editor', async function (req, res) {
     Item: {
       id: id,
       content: content,
+      userId: req.userId // Store the userId (Cognito identity)
     },
   };
 
@@ -94,11 +105,12 @@ app.post('/editor', async function (req, res) {
 /************************************
  * HTTP Delete method to remove an item by ID
  ************************************/
-app.delete('/editor/:id', async function (req, res) {
+app.delete('/editor/:id', checkUserAuth, async function (req, res) {
   const params = {
     TableName: tableName,
     Key: {
       id: req.params.id,
+      userId: req.userId // Ensure the authenticated user is the one who created the item
     },
   };
 
