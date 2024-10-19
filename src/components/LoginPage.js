@@ -1,37 +1,36 @@
 import React, { useRef } from 'react';
 import { Authenticator } from '@aws-amplify/ui-react';
-import { API } from 'aws-amplify'; // Correct API import
-import { Amplify } from 'aws-amplify'; 
-import awsconfig from '../aws-exports'; 
+import { Amplify } from 'aws-amplify'; // Use Amplify from the core package
+import awsconfig from '../aws-exports';
 
 // Configure Amplify
 Amplify.configure(awsconfig);
 
 function EditorPage() {
-    const editorRef = useRef(null); // Use a ref to manage the editor area
+    const editorRef = useRef(null);
 
     // Function to save content to DynamoDB via API Gateway
     const saveContent = async () => {
-        const editorContent = editorRef.current.innerHTML; // Get the content from the editor
-        const id = Date.now().toString(); // Generate a unique ID based on the timestamp
-
-        // Construct the request body to match the backend API format
+        console.log('Save button clicked');
+        const editorContent = editorRef.current.innerHTML;
+        const id = Date.now().toString();
+    
         const body = {
-            id: id, 
+            id: id,
             content: editorContent
         };
-
-        console.log('Request Body:', body); // Log the body to check its content
-
+    
+        console.log('Request Body:', body);
+    
         try {
-            // Use API.post to save content
-            const response = await API.post('editorAPI', '/editor', { body }); // Correct API method
-            console.log('Response from API:', response); // Log the API response
+            console.log('Sending API request...');
+            const response = await Amplify.API.post('editorAPI', '/editor', { body });
+            console.log('API response received:', response);
             alert('Content saved successfully!');
         } catch (error) {
             console.error('Error saving content:', error);
         }
-    };
+    };    
 
     return (
         <div>
