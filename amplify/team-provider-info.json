@@ -10,6 +10,11 @@
       "StackName": "amplify-followingthesunnah-dev-2bf7d",
       "StackId": "arn:aws:cloudformation:us-east-1:730335296670:stack/amplify-followingthesunnah-dev-2bf7d/ca2353f0-8db3-11ef-831b-0e781f6ca853",
       "AmplifyAppId": "d3showifiypepy"
+    },
+    "categories": {
+      "auth": {
+        "followingthesunnaha2b3202b": {}
+      }
     }
   }
 }
