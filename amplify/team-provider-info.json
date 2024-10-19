@@ -17,6 +17,15 @@
       },
       "storage": {
         "editorcontent": {}
+      },
+      "function": {
+        "editorFunction": {
+          "deploymentBucketName": "amplify-followingthesunnah-dev-2bf7d-deployment",
+          "s3Key": "amplify-builds/editorFunction-30434771735066356a44-build.zip"
+        }
+      },
+      "api": {
+        "editorAPI": {}
       }
     }
   }
