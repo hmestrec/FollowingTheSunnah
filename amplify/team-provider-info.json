@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-followingthesunnah-dev-2bf7d-authRole",
+      "UnauthRoleArn": "arn:aws:iam::730335296670:role/amplify-followingthesunnah-dev-2bf7d-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::730335296670:role/amplify-followingthesunnah-dev-2bf7d-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-followingthesunnah-dev-2bf7d-deployment",
+      "UnauthRoleName": "amplify-followingthesunnah-dev-2bf7d-unauthRole",
+      "StackName": "amplify-followingthesunnah-dev-2bf7d",
+      "StackId": "arn:aws:cloudformation:us-east-1:730335296670:stack/amplify-followingthesunnah-dev-2bf7d/ca2353f0-8db3-11ef-831b-0e781f6ca853",
+      "AmplifyAppId": "d3showifiypepy"
+    }
+  }
+}
