@@ -49,56 +49,6 @@
       "service": "Lambda"
     }
   },
-  "parameters": {
-    "AMPLIFY_function_FollowingSunnahComments_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "FollowingSunnahComments"
-        }
-      ]
-    },
-    "AMPLIFY_function_FollowingSunnahComments_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "FollowingSunnahComments"
-        }
-      ]
-    },
-    "AMPLIFY_function_FollowingSunnahSaver_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "FollowingSunnahSaver"
-        }
-      ]
-    },
-    "AMPLIFY_function_FollowingSunnahSaver_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "FollowingSunnahSaver"
-        }
-      ]
-    },
-    "AMPLIFY_function_editorFunction_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "editorFunction"
-        }
-      ]
-    },
-    "AMPLIFY_function_editorFunction_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "editorFunction"
-        }
-      ]
-    }
-  },
   "storage": {
     "editorcontent": {
       "providerPlugin": "awscloudformation",
