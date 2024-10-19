@@ -60,7 +60,13 @@
         "followingthesunnahddd32ec8": {}
       },
       "function": {
-        "editorFunction": {},
+        "editorFunction": {
+          "deploymentBucketName": "amplify-followingthesunnah-following-a04eb-deployment",
+          "s3Key": "amplify-builds/editorFunction-523358436e7346777a4e-build.zip"
+        },
+        "editorcontent": {}
+      },
+      "storage": {
         "editorcontent": {}
       }
     }
