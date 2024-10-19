@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import './contentpage.css'; // Make sure to import your CSS file
 
 const WhyBeard = () => {
   const [content, setContent] = useState(""); // State to hold the content
@@ -16,9 +17,9 @@ const WhyBeard = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const wakingUpEarlyContent = data.find(record => record.id === "WhyBeard"); // Replace with your actual ID
-        if (wakingUpEarlyContent) {
-          setContent(wakingUpEarlyContent.content); // Set the content if found
+        const whyBeardContent = data.find(record => record.id === "WhyBeard"); // Replace with your actual ID
+        if (whyBeardContent) {
+          setContent(whyBeardContent.content); // Set the content if found
         } else {
           console.error("Content not found for WhyBeard.");
           setContent("Content not found."); // Fallback message
@@ -40,8 +41,8 @@ const WhyBeard = () => {
 
   return (
     <main>
-      <h1>WhyBeard</h1>
-      <p>{content || "Loading content..."}</p> {/* Display fetched content or loading message */}
+      <h1 className="black-heading">Why Beard</h1>
+      <div className="content" style={{ color: 'black' }} dangerouslySetInnerHTML={{ __html: content }} /> {/* Render fetched content as HTML */}
     </main>
   );
 };

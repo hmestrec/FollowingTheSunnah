@@ -14,7 +14,7 @@ header {
   justify-content: space-between;
   align-items: center;
   background-color: #1a73e8; /* Deep blue header */
-  color: white;
+  color: rgb(0, 0, 0);
   padding: 15px 30px;
   border-radius: 0px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import './contentpage.css'; // Make sure to import your CSS file
 
 const WakingUpEarly = () => {
   const [content, setContent] = useState(""); // State to hold the content
@@ -40,8 +41,8 @@ const WakingUpEarly = () => {
 
   return (
     <main>
-      <h1>Waking Up Early</h1>
-      <p>{content || "Loading content..."}</p> {/* Display fetched content or loading message */}
+      <h1 className="black-heading">Waking Up Early</h1>
+      <div dangerouslySetInnerHTML={{ __html: content }} /> {/* Render fetched content as HTML */}
     </main>
   );
 };

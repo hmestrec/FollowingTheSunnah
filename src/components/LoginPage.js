@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Amplify } from 'aws-amplify'; // Import Amplify for configuration
+import { Authenticator } from '@aws-amplify/ui-react'; // Import Authenticator from Amplify
 import awsconfig from '../aws-exports'; // Import your Amplify configuration
+import ReactQuill from 'react-quill'; // Import the React Quill component
+import 'react-quill/dist/quill.snow.css'; // Import the Quill CSS
 
 // Configure Amplify
 Amplify.configure(awsconfig);
@@ -43,7 +46,7 @@ function SimpleApiTest() {
     // Handle editing an existing record
     const handleEdit = (record) => {
         setId(record.id); // Set ID for editing
-        setContent(record.content); // Load content into the textarea for editing
+        setContent(record.content); // Load content into the editor for editing
         setIsEditing(true); // Set editing mode to true
     };
 
@@ -109,56 +112,73 @@ function SimpleApiTest() {
         }
     };
 
+    const modules = {
+        toolbar: [
+            [{ 'header': [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'align': [] }], // Add align options
+            ['link', 'image', 'clean'], // Add more options here
+        ],
+    };
+
     return (
-        <div>
-            <h1>Simple API Test</h1>
+        <Authenticator>
+            {({ signOut, user }) => (
+                <div>
+                    <h1>Simple API Test</h1>
+                    <button onClick={signOut} style={{ marginBottom: '20px' }}>Sign Out</button>
 
-            <form onSubmit={handleSaveContent}>
-                <label htmlFor="id">Enter ID:</label>
-                <input
-                    id="id"
-                    value={id}
-                    onChange={(e) => setId(e.target.value)} // Update state when input changes
-                    style={{ width: '100%', padding: '10px', marginTop: '10px' }}
-                />
+                    <form onSubmit={handleSaveContent}>
+                        <label htmlFor="id">Enter ID:</label>
+                        <input
+                            id="id"
+                            value={id}
+                            onChange={(e) => setId(e.target.value)} // Update state when input changes
+                            style={{ width: '100%', padding: '10px', marginTop: '10px' }}
+                        />
 
-                <label htmlFor="content" style={{ marginTop: '20px' }}>Enter Content:</label>
-                <textarea
-                    id="content"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)} // Update state when input changes
-                    rows="5"
-                    style={{ width: '100%', padding: '10px', marginTop: '10px' }}
-                />
+                        <label htmlFor="content" style={{ marginTop: '20px' }}>Enter Content:</label>
+                        <ReactQuill
+                            id="content"
+                            value={content}
+                            onChange={setContent} // Update state when input changes
+                            modules={modules} // Use the modules defined above
+                            style={{ height: '200px', marginTop: '10px' }} // Custom style
+                        />
 
-                <button
-                    type="submit"
-                    style={{ marginTop: '20px', padding: '10px', backgroundColor: isEditing ? '#28a745' : '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }}
-                >
-                    {isEditing ? 'Update Content' : 'Save Content'}
-                </button>
-            </form>
-
-            {/* Display records for editing */}
-            <h3 style={{ marginTop: '40px' }}>Saved Records:</h3>
-            <ul>
-                {records.length > 0 ? (
-                    records.map((record) => (
-                        <li key={record.id}>
-                            <strong>ID:</strong> {record.id} | <strong>Content:</strong> {record.content}
-                            <button onClick={() => handleEdit(record)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '3px' }}>
-                                Edit
+                        <div style={{ marginTop: '60px' }}> {/* Add spacing above the button */}
+                            <button
+                                type="submit"
+                                style={{ padding: '10px', backgroundColor: isEditing ? '#28a745' : '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }}
+                            >
+                                {isEditing ? 'Update Content' : 'Save Content'}
                             </button>
-                            <button onClick={() => handleDelete(record.id)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#FF0000', color: 'white', border: 'none', borderRadius: '3px' }}>
-                                Delete
-                            </button>
-                        </li>
-                    ))
-                ) : (
-                    <li>No records found.</li>
-                )}
-            </ul>
-        </div>
+                        </div>
+                    </form>
+
+                    {/* Display records for editing */}
+                    <h3 style={{ marginTop: '40px' }}>Saved Records:</h3>
+                    <ul>
+                        {records.length > 0 ? (
+                            records.map((record) => (
+                                <li key={record.id}>
+                                    <strong>ID:</strong> {record.id} | <strong>Content:</strong> {record.content}
+                                    <button onClick={() => handleEdit(record)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '3px' }}>
+                                        Edit
+                                    </button>
+                                    <button onClick={() => handleDelete(record.id)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#FF0000', color: 'white', border: 'none', borderRadius: '3px' }}>
+                                        Delete
+                                    </button>
+                                </li>
+                            ))
+                        ) : (
+                            <li>No records found.</li>
+                        )}
+                    </ul>
+                </div>
+            )}
+        </Authenticator>
     );
 }
 
