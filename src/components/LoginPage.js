@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Authenticator } from '@aws-amplify/ui-react'; // Import Authenticator from Amplify
-import { Amplify } from 'aws-amplify'; // Import Amplify for configuration
+import { Amplify, Auth } from 'aws-amplify'; // Import Amplify for configuration
 import awsconfig from '../aws-exports'; // Import your Amplify configuration
 
 // Configure Amplify
@@ -9,25 +9,72 @@ Amplify.configure(awsconfig);
 function SimpleApiTest() {
     const [content, setContent] = useState(''); // State to store the content
     const [id, setId] = useState(''); // State to store the ID input
-    const [records, setRecords] = useState([]); // State to store records from DynamoDB
+    const [isEditing, setIsEditing] = useState(false); // State to track if editing an existing entry
+    const [records, setRecords] = useState([]); // State to hold records fetched from the API
 
     // Function to fetch all records from DynamoDB
     const fetchRecords = async () => {
         try {
-            // Replace with your actual API Gateway endpoint for GET
             const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
+            const session = await Auth.currentSession(); // Get the current session
+            const token = session.idToken.jwtToken; // Get the JWT token
+            
             const response = await fetch(apiUrl, {
                 method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Add token to headers
+                    'Content-Type': 'application/json',
+                },
             });
-            const data = await response.json();
-            setRecords(data); // Set fetched records to state
+
+            if (response.ok) {
+                const data = await response.json();
+                setRecords(data); // Set the fetched records to state
+            } else {
+                console.error('Failed to fetch records:', response);
+                alert('Failed to fetch records.');
+            }
         } catch (error) {
             console.error('Error fetching records:', error);
-            alert('Failed to fetch records.');
+            alert('Error fetching records.');
         }
     };
 
-    // Function to handle saving new or edited content
+    // Fetch records on initial load
+    useEffect(() => {
+        fetchRecords();
+    }, []);
+
+    // Fetch content by ID for editing
+    const handleFetchContent = async () => {
+        try {
+            const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${id}`;
+            const session = await Auth.currentSession(); // Get the current session
+            const token = session.idToken.jwtToken; // Get the JWT token
+            
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Add token to headers
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setContent(data.content); // Preload content into the textarea
+                setIsEditing(true); // Set editing mode to true
+                alert('Content loaded for editing.');
+            } else {
+                alert('Content not found.');
+            }
+        } catch (error) {
+            console.error('Error fetching content:', error);
+            alert('Failed to fetch content.');
+        }
+    };
+
+    // Save or update content
     const handleSaveContent = async (e) => {
         e.preventDefault(); // Prevent form refresh
 
@@ -36,11 +83,14 @@ function SimpleApiTest() {
         console.log('Request Body:', body);
 
         try {
-            // Replace with your actual API Gateway endpoint for POST/PUT
             const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
+            const session = await Auth.currentSession(); // Get the current session
+            const token = session.idToken.jwtToken; // Get the JWT token
+
             const response = await fetch(apiUrl, {
-                method: 'POST',
+                method: isEditing ? 'PUT' : 'POST', // Use PUT for updating existing entries
                 headers: {
+                    'Authorization': `Bearer ${token}`, // Add token to headers
                     'Content-Type': 'application/json',
                 },
                 body: body,
@@ -49,23 +99,13 @@ function SimpleApiTest() {
             const result = await response.json();
             console.log('Response from API:', result);
             alert('Content saved successfully!');
+            setIsEditing(false); // Reset editing state
             fetchRecords(); // Refresh records after saving
         } catch (error) {
             console.error('Error saving content:', error);
             alert('Failed to save content.');
         }
     };
-
-    // Function to load content for editing
-    const handleEdit = (record) => {
-        setId(record.id); // Set ID for editing
-        setContent(record.content); // Load content into the textarea for editing
-    };
-
-    // Fetch records on initial load
-    useEffect(() => {
-        fetchRecords();
-    }, []);
 
     return (
         <Authenticator>
@@ -83,6 +123,14 @@ function SimpleApiTest() {
                             style={{ width: '100%', padding: '10px', marginTop: '10px' }}
                         />
 
+                        <button
+                            type="button"
+                            onClick={handleFetchContent}
+                            style={{ marginTop: '10px', padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px' }}
+                        >
+                            Load Content for Editing
+                        </button>
+
                         <label htmlFor="content" style={{ marginTop: '20px' }}>Enter Content:</label>
                         <textarea
                             id="content"
@@ -92,25 +140,13 @@ function SimpleApiTest() {
                             style={{ width: '100%', padding: '10px', marginTop: '10px' }}
                         />
 
-                        <button type="submit" style={{ marginTop: '20px', padding: '10px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }}>
-                            Save Content
+                        <button
+                            type="submit"
+                            style={{ marginTop: '20px', padding: '10px', backgroundColor: isEditing ? '#28a745' : '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }}
+                        >
+                            {isEditing ? 'Update Content' : 'Save Content'}
                         </button>
                     </form>
-
-                    {/* Records List */}
-                    <div style={{ marginTop: '40px' }}>
-                        <h3>Saved Records:</h3>
-                        <ul>
-                            {records.map((record) => (
-                                <li key={record.id}>
-                                    <strong>ID:</strong> {record.id} | <strong>Content:</strong> {record.content}
-                                    <button onClick={() => handleEdit(record)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '3px' }}>
-                                        Edit
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
 
                     <button onClick={signOut} style={{ marginTop: '20px', padding: '10px', backgroundColor: '#FF0000', color: 'white', border: 'none', borderRadius: '5px' }}>
                         Sign Out
