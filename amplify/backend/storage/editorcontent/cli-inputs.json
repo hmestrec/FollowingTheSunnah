@@ -1,0 +1,10 @@
+{
+  "resourceName": "editorcontent",
+  "tableName": "editorcontent",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}
