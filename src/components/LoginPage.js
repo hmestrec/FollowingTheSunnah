@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Authenticator } from '@aws-amplify/ui-react'; // Import Authenticator from Amplify
-import { Amplify, Auth } from 'aws-amplify'; // Import Amplify for configuration
+import { Amplify } from 'aws-amplify'; // Import Amplify for configuration
 import awsconfig from '../aws-exports'; // Import your Amplify configuration
 
 // Configure Amplify
@@ -16,13 +15,9 @@ function SimpleApiTest() {
     const fetchRecords = async () => {
         try {
             const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
-            const session = await Auth.currentSession(); // Get the current session
-            const token = session.idToken.jwtToken; // Get the JWT token
-            
             const response = await fetch(apiUrl, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Add token to headers
                     'Content-Type': 'application/json',
                 },
             });
@@ -45,33 +40,11 @@ function SimpleApiTest() {
         fetchRecords();
     }, []);
 
-    // Fetch content by ID for editing
-    const handleFetchContent = async () => {
-        try {
-            const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${id}`;
-            const session = await Auth.currentSession(); // Get the current session
-            const token = session.idToken.jwtToken; // Get the JWT token
-            
-            const response = await fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`, // Add token to headers
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setContent(data.content); // Preload content into the textarea
-                setIsEditing(true); // Set editing mode to true
-                alert('Content loaded for editing.');
-            } else {
-                alert('Content not found.');
-            }
-        } catch (error) {
-            console.error('Error fetching content:', error);
-            alert('Failed to fetch content.');
-        }
+    // Handle editing an existing record
+    const handleEdit = (record) => {
+        setId(record.id); // Set ID for editing
+        setContent(record.content); // Load content into the textarea for editing
+        setIsEditing(true); // Set editing mode to true
     };
 
     // Save or update content
@@ -84,17 +57,20 @@ function SimpleApiTest() {
 
         try {
             const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
-            const session = await Auth.currentSession(); // Get the current session
-            const token = session.idToken.jwtToken; // Get the JWT token
 
+            // Use PUT for updating existing entries, POST for creating new ones
             const response = await fetch(apiUrl, {
-                method: isEditing ? 'PUT' : 'POST', // Use PUT for updating existing entries
+                method: isEditing ? 'PUT' : 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Add token to headers
                     'Content-Type': 'application/json',
                 },
                 body: body,
             });
+
+            if (!response.ok) {
+                const errorText = await response.text(); // Get the response text for better debugging
+                throw new Error(`Error ${response.status}: ${errorText}`);
+            }
 
             const result = await response.json();
             console.log('Response from API:', result);
@@ -103,57 +79,86 @@ function SimpleApiTest() {
             fetchRecords(); // Refresh records after saving
         } catch (error) {
             console.error('Error saving content:', error);
-            alert('Failed to save content.');
+            alert(`Failed to save content: ${error.message}`);
+        }
+    };
+
+    // Handle deleting a record
+    const handleDelete = async (recordId) => {
+        try {
+            const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${recordId}`;
+            const response = await fetch(apiUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Response from API:', result);
+                alert('Content deleted successfully!');
+                fetchRecords(); // Refresh records after deleting
+            } else {
+                console.error('Failed to delete record:', response);
+                alert('Failed to delete record.');
+            }
+        } catch (error) {
+            console.error('Error deleting content:', error);
+            alert('Failed to delete content.');
         }
     };
 
     return (
-        <Authenticator>
-            {({ signOut, user }) => (
-                <div>
-                    <h1>Simple API Test</h1>
-                    <p>Welcome, {user.username}!</p>
+        <div>
+            <h1>Simple API Test</h1>
 
-                    <form onSubmit={handleSaveContent}>
-                        <label htmlFor="id">Enter ID:</label>
-                        <input
-                            id="id"
-                            value={id}
-                            onChange={(e) => setId(e.target.value)} // Update state when input changes
-                            style={{ width: '100%', padding: '10px', marginTop: '10px' }}
-                        />
+            <form onSubmit={handleSaveContent}>
+                <label htmlFor="id">Enter ID:</label>
+                <input
+                    id="id"
+                    value={id}
+                    onChange={(e) => setId(e.target.value)} // Update state when input changes
+                    style={{ width: '100%', padding: '10px', marginTop: '10px' }}
+                />
 
-                        <button
-                            type="button"
-                            onClick={handleFetchContent}
-                            style={{ marginTop: '10px', padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px' }}
-                        >
-                            Load Content for Editing
-                        </button>
+                <label htmlFor="content" style={{ marginTop: '20px' }}>Enter Content:</label>
+                <textarea
+                    id="content"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)} // Update state when input changes
+                    rows="5"
+                    style={{ width: '100%', padding: '10px', marginTop: '10px' }}
+                />
 
-                        <label htmlFor="content" style={{ marginTop: '20px' }}>Enter Content:</label>
-                        <textarea
-                            id="content"
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)} // Update state when input changes
-                            rows="5"
-                            style={{ width: '100%', padding: '10px', marginTop: '10px' }}
-                        />
+                <button
+                    type="submit"
+                    style={{ marginTop: '20px', padding: '10px', backgroundColor: isEditing ? '#28a745' : '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }}
+                >
+                    {isEditing ? 'Update Content' : 'Save Content'}
+                </button>
+            </form>
 
-                        <button
-                            type="submit"
-                            style={{ marginTop: '20px', padding: '10px', backgroundColor: isEditing ? '#28a745' : '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }}
-                        >
-                            {isEditing ? 'Update Content' : 'Save Content'}
-                        </button>
-                    </form>
-
-                    <button onClick={signOut} style={{ marginTop: '20px', padding: '10px', backgroundColor: '#FF0000', color: 'white', border: 'none', borderRadius: '5px' }}>
-                        Sign Out
-                    </button>
-                </div>
-            )}
-        </Authenticator>
+            {/* Display records for editing */}
+            <h3 style={{ marginTop: '40px' }}>Saved Records:</h3>
+            <ul>
+                {records.length > 0 ? (
+                    records.map((record) => (
+                        <li key={record.id}>
+                            <strong>ID:</strong> {record.id} | <strong>Content:</strong> {record.content}
+                            <button onClick={() => handleEdit(record)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '3px' }}>
+                                Edit
+                            </button>
+                            <button onClick={() => handleDelete(record.id)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#FF0000', color: 'white', border: 'none', borderRadius: '3px' }}>
+                                Delete
+                            </button>
+                        </li>
+                    ))
+                ) : (
+                    <li>No records found.</li>
+                )}
+            </ul>
+        </div>
     );
 }
 
