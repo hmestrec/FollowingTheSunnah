@@ -1,11 +1,4 @@
 export type AmplifyDependentResourcesAttributes = {
-  "api": {
-    "editorApp": {
-      "ApiId": "string",
-      "ApiName": "string",
-      "RootUrl": "string"
-    }
-  },
   "auth": {
     "followingthesunnahddd32ec8": {
       "AppClientID": "string",
