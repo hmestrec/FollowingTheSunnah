@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Authenticator } from '@aws-amplify/ui-react';
-import { post } from '@aws-amplify/api-rest'; // Import post from api-rest
+import { API } from 'aws-amplify'; // Correct API import
 import { Amplify } from 'aws-amplify'; 
 import awsconfig from '../aws-exports'; 
 
@@ -15,20 +15,17 @@ function EditorPage() {
         const editorContent = editorRef.current.innerHTML; // Get the content from the editor
         const id = Date.now().toString(); // Generate a unique ID based on the timestamp
 
-        // Construct the request body to match the successful format
+        // Construct the request body to match the backend API format
         const body = {
-            TableName: "editorcontent-dev", // Updated table name
-            Item: {
-                id: id, 
-                content: editorContent
-            }
+            id: id, 
+            content: editorContent
         };
 
         console.log('Request Body:', body); // Log the body to check its content
 
         try {
-            // Use post to save content
-            const response = await post('editorAPI', '/editor', { body }); // Use the correct API
+            // Use API.post to save content
+            const response = await API.post('editorAPI', '/editor', { body }); // Correct API method
             console.log('Response from API:', response); // Log the API response
             alert('Content saved successfully!');
         } catch (error) {
