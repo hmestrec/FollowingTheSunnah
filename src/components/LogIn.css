@@ -1,0 +1,211 @@
+/* Center the entire page content */
+.page-container {
+  display: flex;
+  flex-direction: column;  /* Align content vertically */
+  justify-content: center;  /* Center vertically */
+  align-items: center;      /* Center horizontally */
+  min-height: 100vh;        /* Full viewport height */
+  padding: 20px;            /* Add padding around the content */
+  box-sizing: border-box;
+}
+
+/* Center the login form with a floating window effect */
+.login-container, .editor-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 800px; /* Adjust width as needed */
+  padding: 40px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Creates a nice shadow for the floating effect */
+  text-align: center;
+  z-index: 1000; /* Ensures it stays above other elements */
+  margin: auto;
+}
+
+/* Center the h1 title */
+.h1 {
+  color: #000000;
+  text-align: center;
+}
+
+/* Center the input field */
+.input-field {
+  width: 500px;
+  margin-bottom: 20px; /* Add space below the input field */
+}
+
+/* Center the Quill editor */
+.quill-editor {
+  width: 1000px;
+  margin-bottom: 20px;
+  box-sizing: border-box; /* Ensure padding and border are accounted for */
+}
+
+/* Edit Button */
+.edit-button, .submit-button, .delete-button, .sign-out-button {
+  width: auto;  /* Increased button width */
+  padding: 15px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 50px;
+}
+
+.edit-button {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #4a4b4d; /* Gray on hover */
+  transform: translateY(-3px); /* Slight lift */
+}
+
+.submit-button {
+  background-color: #399b35;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #4a4b4d; /* Gray on hover */
+  transform: translateY(-3px); /* Slight lift */
+}
+
+/* Delete Button */
+.delete-button {
+  background-color: #c01414;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #4a4b4d; /* Gray on hover */
+  transform: translateY(-3px); /* Slight lift */
+}
+
+/* Sign Out Button */
+.sign-out-button {
+  background-color: #000000;
+  color: white;
+}
+
+.sign-out-button:hover {
+  background-color: #4a4b4d; /* Gray on hover */
+  transform: translateY(-3px); /* Slight lift */
+}
+
+/* Dropdown style for Saved Records */
+.record-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.record-item {
+  margin-bottom: 10px;
+}
+
+.dropdown-button {
+  width: 100%;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-button:hover {
+  background-color: #0056b3;
+}
+
+.dropdown-content {
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  border-left: 2px solid #0d6efd;
+  border-radius: 0 5px 5px 5px;
+  margin-top: 5px;
+  transition: height 0.3s ease;
+}
+
+/* Last Updated Span */
+.last-updated {
+  font-weight: normal;
+  font-size: 0.9em;
+  color: #ccc;
+  margin-left: 10px;
+}
+
+/* Adjust button styles inside the dropdown */
+.record-item .edit-button, .record-item .delete-button {
+  margin-right: 10px;
+}
+
+
+/* Tabs Styling - Display tabs stacked vertically */
+.amplify-tabs {
+  display: flex;
+  flex-direction: column; /* Stack tabs vertically */
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Space below the tabs */
+  margin-top: 10px; /* Adjust spacing above the form */
+  position: relative;
+  width: 100%;
+  z-index: 1001;
+}
+
+/* Individual Tab Button Styling */
+.amplify-tabs button {
+  background-color: #0d6efd; /* Button background color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin: 5px 0; /* Spacing between buttons in vertical stack */
+  width: 100%; /* Make sure buttons take full width */
+}
+
+.amplify-tabs button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.amplify-tabs button[aria-selected="true"] {
+  background-color: #0056b3; /* Active tab styling */
+  color: white;
+}
+
+/* Center the login form with a floating window effect */
+.login-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 40px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Creates a nice shadow for the floating effect */
+  text-align: center;
+  z-index: 1000; /* Ensures it stays above other elements */
+}
+
+/* Form elements inside the login window */
+.amplify-form {
+  padding: 20px;
+  width: 100%; /* Set form width to full */
+  max-width: 400px; /* Limit the maximum width */
+  margin: 0 auto; /* Center the form */
+}
+

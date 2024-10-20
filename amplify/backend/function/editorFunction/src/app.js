@@ -80,6 +80,7 @@ app.post('/editor', async function (req, res) {
     Item: {
       id: id,
       content: content,
+      lastUpdated: new Date().toISOString(), // Add the lastUpdated field with current timestamp
     },
   };
 
@@ -106,9 +107,10 @@ app.put('/editor', async function (req, res) {
     Key: {
       id: id,
     },
-    UpdateExpression: 'set content = :content',
+    UpdateExpression: 'set content = :content, lastUpdated = :lastUpdated', // Update both content and lastUpdated
     ExpressionAttributeValues: {
       ':content': content,
+      ':lastUpdated': new Date().toISOString(), // Add the current timestamp for lastUpdated
     },
     ReturnValues: 'UPDATED_NEW', // Optional: returns the new value
   };

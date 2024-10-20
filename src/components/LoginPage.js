@@ -1,185 +1,178 @@
 import React, { useState, useEffect } from 'react';
-import { Amplify } from 'aws-amplify'; // Import Amplify for configuration
-import { Authenticator } from '@aws-amplify/ui-react'; // Import Authenticator from Amplify
-import awsconfig from '../aws-exports'; // Import your Amplify configuration
-import ReactQuill from 'react-quill'; // Import the React Quill component
-import 'react-quill/dist/quill.snow.css'; // Import the Quill CSS
+import { Amplify } from 'aws-amplify';
+import { Authenticator, SignIn } from '@aws-amplify/ui-react';
+import awsconfig from '../aws-exports';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import './LogIn.css';  // Import your custom CSS for styling
 
-// Configure Amplify
 Amplify.configure(awsconfig);
 
 function SimpleApiTest() {
-    const [content, setContent] = useState(''); // State to store the content
-    const [id, setId] = useState(''); // State to store the ID input
-    const [isEditing, setIsEditing] = useState(false); // State to track if editing an existing entry
-    const [records, setRecords] = useState([]); // State to hold records fetched from the API
+  const [content, setContent] = useState('');
+  const [id, setId] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [records, setRecords] = useState([]);
+  const [openRecord, setOpenRecord] = useState(null); // State to track open record
 
-    // Function to fetch all records from DynamoDB
-    const fetchRecords = async () => {
-        try {
-            const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
-            const response = await fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+  const fetchRecords = async () => {
+    try {
+      const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
+      const response = await fetch(apiUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Fetched Records:', data); // Log the records to check for the lastUpdated field
+        setRecords(data);
+      } else {
+        console.error('Failed to fetch records:', response);
+        alert('Failed to fetch records.');
+      }
+    } catch (error) {
+      console.error('Error fetching records:', error);
+      alert('Error fetching records.');
+    }
+  };
 
-            if (response.ok) {
-                const data = await response.json();
-                setRecords(data); // Set the fetched records to state
-            } else {
-                console.error('Failed to fetch records:', response);
-                alert('Failed to fetch records.');
-            }
-        } catch (error) {
-            console.error('Error fetching records:', error);
-            alert('Error fetching records.');
-        }
-    };
+  useEffect(() => {
+    fetchRecords();
+  }, []);
 
-    // Fetch records on initial load
-    useEffect(() => {
+  const handleEdit = (record) => {
+    setId(record.id);
+    setContent(record.content);
+    setIsEditing(true);
+  };
+
+  const handleSaveContent = async (e) => {
+    e.preventDefault();
+    const body = JSON.stringify({ id, content });
+    try {
+      const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
+      const response = await fetch(apiUrl, {
+        method: isEditing ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body,
+      });
+      if (response.ok) {
+        alert('Content saved successfully!');
+        setIsEditing(false);
         fetchRecords();
-    }, []);
+      } else {
+        const errorText = await response.text();
+        throw new Error(`Error ${response.status}: ${errorText}`);
+      }
+    } catch (error) {
+      alert(`Failed to save content: ${error.message}`);
+    }
+  };
 
-    // Handle editing an existing record
-    const handleEdit = (record) => {
-        setId(record.id); // Set ID for editing
-        setContent(record.content); // Load content into the editor for editing
-        setIsEditing(true); // Set editing mode to true
-    };
+  const handleDelete = async (recordId) => {
+    try {
+      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${recordId}`;
+      const response = await fetch(apiUrl, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
+      if (response.ok) {
+        alert('Content deleted successfully!');
+        fetchRecords();
+      } else {
+        alert('Failed to delete record.');
+      }
+    } catch (error) {
+      alert('Failed to delete content.');
+    }
+  };
 
-    // Save or update content
-    const handleSaveContent = async (e) => {
-        e.preventDefault(); // Prevent form refresh
+  const toggleRecord = (recordId) => {
+    setOpenRecord(openRecord === recordId ? null : recordId);
+  };
 
-        const body = JSON.stringify({ id, content });
+  // Format the date with a fallback for missing or invalid dates
+  const formatDate = (dateString) => {
+    if (!dateString || isNaN(new Date(dateString).getTime())) {
+      return 'Not Available'; // Fallback for missing or invalid dates
+    }
+    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
-        console.log('Request Body:', body);
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ align: [] }],
+      ['link', 'image', 'clean'],
+    ],
+  };
 
-        try {
-            const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
-
-            // Use PUT for updating existing entries, POST for creating new ones
-            const response = await fetch(apiUrl, {
-                method: isEditing ? 'PUT' : 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: body,
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text(); // Get the response text for better debugging
-                throw new Error(`Error ${response.status}: ${errorText}`);
-            }
-
-            const result = await response.json();
-            console.log('Response from API:', result);
-            alert('Content saved successfully!');
-            setIsEditing(false); // Reset editing state
-            fetchRecords(); // Refresh records after saving
-        } catch (error) {
-            console.error('Error saving content:', error);
-            alert(`Failed to save content: ${error.message}`);
+  return (
+    <Authenticator components={{ SignIn: { Header() { return <h2 className="custom-signin-header">Editing Login</h2>; }}}}>
+      {({ signOut, user }) => {
+        if (!user) {
+          return (
+            <div className="login-container">
+              <h2>Login</h2>
+            </div>
+          );
         }
-    };
+        return (
+          <div className="page-container">
+            <h1 className="h1">Editing Page</h1>
+            <button className="sign-out-button" onClick={signOut}>Sign Out</button>
 
-    // Handle deleting a record
-    const handleDelete = async (recordId) => {
-        try {
-            const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${recordId}`;
-            const response = await fetch(apiUrl, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+            <form onSubmit={handleSaveContent} className="editor-form">
+              <label htmlFor="id">Enter ID:</label>
+              <input
+                id="id"
+                className="input-field"
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+              />
+              
+              <div style={{ marginTop: '20px' }}>
+                <label htmlFor="content">Enter Content:</label>
+                <ReactQuill
+                  id="content"
+                  className="quill-editor"
+                  value={content}
+                  onChange={setContent}
+                  modules={modules}
+                />
+              </div>
+              
+              <div className="button-container">
+                <button type="submit" className={`submit-button ${isEditing ? 'edit-button' : 'save-button'}`}>
+                  {isEditing ? 'Update Content' : 'Save Content'}
+                </button>
+              </div>
+            </form>
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Response from API:', result);
-                alert('Content deleted successfully!');
-                fetchRecords(); // Refresh records after deleting
-            } else {
-                console.error('Failed to delete record:', response);
-                alert('Failed to delete record.');
-            }
-        } catch (error) {
-            console.error('Error deleting content:', error);
-            alert('Failed to delete content.');
-        }
-    };
-
-    const modules = {
-        toolbar: [
-            [{ 'header': [1, 2, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'align': [] }], // Add align options
-            ['link', 'image', 'clean'], // Add more options here
-        ],
-    };
-
-    return (
-        <Authenticator>
-            {({ signOut, user }) => (
-                <div>
-                    <h1>Simple API Test</h1>
-                    <button onClick={signOut} style={{ marginBottom: '20px' }}>Sign Out</button>
-
-                    <form onSubmit={handleSaveContent}>
-                        <label htmlFor="id">Enter ID:</label>
-                        <input
-                            id="id"
-                            value={id}
-                            onChange={(e) => setId(e.target.value)} // Update state when input changes
-                            style={{ width: '100%', padding: '10px', marginTop: '10px' }}
-                        />
-
-                        <label htmlFor="content" style={{ marginTop: '20px' }}>Enter Content:</label>
-                        <ReactQuill
-                            id="content"
-                            value={content}
-                            onChange={setContent} // Update state when input changes
-                            modules={modules} // Use the modules defined above
-                            style={{ height: '200px', marginTop: '10px' }} // Custom style
-                        />
-
-                        <div style={{ marginTop: '60px' }}> {/* Add spacing above the button */}
-                            <button
-                                type="submit"
-                                style={{ padding: '10px', backgroundColor: isEditing ? '#28a745' : '#007BFF', color: 'white', border: 'none', borderRadius: '5px' }}
-                            >
-                                {isEditing ? 'Update Content' : 'Save Content'}
-                            </button>
-                        </div>
-                    </form>
-
-                    {/* Display records for editing */}
-                    <h3 style={{ marginTop: '40px' }}>Saved Records:</h3>
-                    <ul>
-                        {records.length > 0 ? (
-                            records.map((record) => (
-                                <li key={record.id}>
-                                    <strong>ID:</strong> {record.id} | <strong>Content:</strong> {record.content}
-                                    <button onClick={() => handleEdit(record)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '3px' }}>
-                                        Edit
-                                    </button>
-                                    <button onClick={() => handleDelete(record.id)} style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#FF0000', color: 'white', border: 'none', borderRadius: '3px' }}>
-                                        Delete
-                                    </button>
-                                </li>
-                            ))
-                        ) : (
-                            <li>No records found.</li>
-                        )}
-                    </ul>
-                </div>
-            )}
-        </Authenticator>
-    );
+            <h3>Saved Records:</h3>
+            <ul className="record-list">
+              {records.length > 0 ? (
+                records.map((record) => (
+                  <li key={record.id} className="record-item">
+                    <button className="dropdown-button" onClick={() => toggleRecord(record.id)}>
+                      <strong>ID:</strong> {record.id}
+                      <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
+                    </button>
+                    {openRecord === record.id && (
+                      <div className="dropdown-content">
+                        <strong>Content:</strong> {record.content}
+                        <button className="edit-button" onClick={() => handleEdit(record)}>Edit</button>
+                        <button className="delete-button" onClick={() => handleDelete(record.id)}>Delete</button>
+                      </div>
+                    )}
+                  </li>
+                ))
+              ) : (
+                <li>No records found.</li>
+              )}
+            </ul>
+          </div>
+        );
+      }}
+    </Authenticator>
+  );
 }
 
 export default SimpleApiTest;

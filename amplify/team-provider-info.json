@@ -21,7 +21,7 @@
       "function": {
         "editorFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-dev-2bf7d-deployment",
-          "s3Key": "amplify-builds/editorFunction-4e7a522f687553574f30-build.zip"
+          "s3Key": "amplify-builds/editorFunction-766e464842345935552f-build.zip"
         }
       },
       "api": {
