@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import awsconfig from '../aws-exports';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import './LogIn.css'; // Import your custom CSS for styling
+import './LogIn.css';
 
 Amplify.configure(awsconfig);
 
-function SimpleApiTest() {
+function SimpleApiTestContent({ user, signOut }) {
   const [content, setContent] = useState('');
   const [id, setId] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [records, setRecords] = useState([]);
-  const [openRecord, setOpenRecord] = useState(null); // State to track open record
+  const [openRecord, setOpenRecord] = useState(null);
+  const [editingRecordId, setEditingRecordId] = useState(null);
+
+  const userEmail = user?.signInDetails?.loginId || 'User';
+
+  useEffect(() => {
+    fetchRecords();
+    // Polling to fetch records every 5 seconds
+    const interval = setInterval(() => {
+      fetchRecords();
+    }, 5000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, [user]);
 
   const fetchRecords = async () => {
     try {
@@ -21,83 +37,112 @@ function SimpleApiTest() {
       const response = await fetch(apiUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
       if (response.ok) {
         const data = await response.json();
-        console.log('Fetched Records:', data); // Log the records to check for the lastUpdated field
         setRecords(data);
       } else {
         console.error('Failed to fetch records:', response);
-        alert('Failed to fetch records.');
+        toast.error('Failed to fetch records.');
       }
     } catch (error) {
       console.error('Error fetching records:', error);
-      alert('Error fetching records.');
+      toast.error('Error fetching records.');
     }
   };
 
-  useEffect(() => {
-    fetchRecords();
-  }, []);
-
-  const handleEdit = (record) => {
-    setId(record.id);
-    setContent(record.content);
-    setIsEditing(true);
-  };
-
-  const handleSaveContent = async (e, user) => {
-    e.preventDefault();
-    
-    const userId = user ? user.username : null; // Get user ID from the user object
-
-    if (!userId) {
-      alert('User ID is not available. Please log in.');
-      return;
-    }
-
-    const body = JSON.stringify({ id, content, userId }); // Include userId in the body
+  const handleEdit = async (record) => {
     try {
-      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${id}`; // Append ID correctly
+      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/edit/${record.id}`;
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: userEmail }),
+      });
+      if (response.ok) {
+        setId(record.id);
+        setContent(record.content);
+        setIsEditing(true);
+        setEditingRecordId(record.id);
+      } else {
+        const errorText = await response.text();
+        throw new Error(`Error ${response.status}: ${errorText}`);
+      }
+    } catch (error) {
+      toast.error(`Failed to mark content as being edited: ${error.message}`);
+    }
+  };
+
+  const handleSaveContent = async (e) => {
+    e.preventDefault();
+    const userId = userEmail;
+
+    const body = JSON.stringify({ id, content, userId });
+    try {
+      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${id}`;
       const response = await fetch(apiUrl, {
         method: isEditing ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: body,
       });
       if (response.ok) {
-        alert('Content saved successfully!');
+        toast.success('Content saved successfully!');
         setIsEditing(false);
-        fetchRecords();
+        setEditingRecordId(null);
+        handleUnlockContent(id, userId); // Unlock asynchronously after saving
+        setId(''); // Reset ID
+        setContent(''); // Reset content
+        fetchRecords(); // Fetch the updated records immediately after saving
       } else {
         const errorText = await response.text();
         throw new Error(`Error ${response.status}: ${errorText}`);
       }
     } catch (error) {
-      alert(`Failed to save content: ${error.message}`);
+      toast.error(`Failed to save content: ${error.message}`);
+    }
+  };
+
+  const handleClear = () => {
+    if (editingRecordId) {
+      handleUnlockContent(editingRecordId, userEmail); // Unlock asynchronously
+    }
+    setId('');
+    setContent('');
+    setIsEditing(false);
+    setEditingRecordId(null);
+  };
+
+  const handleUnlockContent = async (id, userId) => {
+    try {
+      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/unlock/${id}`;
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error ${response.status}: ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Failed to unlock content:', error);
     }
   };
 
   const handleDelete = async (recordId) => {
     try {
       const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${recordId}`;
-      const response = await fetch(apiUrl, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
+      const response = await fetch(apiUrl, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
       if (response.ok) {
-        alert('Content deleted successfully!');
-        fetchRecords();
+        toast.success('Item deleted successfully!');
+        fetchRecords(); // Fetch the updated records after deletion
       } else {
-        alert('Failed to delete record.');
+        const errorText = await response.text();
+        throw new Error(`Error ${response.status}: ${errorText}`);
       }
     } catch (error) {
-      alert('Failed to delete content.');
+      toast.error(`Failed to delete item: ${error.message}`);
     }
-  };
-
-  const handleClear = () => {
-    setId(''); // Clear ID
-    setContent(''); // Clear content
-    setIsEditing(false); // Reset editing state
-  };
-
-  const handleSignOut = async (signOut) => {
-    await signOut(); // Sign out the user
-    handleClear(); // Clear ID and content on sign out
   };
 
   const toggleRecord = (recordId) => {
@@ -106,7 +151,7 @@ function SimpleApiTest() {
 
   const formatDate = (dateString) => {
     if (!dateString || isNaN(new Date(dateString).getTime())) {
-      return 'Not Available'; // Fallback for missing or invalid dates
+      return 'Not Available';
     }
     const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -123,76 +168,90 @@ function SimpleApiTest() {
   };
 
   return (
-    <Authenticator>
-      {({ signOut, user }) => {
-        if (!user) {
-          return (
-            <div className="login-container">
-              <h2>Login</h2>
-            </div>
-          );
-        }
-        return (
-          <div className="page-container">
-            <h1 className="h1">Editing Page</h1>
-            <h2>Welcome, {user.signInDetails.loginId}!</h2>
-            <button className="sign-out-button" onClick={() => handleSignOut(signOut)}>Sign Out</button>
+    <div className="page-container">
+      <h1 className="h1">Editing Page</h1>
+      <h2>Welcome, {userEmail}!</h2>
+      <button className="sign-out-button" onClick={signOut}>Sign Out</button>
 
-            <form onSubmit={(e) => handleSaveContent(e, user)} className="editor-form">
-              <label htmlFor="id">Enter ID:</label>
-              <input
-                id="id"
-                className="input-field"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
-              />
-              
-              <div style={{ marginTop: '20px' }}>
-                <label htmlFor="content">Enter Content:</label>
-                <ReactQuill
-                  id="content"
-                  className="quill-editor"
-                  value={content}
-                  onChange={setContent}
-                  modules={modules}
-                />
-              </div>
-              
-              <div className="button-container">
-                <button type="submit" className={`submit-button ${isEditing ? 'edit-button' : 'save-button'}`}>
-                  {isEditing ? 'Update Content' : 'Save Content'}
-                </button>
-                <button type="button" className="clear-button" onClick={handleClear}>
-                  Clear
-                </button>
-              </div>
-            </form>
+      <form onSubmit={handleSaveContent} className="editor-form">
+        <label htmlFor="id">Enter ID:</label>
+        <input
+          id="id"
+          className="input-field"
+          value={id}
+          onChange={(e) => setId(e.target.value)} // Allow modifying the ID
+        />
 
-            <h3>Saved Records:</h3>
-            <ul className="record-list">
-              {records.length > 0 ? (
-                records.map((record) => (
-                  <li key={record.id} className="record-item">
-                    <button className="dropdown-button" onClick={() => toggleRecord(record.id)}>
-                      <strong>ID:</strong> {record.id}
-                      <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
-                    </button>
-                    {openRecord === record.id && (
-                      <div className="dropdown-content">
-                        <strong>Content:</strong> {record.content}
-                        <button className="edit-button" onClick={() => handleEdit(record)}>Edit</button>
-                        <button className="delete-button" onClick={() => handleDelete(record.id)}>Delete</button>
-                      </div>
-                    )}
-                  </li>
-                ))
-              ) : (
-                <li>No records found.</li>
+        <div style={{ marginTop: '20px' }}>
+          <label htmlFor="content">Enter Content:</label>
+          <ReactQuill
+            id="content"
+            className="quill-editor"
+            value={content}
+            onChange={setContent}
+            modules={modules}
+          />
+        </div>
+
+        <div className="button-container">
+          <button type="submit" className={`submit-button ${isEditing ? 'edit-button' : 'save-button'}`}>
+            {isEditing ? 'Update Content' : 'Save Content'}
+          </button>
+          <button type="button" className="clear-button" onClick={handleClear}>
+            Clear
+          </button>
+        </div>
+      </form>
+
+      <h3>Saved Records:</h3>
+      <ul className="record-list">
+        {records.length > 0 ? (
+          records.map((record) => (
+            <li key={record.id} className="record-item">
+              <button className="dropdown-button" onClick={() => toggleRecord(record.id)}>
+                <strong>ID:</strong> {record.id}
+                <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
+                <span className="current-editor"> | Editing User: {record.currentUserId ? record.currentUserId : 'None'}</span>
+              </button>
+              {openRecord === record.id && (
+                <div className="dropdown-content">
+                  <strong>Content:</strong> {record.content}
+                  {isEditing && editingRecordId !== record.id ? (
+                    <p>This record is currently being edited by another user.</p>
+                  ) : (
+                    <>
+                      <button className="edit-button" onClick={() => handleEdit(record)}>
+                        Edit
+                      </button>
+                      <button className="delete-button" onClick={() => handleDelete(record.id)}>
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </div>
               )}
-            </ul>
+            </li>
+          ))
+        ) : (
+          <li>No records found.</li>
+        )}
+      </ul>
+
+      <ToastContainer />
+    </div>
+  );
+}
+
+function SimpleApiTest() {
+  return (
+    <Authenticator>
+      {({ signOut, user }) => (
+        user ? <SimpleApiTestContent user={user} signOut={signOut} /> : (
+          <div className="login-container">
+            <h2>Login</h2>
           </div>
-        );
-      }}
+        )
+      )}
     </Authenticator>
   );
 }

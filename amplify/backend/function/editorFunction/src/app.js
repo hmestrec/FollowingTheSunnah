@@ -43,14 +43,86 @@ app.get('/editor', async function (req, res) {
 });
 
 /************************************
+ * HTTP Post method to insert a new item
+ ************************************/
+app.post('/editor', async function (req, res) {
+  const { id, content } = req.body;
+
+  if (!id || !content) {
+    return res.status(400).json({ error: 'Missing id or content in request body' });
+  }
+
+  const params = {
+    TableName: tableName,
+    Item: {
+      id: id,
+      content: content,
+      lastUpdated: new Date().toISOString(),
+      isBeingEdited: false,
+      currentUserId: null,
+    },
+  };
+
+  try {
+    await ddbDocClient.send(new PutCommand(params));
+    res.json({ success: 'Item saved successfully!', id });
+  } catch (err) {
+    res.status(500).json({ error: 'Could not save item: ' + err.message });
+  }
+});
+
+/************************************
+ * HTTP Put method to mark an item as being edited by a user
+ ************************************/
+app.put('/editor/edit/:id', async function (req, res) {
+  const id = decodeURIComponent(req.params.id);
+  const { userId } = req.body;
+
+  if (!id || !userId) {
+    return res.status(400).json({ error: 'Missing id or userId in request body' });
+  }
+
+  const getParams = {
+    TableName: tableName,
+    Key: { id },
+  };
+
+  try {
+    const data = await ddbDocClient.send(new GetCommand(getParams));
+    if (data.Item) {
+      if (data.Item.isBeingEdited && data.Item.currentUserId !== userId) {
+        return res.status(403).json({ error: 'This content is currently being edited by another user.' });
+      }
+
+      const updateParams = {
+        TableName: tableName,
+        Key: { id },
+        UpdateExpression: 'set isBeingEdited = :isBeingEdited, currentUserId = :currentUserId',
+        ExpressionAttributeValues: {
+          ':isBeingEdited': true,
+          ':currentUserId': userId,
+        },
+      };
+
+      await ddbDocClient.send(new UpdateCommand(updateParams));
+      res.json({ success: 'Item marked as being edited successfully!', id });
+    } else {
+      res.status(404).json({ error: 'Item not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Could not mark item as being edited: ' + err.message });
+  }
+});
+
+/************************************
  * HTTP Get method to retrieve a single item by ID
  ************************************/
 app.get('/editor/:id', async function (req, res) {
+  const id = decodeURIComponent(req.params.id);
+
   const params = {
     TableName: tableName,
-    Key: {
-      id: req.params.id,
-    },
+    Key: { id },
   };
 
   try {
@@ -66,40 +138,11 @@ app.get('/editor/:id', async function (req, res) {
 });
 
 /************************************
- * HTTP Post method to insert a new item
- ************************************/
-app.post('/editor', async function (req, res) {
-  const { id, content } = req.body; // Expecting id and content in the request body
-
-  if (!id || !content) {
-    return res.status(400).json({ error: 'Missing id or content in request body' });
-  }
-
-  const params = {
-    TableName: tableName,
-    Item: {
-      id: id,
-      content: content,
-      lastUpdated: new Date().toISOString(),
-      isBeingEdited: false, // Default to not being edited
-      currentUserId: null, // No user is currently editing
-    },
-  };
-
-  try {
-    await ddbDocClient.send(new PutCommand(params));
-    res.json({ success: 'Item saved successfully!', id });
-  } catch (err) {
-    res.status(500).json({ error: 'Could not save item: ' + err.message });
-  }
-});
-
-/************************************
  * HTTP Put method to update an existing item
  ************************************/
 app.put('/editor/:id', async function (req, res) {
-  const { id } = req.params;
-  const { content, userId } = req.body; // Expecting content and userId in the request body
+  const id = decodeURIComponent(req.params.id);
+  const { content, userId } = req.body;
 
   if (!id || !content || !userId) {
     return res.status(400).json({ error: 'Missing id, content, or userId in request body' });
@@ -116,24 +159,69 @@ app.put('/editor/:id', async function (req, res) {
       if (data.Item.isBeingEdited && data.Item.currentUserId !== userId) {
         return res.status(403).json({ error: 'Sorry, someone else is currently editing this content.' });
       }
+
+      const updateParams = {
+        TableName: tableName,
+        Key: { id },
+        UpdateExpression: 'set content = :content, lastUpdated = :lastUpdated, isBeingEdited = :isBeingEdited, currentUserId = :currentUserId',
+        ExpressionAttributeValues: {
+          ':content': content,
+          ':lastUpdated': new Date().toISOString(),
+          ':isBeingEdited': false,
+          ':currentUserId': null,
+        },
+      };
+
+      await ddbDocClient.send(new UpdateCommand(updateParams));
+      res.json({ success: 'Item updated successfully!', id });
+    } else {
+      res.status(404).json({ error: 'Item not found' });
     }
-
-    const updateParams = {
-      TableName: tableName,
-      Key: { id },
-      UpdateExpression: 'set content = :content, lastUpdated = :lastUpdated, isBeingEdited = :isBeingEdited, currentUserId = :currentUserId',
-      ExpressionAttributeValues: {
-        ':content': content,
-        ':lastUpdated': new Date().toISOString(),
-        ':isBeingEdited': true, // Mark as being edited
-        ':currentUserId': userId, // Track the current user
-      },
-    };
-
-    await ddbDocClient.send(new UpdateCommand(updateParams));
-    res.json({ success: 'Item updated successfully!', id });
   } catch (err) {
     res.status(500).json({ error: 'Could not update item: ' + err.message });
+  }
+});
+
+/************************************
+ * HTTP Put method to unlock an item (indicate editing is finished)
+ ************************************/
+app.put('/editor/unlock/:id', async function (req, res) {
+  const id = decodeURIComponent(req.params.id);
+  const { userId } = req.body;
+
+  if (!id || !userId) {
+    return res.status(400).json({ error: 'Missing id or userId in request body' });
+  }
+
+  const getParams = {
+    TableName: tableName,
+    Key: { id },
+  };
+
+  try {
+    const data = await ddbDocClient.send(new GetCommand(getParams));
+    if (data.Item) {
+      if (data.Item.currentUserId !== userId) {
+        return res.status(403).json({ error: 'You are not the user currently editing this content.' });
+      }
+
+      const updateParams = {
+        TableName: tableName,
+        Key: { id },
+        UpdateExpression: 'set isBeingEdited = :isBeingEdited, currentUserId = :currentUserId',
+        ExpressionAttributeValues: {
+          ':isBeingEdited': false,
+          ':currentUserId': null,
+        },
+      };
+
+      await ddbDocClient.send(new UpdateCommand(updateParams));
+      res.json({ success: 'Item unlocked successfully!', id });
+    } else {
+      res.status(404).json({ error: 'Item not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Could not unlock item: ' + err.message });
   }
 });
 
@@ -141,16 +229,16 @@ app.put('/editor/:id', async function (req, res) {
  * HTTP Delete method to remove an item by ID
  ************************************/
 app.delete('/editor/:id', async function (req, res) {
+  const id = decodeURIComponent(req.params.id);
+
   const params = {
     TableName: tableName,
-    Key: {
-      id: req.params.id,
-    },
+    Key: { id },
   };
 
   try {
     await ddbDocClient.send(new DeleteCommand(params));
-    res.json({ success: 'Item deleted successfully!', id: req.params.id });
+    res.json({ success: 'Item deleted successfully!', id });
   } catch (err) {
     res.status(500).json({ error: 'Could not delete item: ' + err.message });
   }
