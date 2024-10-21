@@ -41,6 +41,18 @@ header h1 {
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+.podcast-title {
+  color: black;
+}
+
+.topics-title {
+  color: #000000
+}
+
+.Content-Title {
+  color: black;
+}
+
 .header-scrolled {
   background-color: #1669c1; /* Slightly darker blue on scroll */
   padding: 10px 20px;

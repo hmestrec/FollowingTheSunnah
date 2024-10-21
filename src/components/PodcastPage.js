@@ -3,7 +3,7 @@ import React from "react";
 const PodcastPage = () => {
   return (
     <main>
-      <h1>Podcast Episodes</h1>
+      <h1 className="podcast-title">Podcast Episodes</h1>
       <a href="https://youtu.be/moD6FxZu-K8?si=3G5HJtvZGOAVQ_N2" target="_blank" rel="noreferrer">
         <span className="Podcast-button">Episode 1</span>
       </a>

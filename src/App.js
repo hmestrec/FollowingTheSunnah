@@ -6,12 +6,10 @@ import TopicsPage from './components/TopicsPage';
 import FormPage from './components/FormPage';
 import LoginPage from './components/LoginPage';
 import HomePage from './components/HomePage';
-import WhyBeard from './components/WhyBeard';
-import WakingUpEarly from './components/WakingUpEarly';
 import EditingPage from './components/EditingPage';
-import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute
-import './App.css'; 
-
+import ContentPage from './components/ContentPage'; // Import your new ContentPage
+import ProtectedRoute from './components/ProtectedRoute';
+import './App.css';
 
 function App() {
   return (
@@ -23,9 +21,8 @@ function App() {
           <Route path="/topics" element={<TopicsPage />} />
           <Route path="/form" element={<FormPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/whybeard" element={<WhyBeard />} />
-          <Route path="/wakingupearly" element={<WakingUpEarly />} />
           <Route path="/edit" element={<ProtectedRoute element={EditingPage} />} />
+          <Route path="/content/:id" element={<ContentPage />} /> {/* Dynamic route for content */}
           <Route path="/" element={<HomePage />} />
         </Routes>
       </div>
