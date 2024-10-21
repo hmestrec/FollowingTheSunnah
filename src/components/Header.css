@@ -1,0 +1,23 @@
+.app-header {
+    background-color: #007BFF; /* Adjust the color as needed */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home-link {
+    color: white; /* Link color */
+    text-decoration: none; /* Remove underline */
+    font-size: 24px; /* Increase font size */
+}
+
+nav a {
+    color: white; /* Link color */
+    margin-left: 20px; /* Space between links */
+    text-decoration: none; /* Remove underline */
+}
+
+nav a:hover {
+    text-decoration: underline; /* Underline on hover for better UX */
+}

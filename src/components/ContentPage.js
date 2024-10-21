@@ -19,6 +19,7 @@ const ContentPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log("Fetched Content:", data.content); // Log the fetched content for debugging
         setContent(data.content); // Set the content if found
       } else {
         setErrorMessage("Content not found."); // Fallback message
@@ -37,11 +38,14 @@ const ContentPage = () => {
 
   return (
     <main>
-      <h1 className="Content-Title">{id}</h1>
+      <h1 className="content-title">{id}</h1>
       {errorMessage ? (
         <p>{errorMessage}</p> // Display error message if any
       ) : (
-        <div dangerouslySetInnerHTML={{ __html: content || "Loading content..." }} /> // Display fetched content
+        <div 
+          className="content-display" // Optional: Add a class for styling
+          dangerouslySetInnerHTML={{ __html: content || "Loading content..." }} // Display fetched content
+        />
       )}
     </main>
   );

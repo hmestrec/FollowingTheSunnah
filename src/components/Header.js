@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import './Header.css'; // Ensure you have some basic styling
+
 
 const Header = () => {
   return (
     <header id="header">
-      <h1>Following the Sunnah</h1>
+      <Link to="/" className="home-link">Following the Sunnah</Link>
       <div className="tab">
         <Link to="/podcast"><button className="tablinks">Podcast</button></Link>
         <Link to="/topics"><button className="tablinks">Topics</button></Link>

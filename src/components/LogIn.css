@@ -44,6 +44,12 @@
   box-sizing: border-box; /* Ensure padding and border are accounted for */
 }
 
+.button-container {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space out buttons */
+  margin-top: 20px; /* Space above the button container */
+}
+
 /* Edit Button */
 .edit-button, .submit-button, .delete-button, .sign-out-button {
   width: auto;  /* Increased button width */
@@ -55,6 +61,21 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   height: 50px;
+}
+
+.clear-button {
+  background-color: cyan; /* Clear button color */
+  color: black; /* Text color */
+  margin-top: 20px;
+  width: auto;
+  padding: 15px;
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.clear-button:hover {
+  background-color: #4a4b4d; /* Gray on hover */
+  transform: translateY(-3px); /* Slight lift */
 }
 
 .edit-button {

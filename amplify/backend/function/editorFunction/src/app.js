@@ -80,7 +80,9 @@ app.post('/editor', async function (req, res) {
     Item: {
       id: id,
       content: content,
-      lastUpdated: new Date().toISOString(), // Add the lastUpdated field with current timestamp
+      lastUpdated: new Date().toISOString(),
+      isBeingEdited: false, // Default to not being edited
+      currentUserId: null, // No user is currently editing
     },
   };
 
@@ -95,28 +97,40 @@ app.post('/editor', async function (req, res) {
 /************************************
  * HTTP Put method to update an existing item
  ************************************/
-app.put('/editor', async function (req, res) {
-  const { id, content } = req.body;
+app.put('/editor/:id', async function (req, res) {
+  const { id } = req.params;
+  const { content, userId } = req.body; // Expecting content and userId in the request body
 
-  if (!id || !content) {
-    return res.status(400).json({ error: 'Missing id or content in request body' });
+  if (!id || !content || !userId) {
+    return res.status(400).json({ error: 'Missing id, content, or userId in request body' });
   }
 
-  const params = {
+  const getParams = {
     TableName: tableName,
-    Key: {
-      id: id,
-    },
-    UpdateExpression: 'set content = :content, lastUpdated = :lastUpdated', // Update both content and lastUpdated
-    ExpressionAttributeValues: {
-      ':content': content,
-      ':lastUpdated': new Date().toISOString(), // Add the current timestamp for lastUpdated
-    },
-    ReturnValues: 'UPDATED_NEW', // Optional: returns the new value
+    Key: { id },
   };
 
   try {
-    await ddbDocClient.send(new UpdateCommand(params));
+    const data = await ddbDocClient.send(new GetCommand(getParams));
+    if (data.Item) {
+      if (data.Item.isBeingEdited && data.Item.currentUserId !== userId) {
+        return res.status(403).json({ error: 'Sorry, someone else is currently editing this content.' });
+      }
+    }
+
+    const updateParams = {
+      TableName: tableName,
+      Key: { id },
+      UpdateExpression: 'set content = :content, lastUpdated = :lastUpdated, isBeingEdited = :isBeingEdited, currentUserId = :currentUserId',
+      ExpressionAttributeValues: {
+        ':content': content,
+        ':lastUpdated': new Date().toISOString(),
+        ':isBeingEdited': true, // Mark as being edited
+        ':currentUserId': userId, // Track the current user
+      },
+    };
+
+    await ddbDocClient.send(new UpdateCommand(updateParams));
     res.json({ success: 'Item updated successfully!', id });
   } catch (err) {
     res.status(500).json({ error: 'Could not update item: ' + err.message });

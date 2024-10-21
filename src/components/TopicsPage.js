@@ -35,7 +35,7 @@ const TopicsPage = () => {
 
   return (
     <main>
-      <h1 className="topics-title">Topics</h1>
+      <h1 className="podcast-title">Topics</h1>
       <ul>
         {records.map((record) => (
           <li key={record.id}>

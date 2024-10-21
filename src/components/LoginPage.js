@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
-import { Authenticator, SignIn } from '@aws-amplify/ui-react';
+import { Authenticator } from '@aws-amplify/ui-react';
 import awsconfig from '../aws-exports';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import './LogIn.css';  // Import your custom CSS for styling
+import './LogIn.css'; // Import your custom CSS for styling
 
 Amplify.configure(awsconfig);
 
@@ -43,11 +43,19 @@ function SimpleApiTest() {
     setIsEditing(true);
   };
 
-  const handleSaveContent = async (e) => {
+  const handleSaveContent = async (e, user) => {
     e.preventDefault();
-    const body = JSON.stringify({ id, content });
+    
+    const userId = user ? user.username : null; // Get user ID from the user object
+
+    if (!userId) {
+      alert('User ID is not available. Please log in.');
+      return;
+    }
+
+    const body = JSON.stringify({ id, content, userId }); // Include userId in the body
     try {
-      const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
+      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${id}`; // Append ID correctly
       const response = await fetch(apiUrl, {
         method: isEditing ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -81,11 +89,21 @@ function SimpleApiTest() {
     }
   };
 
+  const handleClear = () => {
+    setId(''); // Clear ID
+    setContent(''); // Clear content
+    setIsEditing(false); // Reset editing state
+  };
+
+  const handleSignOut = async (signOut) => {
+    await signOut(); // Sign out the user
+    handleClear(); // Clear ID and content on sign out
+  };
+
   const toggleRecord = (recordId) => {
     setOpenRecord(openRecord === recordId ? null : recordId);
   };
 
-  // Format the date with a fallback for missing or invalid dates
   const formatDate = (dateString) => {
     if (!dateString || isNaN(new Date(dateString).getTime())) {
       return 'Not Available'; // Fallback for missing or invalid dates
@@ -105,7 +123,7 @@ function SimpleApiTest() {
   };
 
   return (
-    <Authenticator components={{ SignIn: { Header() { return <h2 className="custom-signin-header">Editing Login</h2>; }}}}>
+    <Authenticator>
       {({ signOut, user }) => {
         if (!user) {
           return (
@@ -117,9 +135,10 @@ function SimpleApiTest() {
         return (
           <div className="page-container">
             <h1 className="h1">Editing Page</h1>
-            <button className="sign-out-button" onClick={signOut}>Sign Out</button>
+            <h2>Welcome, {user.signInDetails.loginId}!</h2>
+            <button className="sign-out-button" onClick={() => handleSignOut(signOut)}>Sign Out</button>
 
-            <form onSubmit={handleSaveContent} className="editor-form">
+            <form onSubmit={(e) => handleSaveContent(e, user)} className="editor-form">
               <label htmlFor="id">Enter ID:</label>
               <input
                 id="id"
@@ -142,6 +161,9 @@ function SimpleApiTest() {
               <div className="button-container">
                 <button type="submit" className={`submit-button ${isEditing ? 'edit-button' : 'save-button'}`}>
                   {isEditing ? 'Update Content' : 'Save Content'}
+                </button>
+                <button type="button" className="clear-button" onClick={handleClear}>
+                  Clear
                 </button>
               </div>
             </form>
