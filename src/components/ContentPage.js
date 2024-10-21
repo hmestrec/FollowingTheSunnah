@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import './contentpage.css'; // Import your custom CSS for styling
+
 
 const ContentPage = () => {
   const { id } = useParams(); // Get the ID from the URL
