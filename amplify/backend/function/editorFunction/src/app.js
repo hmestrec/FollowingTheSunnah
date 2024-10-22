@@ -60,6 +60,7 @@ app.post('/editor', async function (req, res) {
       lastUpdated: new Date().toISOString(),
       isBeingEdited: false,
       currentUserId: null,
+      status: 'In Progress', // Default status
     },
   };
 
@@ -142,7 +143,7 @@ app.get('/editor/:id', async function (req, res) {
  ************************************/
 app.put('/editor/:id', async function (req, res) {
   const id = decodeURIComponent(req.params.id);
-  const { content, userId } = req.body;
+  const { content, userId, status } = req.body;
 
   if (!id || !content || !userId) {
     return res.status(400).json({ error: 'Missing id, content, or userId in request body' });
@@ -163,12 +164,16 @@ app.put('/editor/:id', async function (req, res) {
       const updateParams = {
         TableName: tableName,
         Key: { id },
-        UpdateExpression: 'set content = :content, lastUpdated = :lastUpdated, isBeingEdited = :isBeingEdited, currentUserId = :currentUserId',
+        UpdateExpression: 'set content = :content, lastUpdated = :lastUpdated, isBeingEdited = :isBeingEdited, currentUserId = :currentUserId, #status = :status',
         ExpressionAttributeValues: {
           ':content': content,
           ':lastUpdated': new Date().toISOString(),
           ':isBeingEdited': false,
           ':currentUserId': null,
+          ':status': status || 'In Progress', // Update status if provided, default to 'In Progress'
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status',
         },
       };
 

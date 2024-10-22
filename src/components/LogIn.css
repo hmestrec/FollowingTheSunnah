@@ -73,6 +73,16 @@
   border-radius: 5px; /* Rounded corners */
 }
 
+.dropdown-button.ready {
+  background-color: green;  /* Ready records with green background */
+  color: white; /* Optional: Adjust text color for better readability */
+}
+
+.dropdown-button.in-progress {
+  background-color: rgb(161, 117, 35);  /* In-progress records with yellow background */
+  color: black; /* Optional: Adjust text color for better readability */
+}
+
 .clear-button:hover {
   background-color: #4a4b4d; /* Gray on hover */
   transform: translateY(-3px); /* Slight lift */

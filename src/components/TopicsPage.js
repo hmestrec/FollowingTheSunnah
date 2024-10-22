@@ -17,7 +17,9 @@ const TopicsPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setRecords(data); // Set the fetched records to state
+        // Filter only records with status 'Ready'
+        const readyRecords = data.filter(record => record.status?.toLowerCase() === 'ready');
+        setRecords(readyRecords); // Set the filtered records to state
       } else {
         console.error('Failed to fetch records:', response);
         alert('Failed to fetch records.');

@@ -13,6 +13,7 @@ Amplify.configure(awsconfig);
 function SimpleApiTestContent({ user, signOut }) {
   const [content, setContent] = useState('');
   const [id, setId] = useState('');
+  const [status, setStatus] = useState('In Progress');
   const [isEditing, setIsEditing] = useState(false);
   const [records, setRecords] = useState([]);
   const [openRecord, setOpenRecord] = useState(null);
@@ -59,6 +60,7 @@ function SimpleApiTestContent({ user, signOut }) {
       if (response.ok) {
         setId(record.id);
         setContent(record.content);
+        setStatus(record.status);
         setIsEditing(true);
         setEditingRecordId(record.id);
       } else {
@@ -73,15 +75,27 @@ function SimpleApiTestContent({ user, signOut }) {
   const handleSaveContent = async (e) => {
     e.preventDefault();
     const userId = userEmail;
-
-    const body = JSON.stringify({ id, content, userId });
+  
+    // Determine whether this is a new post (POST) or an update (PUT)
+    const method = isEditing ? 'PUT' : 'POST';
+    const apiUrl = isEditing
+      ? `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${id}`
+      : `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor`;
+    
+    // Construct the request body
+    const body = JSON.stringify({ id, content, status, userId });
+  
     try {
-      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${id}`;
+      console.log(`Sending ${method} request to: ${apiUrl} with body:`, body); // Log request details for debugging
+      
       const response = await fetch(apiUrl, {
-        method: isEditing ? 'PUT' : 'POST',
+        method,
         headers: { 'Content-Type': 'application/json' },
-        body: body,
+        body,
       });
+  
+      console.log(`Response status: ${response.status}`); // Log response status for debugging
+  
       if (response.ok) {
         toast.success('Content saved successfully!');
         setIsEditing(false);
@@ -89,9 +103,11 @@ function SimpleApiTestContent({ user, signOut }) {
         handleUnlockContent(id, userId); // Unlock asynchronously after saving
         setId(''); // Reset ID
         setContent(''); // Reset content
+        setStatus('In Progress'); // Reset status
         fetchRecords(); // Fetch the updated records immediately after saving
       } else {
         const errorText = await response.text();
+        console.error(`Failed ${method} request. Status: ${response.status}, Error: ${errorText}`);
         throw new Error(`Error ${response.status}: ${errorText}`);
       }
     } catch (error) {
@@ -105,6 +121,7 @@ function SimpleApiTestContent({ user, signOut }) {
     }
     setId('');
     setContent('');
+    setStatus('In Progress');
     setIsEditing(false);
     setEditingRecordId(null);
   };
@@ -167,11 +184,28 @@ function SimpleApiTestContent({ user, signOut }) {
     ],
   };
 
+  const handleSignOut = () => {
+    // Unlock the content if currently being edited
+    if (editingRecordId) {
+      handleUnlockContent(editingRecordId, userEmail);
+    }
+    // Clear all the state variables when signing out
+    setContent('');
+    setId('');
+    setStatus('In Progress');
+    setIsEditing(false);
+    setEditingRecordId(null);
+    setOpenRecord(null);
+    setRecords([]);
+    // Call signOut to log out the user
+    signOut();
+  };
+
   return (
     <div className="page-container">
       <h1 className="h1">Editing Page</h1>
       <h2>Welcome, {userEmail}!</h2>
-      <button className="sign-out-button" onClick={signOut}>Sign Out</button>
+      <button className="sign-out-button" onClick={handleSignOut}>Sign Out</button>
 
       <form onSubmit={handleSaveContent} className="editor-form">
         <label htmlFor="id">Enter ID:</label>
@@ -193,6 +227,12 @@ function SimpleApiTestContent({ user, signOut }) {
           />
         </div>
 
+        <label htmlFor="status">Select Status:</label>
+        <select id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+          <option value="In Progress">In Progress</option>
+          <option value="Ready">Ready</option>
+        </select>
+
         <div className="button-container">
           <button type="submit" className={`submit-button ${isEditing ? 'edit-button' : 'save-button'}`}>
             {isEditing ? 'Update Content' : 'Save Content'}
@@ -203,39 +243,71 @@ function SimpleApiTestContent({ user, signOut }) {
         </div>
       </form>
 
-      <h3>Saved Records:</h3>
-      <ul className="record-list">
-        {records.length > 0 ? (
-          records.map((record) => (
-            <li key={record.id} className="record-item">
-              <button className="dropdown-button" onClick={() => toggleRecord(record.id)}>
-                <strong>ID:</strong> {record.id}
-                <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
-                <span className="current-editor"> | Editing User: {record.currentUserId ? record.currentUserId : 'None'}</span>
-              </button>
-              {openRecord === record.id && (
-                <div className="dropdown-content">
-                  <strong>Content:</strong> {record.content}
-                  {isEditing && editingRecordId !== record.id ? (
-                    <p>This record is currently being edited by another user.</p>
-                  ) : (
-                    <>
-                      <button className="edit-button" onClick={() => handleEdit(record)}>
-                        Edit
-                      </button>
-                      <button className="delete-button" onClick={() => handleDelete(record.id)}>
-                        Delete
-                      </button>
-                    </>
-                  )}
-                </div>
-              )}
-            </li>
-          ))
-        ) : (
-          <li>No records found.</li>
+      <h3>In Progress Content:</h3>
+<ul className="record-list">
+  {records.filter(record => !record.status || record.status?.toLowerCase() === 'in progress').length > 0 ? (
+    records.filter(record => !record.status || record.status?.toLowerCase() === 'in progress').map((record) => (
+      <li key={record.id} className="record-item">
+        <button 
+          className="dropdown-button in-progress" 
+          onClick={() => toggleRecord(record.id)}
+        > 
+          <strong>ID:</strong> {record.id}
+          <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
+          <span className="current-editor"> | Editing User: {record.currentUserId ? record.currentUserId : 'None'}</span>
+        </button>
+        {openRecord === record.id && (
+          <div className="dropdown-content">
+            <strong>Content:</strong> {record.content}
+            {isEditing && editingRecordId !== record.id ? (
+              <p>This record is currently being edited by another user.</p>
+            ) : (
+              <>
+                <button className="edit-button" onClick={() => handleEdit(record)}>
+                  Edit
+                </button>
+                <button className="delete-button" onClick={() => handleDelete(record.id)}>
+                  Delete
+                </button>
+              </>
+            )}
+          </div>
         )}
-      </ul>
+      </li>
+    ))
+  ) : (
+    <li>No records found.</li>
+  )}
+</ul>
+
+<h3>Ready Content:</h3>
+<ul className="record-list">
+  {records.filter(record => record.status?.toLowerCase() === 'ready').length > 0 ? (
+    records.filter(record => record.status?.toLowerCase() === 'ready').map((record) => (
+      <li key={record.id} className="record-item">
+        <button 
+          className="dropdown-button ready" 
+          onClick={() => toggleRecord(record.id)}
+        >
+          <strong>ID:</strong> {record.id}
+          <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
+          <span className="current-editor"> | Editing User: {record.currentUserId ? record.currentUserId : 'None'}</span>
+        </button>
+        {openRecord === record.id && (
+          <div className="dropdown-content">
+            <strong>Content:</strong> {record.content}
+            <button className="edit-button" onClick={() => handleEdit(record)}>
+              Edit
+            </button>
+          </div>
+        )}
+      </li>
+    ))
+  ) : (
+    <li>No records found.</li>
+  )}
+</ul>
+
 
       <ToastContainer />
     </div>
@@ -257,3 +329,4 @@ function SimpleApiTest() {
 }
 
 export default SimpleApiTest;
+
