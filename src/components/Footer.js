@@ -1,9 +1,12 @@
-import React from "react";
+// src/components/Footer.js
+import React from 'react';
 
 const Footer = () => {
   return (
     <footer>
-      <p>&copy; 2024 Following the Sunnah</p>
+      <div className="footer-content">
+        <p>© Following The Sunnah, 2024</p>
+      </div>
     </footer>
   );
 };

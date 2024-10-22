@@ -46,7 +46,7 @@ app.get('/editor', async function (req, res) {
  * HTTP Post method to insert a new item
  ************************************/
 app.post('/editor', async function (req, res) {
-  const { id, content } = req.body;
+  const { id, content, category } = req.body;
 
   if (!id || !content) {
     return res.status(400).json({ error: 'Missing id or content in request body' });
@@ -61,6 +61,7 @@ app.post('/editor', async function (req, res) {
       isBeingEdited: false,
       currentUserId: null,
       status: 'In Progress', // Default status
+      category: category || 'Other', // Default category
     },
   };
 
@@ -143,7 +144,7 @@ app.get('/editor/:id', async function (req, res) {
  ************************************/
 app.put('/editor/:id', async function (req, res) {
   const id = decodeURIComponent(req.params.id);
-  const { content, userId, status } = req.body;
+  const { content, userId, status, category } = req.body;
 
   if (!id || !content || !userId) {
     return res.status(400).json({ error: 'Missing id, content, or userId in request body' });
@@ -164,13 +165,14 @@ app.put('/editor/:id', async function (req, res) {
       const updateParams = {
         TableName: tableName,
         Key: { id },
-        UpdateExpression: 'set content = :content, lastUpdated = :lastUpdated, isBeingEdited = :isBeingEdited, currentUserId = :currentUserId, #status = :status',
+        UpdateExpression: 'set content = :content, lastUpdated = :lastUpdated, isBeingEdited = :isBeingEdited, currentUserId = :currentUserId, #status = :status, category = :category',
         ExpressionAttributeValues: {
           ':content': content,
           ':lastUpdated': new Date().toISOString(),
           ':isBeingEdited': false,
           ':currentUserId': null,
           ':status': status || 'In Progress', // Update status if provided, default to 'In Progress'
+          ':category': category || 'Other', // Update category if provided, default to 'Other'
         },
         ExpressionAttributeNames: {
           '#status': 'status',
@@ -184,68 +186,6 @@ app.put('/editor/:id', async function (req, res) {
     }
   } catch (err) {
     res.status(500).json({ error: 'Could not update item: ' + err.message });
-  }
-});
-
-/************************************
- * HTTP Put method to unlock an item (indicate editing is finished)
- ************************************/
-app.put('/editor/unlock/:id', async function (req, res) {
-  const id = decodeURIComponent(req.params.id);
-  const { userId } = req.body;
-
-  if (!id || !userId) {
-    return res.status(400).json({ error: 'Missing id or userId in request body' });
-  }
-
-  const getParams = {
-    TableName: tableName,
-    Key: { id },
-  };
-
-  try {
-    const data = await ddbDocClient.send(new GetCommand(getParams));
-    if (data.Item) {
-      if (data.Item.currentUserId !== userId) {
-        return res.status(403).json({ error: 'You are not the user currently editing this content.' });
-      }
-
-      const updateParams = {
-        TableName: tableName,
-        Key: { id },
-        UpdateExpression: 'set isBeingEdited = :isBeingEdited, currentUserId = :currentUserId',
-        ExpressionAttributeValues: {
-          ':isBeingEdited': false,
-          ':currentUserId': null,
-        },
-      };
-
-      await ddbDocClient.send(new UpdateCommand(updateParams));
-      res.json({ success: 'Item unlocked successfully!', id });
-    } else {
-      res.status(404).json({ error: 'Item not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: 'Could not unlock item: ' + err.message });
-  }
-});
-
-/************************************
- * HTTP Delete method to remove an item by ID
- ************************************/
-app.delete('/editor/:id', async function (req, res) {
-  const id = decodeURIComponent(req.params.id);
-
-  const params = {
-    TableName: tableName,
-    Key: { id },
-  };
-
-  try {
-    await ddbDocClient.send(new DeleteCommand(params));
-    res.json({ success: 'Item deleted successfully!', id });
-  } catch (err) {
-    res.status(500).json({ error: 'Could not delete item: ' + err.message });
   }
 });
 

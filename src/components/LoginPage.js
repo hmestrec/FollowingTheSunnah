@@ -14,6 +14,7 @@ function SimpleApiTestContent({ user, signOut }) {
   const [content, setContent] = useState('');
   const [id, setId] = useState('');
   const [status, setStatus] = useState('In Progress');
+  const [category, setCategory] = useState('Motivational');
   const [isEditing, setIsEditing] = useState(false);
   const [records, setRecords] = useState([]);
   const [openRecord, setOpenRecord] = useState(null);
@@ -61,6 +62,7 @@ function SimpleApiTestContent({ user, signOut }) {
         setId(record.id);
         setContent(record.content);
         setStatus(record.status);
+        setCategory(record.category);
         setIsEditing(true);
         setEditingRecordId(record.id);
       } else {
@@ -83,7 +85,7 @@ function SimpleApiTestContent({ user, signOut }) {
       : `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor`;
     
     // Construct the request body
-    const body = JSON.stringify({ id, content, status, userId });
+    const body = JSON.stringify({ id, content, status, category, userId });
   
     try {
       console.log(`Sending ${method} request to: ${apiUrl} with body:`, body); // Log request details for debugging
@@ -104,6 +106,7 @@ function SimpleApiTestContent({ user, signOut }) {
         setId(''); // Reset ID
         setContent(''); // Reset content
         setStatus('In Progress'); // Reset status
+        setCategory('Motivational'); // Reset category
         fetchRecords(); // Fetch the updated records immediately after saving
       } else {
         const errorText = await response.text();
@@ -122,6 +125,7 @@ function SimpleApiTestContent({ user, signOut }) {
     setId('');
     setContent('');
     setStatus('In Progress');
+    setCategory('Motivational');
     setIsEditing(false);
     setEditingRecordId(null);
   };
@@ -193,6 +197,7 @@ function SimpleApiTestContent({ user, signOut }) {
     setContent('');
     setId('');
     setStatus('In Progress');
+    setCategory('Motivational');
     setIsEditing(false);
     setEditingRecordId(null);
     setOpenRecord(null);
@@ -233,6 +238,13 @@ function SimpleApiTestContent({ user, signOut }) {
           <option value="Ready">Ready</option>
         </select>
 
+        <label htmlFor="category">Select Category:</label>
+        <select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="Motivational">Motivational</option>
+          <option value="Educational">Educational</option>
+          <option value="Other">Other</option>
+        </select>
+
         <div className="button-container">
           <button type="submit" className={`submit-button ${isEditing ? 'edit-button' : 'save-button'}`}>
             {isEditing ? 'Update Content' : 'Save Content'}
@@ -244,70 +256,69 @@ function SimpleApiTestContent({ user, signOut }) {
       </form>
 
       <h3>In Progress Content:</h3>
-<ul className="record-list">
-  {records.filter(record => !record.status || record.status?.toLowerCase() === 'in progress').length > 0 ? (
-    records.filter(record => !record.status || record.status?.toLowerCase() === 'in progress').map((record) => (
-      <li key={record.id} className="record-item">
-        <button 
-          className="dropdown-button in-progress" 
-          onClick={() => toggleRecord(record.id)}
-        > 
-          <strong>ID:</strong> {record.id}
-          <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
-          <span className="current-editor"> | Editing User: {record.currentUserId ? record.currentUserId : 'None'}</span>
-        </button>
-        {openRecord === record.id && (
-          <div className="dropdown-content">
-            <strong>Content:</strong> {record.content}
-            {isEditing && editingRecordId !== record.id ? (
-              <p>This record is currently being edited by another user.</p>
-            ) : (
-              <>
-                <button className="edit-button" onClick={() => handleEdit(record)}>
-                  Edit
-                </button>
-                <button className="delete-button" onClick={() => handleDelete(record.id)}>
-                  Delete
-                </button>
-              </>
-            )}
-          </div>
+      <ul className="record-list">
+        {records.filter(record => !record.status || record.status?.toLowerCase() === 'in progress').length > 0 ? (
+          records.filter(record => !record.status || record.status?.toLowerCase() === 'in progress').map((record) => (
+            <li key={record.id} className="record-item">
+              <button 
+                className="dropdown-button in-progress" 
+                onClick={() => toggleRecord(record.id)}
+              > 
+                <strong>ID:</strong> {record.id}
+                <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
+                <span className="current-editor"> | Editing User: {record.currentUserId ? record.currentUserId : 'None'}</span>
+              </button>
+              {openRecord === record.id && (
+                <div className="dropdown-content">
+                  <strong>Content:</strong> {record.content}
+                  {isEditing && editingRecordId !== record.id ? (
+                    <p>This record is currently being edited by another user.</p>
+                  ) : (
+                    <>
+                      <button className="edit-button" onClick={() => handleEdit(record)}>
+                        Edit
+                      </button>
+                      <button className="delete-button" onClick={() => handleDelete(record.id)}>
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </li>
+          ))
+        ) : (
+          <li>No records found.</li>
         )}
-      </li>
-    ))
-  ) : (
-    <li>No records found.</li>
-  )}
-</ul>
+      </ul>
 
-<h3>Ready Content:</h3>
-<ul className="record-list">
-  {records.filter(record => record.status?.toLowerCase() === 'ready').length > 0 ? (
-    records.filter(record => record.status?.toLowerCase() === 'ready').map((record) => (
-      <li key={record.id} className="record-item">
-        <button 
-          className="dropdown-button ready" 
-          onClick={() => toggleRecord(record.id)}
-        >
-          <strong>ID:</strong> {record.id}
-          <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
-          <span className="current-editor"> | Editing User: {record.currentUserId ? record.currentUserId : 'None'}</span>
-        </button>
-        {openRecord === record.id && (
-          <div className="dropdown-content">
-            <strong>Content:</strong> {record.content}
-            <button className="edit-button" onClick={() => handleEdit(record)}>
-              Edit
-            </button>
-          </div>
+      <h3>Ready Content:</h3>
+      <ul className="record-list">
+        {records.filter(record => record.status?.toLowerCase() === 'ready').length > 0 ? (
+          records.filter(record => record.status?.toLowerCase() === 'ready').map((record) => (
+            <li key={record.id} className="record-item">
+              <button 
+                className="dropdown-button ready" 
+                onClick={() => toggleRecord(record.id)}
+              >
+                <strong>ID:</strong> {record.id}
+                <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
+                <span className="current-editor"> | Editing User: {record.currentUserId ? record.currentUserId : 'None'}</span>
+              </button>
+              {openRecord === record.id && (
+                <div className="dropdown-content">
+                  <strong>Content:</strong> {record.content}
+                  <button className="edit-button" onClick={() => handleEdit(record)}>
+                    Edit
+                  </button>
+                </div>
+              )}
+            </li>
+          ))
+        ) : (
+          <li>No records found.</li>
         )}
-      </li>
-    ))
-  ) : (
-    <li>No records found.</li>
-  )}
-</ul>
-
+      </ul>
 
       <ToastContainer />
     </div>
@@ -329,4 +340,3 @@ function SimpleApiTest() {
 }
 
 export default SimpleApiTest;
-
