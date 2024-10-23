@@ -42,6 +42,31 @@ app.get('/editor', async function (req, res) {
   }
 });
 
+// New GET method to retrieve a specific item by its ID
+app.get('/editor/:id', async function (req, res) {
+  const id = decodeURIComponent(req.params.id);
+  console.log("Fetching content with ID:", id); // Log the ID being fetched
+
+  const params = {
+    TableName: tableName,
+    Key: { id },
+  };
+
+  try {
+    const data = await ddbDocClient.send(new GetCommand(params));
+    if (data.Item) {
+      res.json(data.Item);
+    } else {
+      console.error("Item not found:", id);
+      res.status(404).json({ error: 'Item not found' });
+    }
+  } catch (err) {
+    console.error("Error loading item:", err.message);
+    res.status(500).json({ error: 'Could not load item: ' + err.message });
+  }
+});
+
+
 /************************************
  * HTTP Post method to insert a new item
  ************************************/
@@ -117,9 +142,38 @@ app.put('/editor/edit/:id', async function (req, res) {
 });
 
 /************************************
- * HTTP Get method to retrieve a single item by ID
+ * HTTP Put method to unlock an item
  ************************************/
-app.get('/editor/:id', async function (req, res) {
+app.put('/editor/unlock/:id', async function (req, res) {
+  const id = decodeURIComponent(req.params.id);
+  const { userId } = req.body;
+
+  if (!id || !userId) {
+    return res.status(400).json({ error: 'Missing id or userId in request body' });
+  }
+
+  const updateParams = {
+    TableName: tableName,
+    Key: { id },
+    UpdateExpression: 'set isBeingEdited = :isBeingEdited, currentUserId = :currentUserId',
+    ExpressionAttributeValues: {
+      ':isBeingEdited': false,
+      ':currentUserId': null,
+    },
+  };
+
+  try {
+    await ddbDocClient.send(new UpdateCommand(updateParams));
+    res.json({ success: 'Item unlocked successfully!', id });
+  } catch (err) {
+    res.status(500).json({ error: 'Could not unlock item: ' + err.message });
+  }
+});
+
+/************************************
+ * HTTP Delete method to delete an item
+ ************************************/
+app.delete('/editor/:id', async function (req, res) {
   const id = decodeURIComponent(req.params.id);
 
   const params = {
@@ -128,14 +182,10 @@ app.get('/editor/:id', async function (req, res) {
   };
 
   try {
-    const data = await ddbDocClient.send(new GetCommand(params));
-    if (data.Item) {
-      res.json(data.Item);
-    } else {
-      res.status(404).json({ error: 'Item not found' });
-    }
+    await ddbDocClient.send(new DeleteCommand(params));
+    res.json({ success: 'Item deleted successfully!', id });
   } catch (err) {
-    res.status(500).json({ error: 'Could not load item: ' + err.message });
+    res.status(500).json({ error: 'Could not delete item: ' + err.message });
   }
 });
 

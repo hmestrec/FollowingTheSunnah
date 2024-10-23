@@ -77,32 +77,32 @@ function SimpleApiTestContent({ user, signOut }) {
   const handleSaveContent = async (e) => {
     e.preventDefault();
     const userId = userEmail;
-  
+
     // Determine whether this is a new post (POST) or an update (PUT)
     const method = isEditing ? 'PUT' : 'POST';
     const apiUrl = isEditing
       ? `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${id}`
       : `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor`;
-    
+
     // Construct the request body
     const body = JSON.stringify({ id, content, status, category, userId });
-  
+
     try {
       console.log(`Sending ${method} request to: ${apiUrl} with body:`, body); // Log request details for debugging
-      
+
       const response = await fetch(apiUrl, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body,
       });
-  
+
       console.log(`Response status: ${response.status}`); // Log response status for debugging
-  
+
       if (response.ok) {
         toast.success('Content saved successfully!');
         setIsEditing(false);
         setEditingRecordId(null);
-        handleUnlockContent(id, userId); // Unlock asynchronously after saving
+        await handleUnlockContent(id, userId); // Unlock asynchronously after saving
         setId(''); // Reset ID
         setContent(''); // Reset content
         setStatus('In Progress'); // Reset status
@@ -118,16 +118,28 @@ function SimpleApiTestContent({ user, signOut }) {
     }
   };
 
-  const handleClear = () => {
+  const handleClear = async () => {
     if (editingRecordId) {
-      handleUnlockContent(editingRecordId, userEmail); // Unlock asynchronously
+      try {
+        await handleUnlockContent(editingRecordId, userEmail);
+        toast.success('Editing user cleared successfully.');
+      } catch (error) {
+        console.error('Error unlocking content during clear:', error);
+        toast.error('Failed to unlock the content. Please try again.');
+        return;
+      }
     }
+
+    // Reset state after unlocking
     setId('');
     setContent('');
     setStatus('In Progress');
     setCategory('Motivational');
     setIsEditing(false);
     setEditingRecordId(null);
+
+    // Fetch updated records to reflect changes in editing status
+    fetchRecords();
   };
 
   const handleUnlockContent = async (id, userId) => {
@@ -144,6 +156,7 @@ function SimpleApiTestContent({ user, signOut }) {
       }
     } catch (error) {
       console.error('Failed to unlock content:', error);
+      throw error; // Re-throw error to be caught by the caller
     }
   };
 
@@ -180,18 +193,22 @@ function SimpleApiTestContent({ user, signOut }) {
 
   const modules = {
     toolbar: [
-      [{ header: [1, 2, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ align: [] }],
-      ['link', 'image', 'clean'],
+      [{ header: [1, 2, 3, false] }],  // Allows headers of sizes 1, 2, 3
+      [{ 'font': [] }],                // Allows choosing different font styles
+      [{ 'size': ['small', false, 'large', 'huge'] }], // Allows choosing font size
+      [{ 'color': [] }, { 'background': [] }], // Font color and background color
+      ['bold', 'italic', 'underline', 'strike'], // Formatting options
+      [{ list: 'ordered' }, { list: 'bullet' }], // List options
+      [{ align: [] }],                // Text alignment options
+      ['link', 'image'],              // Add link and image options
+      ['clean'],                      // Remove formatting
     ],
   };
+  
 
-  const handleSignOut = () => {
-    // Unlock the content if currently being edited
+  const handleSignOut = async () => {
     if (editingRecordId) {
-      handleUnlockContent(editingRecordId, userEmail);
+      await handleUnlockContent(editingRecordId, userEmail);
     }
     // Clear all the state variables when signing out
     setContent('');

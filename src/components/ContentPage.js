@@ -12,7 +12,13 @@ const ContentPage = () => {
   // Function to fetch content based on ID
   const fetchContent = async () => {
     try {
-      const encodedId = encodeURIComponent(id); // Encode the ID for the URL
+      if (!id) {
+        setErrorMessage("Invalid content ID.");
+        toast.error("Invalid content ID.");
+        return;
+      }
+
+      const encodedId = encodeURIComponent(id.trim()); // Encode the ID for the URL
       const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${encodedId}`;
       console.log("Requesting content with ID:", id); // Log the original ID for debugging
       console.log("Encoded URL:", apiUrl); // Log the encoded URL for debugging
@@ -28,14 +34,18 @@ const ContentPage = () => {
         const data = await response.json();
         console.log("Fetched Content:", data.content); // Log the fetched content for debugging
         setContent(data.content); // Set the content if found
+      } else if (response.status === 404) {
+        setErrorMessage("Content not found. Please ensure the link is correct.");
+        console.error("Content not found. Status:", response.status);
+        toast.error("Content not found.");
       } else {
         const errorText = await response.text();
-        setErrorMessage("Content not found. Please ensure the link is correct.");
-        console.error("Error fetching content. Status:", response.status, response.statusText); // Log status and response
-        toast.error(`Content not found. Status: ${response.status} - ${errorText}`);
+        setErrorMessage("An error occurred while fetching content.");
+        console.error("Error fetching content. Status:", response.status, response.statusText, errorText); // Log status and response
+        toast.error(`Error fetching content. Status: ${response.status} - ${errorText}`);
       }
     } catch (error) {
-      setErrorMessage("Error fetching content.");
+      setErrorMessage("An error occurred while fetching content.");
       console.error("Error fetching content:", error);
       toast.error("Error fetching content.");
     }
@@ -52,7 +62,7 @@ const ContentPage = () => {
     <main>
       <h1 className="content-title">{decodeURIComponent(id)}</h1> {/* Decode the ID for display */}
       {errorMessage ? (
-        <p>{errorMessage}</p> // Display error message if any
+        <p className="error-message">{errorMessage}</p> // Display error message if any
       ) : (
         <div
           className="content-display" // Optional: Add a class for styling
