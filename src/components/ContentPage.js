@@ -12,44 +12,32 @@ const ContentPage = () => {
   // Function to fetch content based on ID
   const fetchContent = async () => {
     try {
-      if (!id) {
-        setErrorMessage("Invalid content ID.");
-        toast.error("Invalid content ID.");
-        return;
-      }
-
-      const encodedId = encodeURIComponent(id.trim()); // Encode the ID for the URL
+      const encodedId = encodeURIComponent(id); // Encode the ID for the URL
       const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${encodedId}`;
-      console.log("Requesting content with ID:", id); // Log the original ID for debugging
-      console.log("Encoded URL:", apiUrl); // Log the encoded URL for debugging
-
+  
+      console.log("Fetching content based on the provided ID..."); // General log message
+  
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
-
+  
       if (response.ok) {
         const data = await response.json();
-        console.log("Fetched Content:", data.content); // Log the fetched content for debugging
         setContent(data.content); // Set the content if found
-      } else if (response.status === 404) {
-        setErrorMessage("Content not found. Please ensure the link is correct.");
-        console.error("Content not found. Status:", response.status);
-        toast.error("Content not found.");
       } else {
         const errorText = await response.text();
-        setErrorMessage("An error occurred while fetching content.");
-        console.error("Error fetching content. Status:", response.status, response.statusText, errorText); // Log status and response
-        toast.error(`Error fetching content. Status: ${response.status} - ${errorText}`);
+        setErrorMessage("Content not found. Please ensure the link is correct.");
+        toast.error(`Content not found. Status: ${response.status} - ${errorText}`);
       }
     } catch (error) {
-      setErrorMessage("An error occurred while fetching content.");
-      console.error("Error fetching content:", error);
+      setErrorMessage("Error fetching content.");
       toast.error("Error fetching content.");
     }
   };
+  
 
   // Fetch content on component mount
   useEffect(() => {
