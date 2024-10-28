@@ -14,7 +14,7 @@ function SimpleApiTestContent({ user, signOut }) {
   const [content, setContent] = useState('');
   const [id, setId] = useState('');
   const [status, setStatus] = useState('In Progress');
-  const [category, setCategory] = useState('Motivational');
+  const [category, setCategory] = useState('Journey');
   const [isEditing, setIsEditing] = useState(false);
   const [records, setRecords] = useState([]);
   const [openRecord, setOpenRecord] = useState(null);
@@ -106,7 +106,7 @@ function SimpleApiTestContent({ user, signOut }) {
         setId(''); // Reset ID
         setContent(''); // Reset content
         setStatus('In Progress'); // Reset status
-        setCategory('Motivational'); // Reset category
+        setCategory('Journey'); // Reset category
         fetchRecords(); // Fetch the updated records immediately after saving
       } else {
         const errorText = await response.text();
@@ -134,7 +134,7 @@ function SimpleApiTestContent({ user, signOut }) {
     setId('');
     setContent('');
     setStatus('In Progress');
-    setCategory('Motivational');
+    setCategory('Journey');
     setIsEditing(false);
     setEditingRecordId(null);
 
@@ -214,7 +214,7 @@ function SimpleApiTestContent({ user, signOut }) {
     setContent('');
     setId('');
     setStatus('In Progress');
-    setCategory('Motivational');
+    setCategory('Journey');
     setIsEditing(false);
     setEditingRecordId(null);
     setOpenRecord(null);
@@ -257,9 +257,9 @@ function SimpleApiTestContent({ user, signOut }) {
 
         <label htmlFor="category">Select Category:</label>
         <select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="Motivational">Motivational</option>
-          <option value="Educational">Educational</option>
-          <option value="Other">Other</option>
+          <option value="Journey">Journey</option>
+          <option value="Fundamentals">Fundamentals</option>
+          <option value="Pathways">Pathways</option>
         </select>
 
         <div className="button-container">

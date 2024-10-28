@@ -39,8 +39,8 @@ const TopicsPage = () => {
   }, []);
 
   // Separate records into different buckets based on category
-  const motivationalTopics = records.filter(record => record.category?.toLowerCase() === 'motivational');
-  const educationalTopics = records.filter(record => record.category?.toLowerCase() === 'educational');
+  const motivationalTopics = records.filter(record => record.category?.toLowerCase() === 'journey');
+  const educationalTopics = records.filter(record => record.category?.toLowerCase() === 'fundamentals');
   const otherTopics = records.filter(record => !motivationalTopics.includes(record) && !educationalTopics.includes(record));
 
   return (
@@ -50,7 +50,7 @@ const TopicsPage = () => {
         {/* Motivational Topics Bucket */}
         <div className="bucket">
           <button className="bucket-button" onClick={() => setMotivationalOpen(!motivationalOpen)}>
-            Motivational Topics
+            Journey
           </button>
           {motivationalOpen && (
             <ul className="bucket-content">
@@ -72,7 +72,7 @@ const TopicsPage = () => {
         {/* Educational Topics Bucket */}
         <div className="bucket">
           <button className="bucket-button" onClick={() => setEducationalOpen(!educationalOpen)}>
-            Educational Topics
+            Fundamentals
           </button>
           {educationalOpen && (
             <ul className="bucket-content">
@@ -94,7 +94,7 @@ const TopicsPage = () => {
         {/* Other Topics Bucket */}
         <div className="bucket">
           <button className="bucket-button" onClick={() => setOtherOpen(!otherOpen)}>
-            Other Topics
+          Pathways
           </button>
           {otherOpen && (
             <ul className="bucket-content">
