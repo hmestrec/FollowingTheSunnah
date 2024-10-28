@@ -37,7 +37,6 @@ const ContentPage = () => {
       toast.error("Error fetching content.");
     }
   };
-  
 
   // Fetch content on component mount
   useEffect(() => {

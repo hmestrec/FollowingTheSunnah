@@ -1,11 +1,100 @@
-.black-heading {
-  color: black !important; /* Set the heading color to black */
-}
+/* contentpage.css */
 
-.content {
-  color: black !important; /* Set the content color to black */
+body {
+  font-family: 'Roboto', 'sans-serif', 'monospace';
 }
 
 .content-title {
-  color: black;
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.content-display {
+  font-size: 1.2em;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* Font size classes */
+.font-small {
+  font-size: 0.8em;
+}
+
+.font-normal {
+  font-size: 1em;
+}
+
+.font-large {
+  font-size: 1.5em;
+}
+
+.font-huge {
+  font-size: 2em;
+}
+
+/* Quill editor size classes */
+.ql-size-small {
+  font-size: 0.8em;
+}
+
+.ql-size-large {
+  font-size: 1.5em;
+}
+
+.ql-size-huge {
+  font-size: 2em;
+}
+
+/* Remove spaces between paragraphs */
+.content-display p {
+  margin: 0;
+}
+
+/* Heading styles */
+.content-display h1 {
+  font-size: 1.8em; /* Adjusted size */
+  margin: 0.25em 0;
+}
+
+.content-display h2 {
+  font-size: 1.5em; /* Adjusted size */
+  margin: 0.25em 0;
+}
+
+.content-display h3 {
+  font-size: 0.9em; /* Adjusted size */
+  margin: 0.25em 0;
+}
+
+/* Additional styles for formatting */
+.content-display b, .content-display strong {
+  font-weight: bold;
+}
+
+.content-display i, .content-display em {
+  font-style: italic;
+}
+
+.content-display u {
+  text-decoration: underline;
+}
+
+.content-display s {
+  text-decoration: line-through;
+}
+
+.content-display ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.content-display ol {
+  list-style-type: decimal;
+  margin-left: 20px;
 }
