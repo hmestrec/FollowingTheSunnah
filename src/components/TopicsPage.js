@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 const TopicsPage = () => {
   const [records, setRecords] = useState([]); // State to hold records fetched from the API
-  const [motivationalOpen, setMotivationalOpen] = useState(false);
-  const [educationalOpen, setEducationalOpen] = useState(false);
-  const [otherOpen, setOtherOpen] = useState(false);
+  const [journeyOpen, setJourneyOpen] = useState(false);
+  const [fundamentalsOpen, setFundamentalsOpen] = useState(false);
+  const [pathwaysOpen, setPathwaysOpen] = useState(false);
 
   // Function to fetch all records from DynamoDB
   const fetchRecords = async () => {
@@ -39,23 +39,23 @@ const TopicsPage = () => {
   }, []);
 
   // Separate records into different buckets based on category
-  const motivationalTopics = records.filter(record => record.category?.toLowerCase() === 'journey');
-  const educationalTopics = records.filter(record => record.category?.toLowerCase() === 'fundamentals');
-  const otherTopics = records.filter(record => !motivationalTopics.includes(record) && !educationalTopics.includes(record));
+  const journeyTopics = records.filter(record => record.category?.toLowerCase() === 'journey');
+  const fundamentalsTopics = records.filter(record => record.category?.toLowerCase() === 'fundamentals');
+  const pathwaysTopics = records.filter(record => record.category?.toLowerCase() === 'pathways');
 
   return (
     <main>
       <h1 className="podcast-title">Topics</h1>
       <div className="buckets-container">
-        {/* Motivational Topics Bucket */}
+        {/* Journey Topics Bucket */}
         <div className="bucket">
-          <button className="bucket-button" onClick={() => setMotivationalOpen(!motivationalOpen)}>
+          <button className="bucket-button" onClick={() => setJourneyOpen(!journeyOpen)}>
             Journey
           </button>
-          {motivationalOpen && (
+          {journeyOpen && (
             <ul className="bucket-content">
-              {motivationalTopics.length > 0 ? (
-                motivationalTopics.map((record) => (
+              {journeyTopics.length > 0 ? (
+                journeyTopics.map((record) => (
                   <li key={record.id}>
                     <Link to={`/content/${record.id}`} className="button-link-topics">
                       {record.id} {/* Display the ID as the topic */}
@@ -63,21 +63,21 @@ const TopicsPage = () => {
                   </li>
                 ))
               ) : (
-                <li>No Motivational Topics found.</li>
+                <li>No Journey Topics found.</li>
               )}
             </ul>
           )}
         </div>
 
-        {/* Educational Topics Bucket */}
+        {/* Fundamentals Topics Bucket */}
         <div className="bucket">
-          <button className="bucket-button" onClick={() => setEducationalOpen(!educationalOpen)}>
+          <button className="bucket-button" onClick={() => setFundamentalsOpen(!fundamentalsOpen)}>
             Fundamentals
           </button>
-          {educationalOpen && (
+          {fundamentalsOpen && (
             <ul className="bucket-content">
-              {educationalTopics.length > 0 ? (
-                educationalTopics.map((record) => (
+              {fundamentalsTopics.length > 0 ? (
+                fundamentalsTopics.map((record) => (
                   <li key={record.id}>
                     <Link to={`/content/${record.id}`} className="button-link-topics">
                       {record.id} {/* Display the ID as the topic */}
@@ -85,21 +85,21 @@ const TopicsPage = () => {
                   </li>
                 ))
               ) : (
-                <li>No Educational Topics found.</li>
+                <li>No Fundamentals Topics found.</li>
               )}
             </ul>
           )}
         </div>
 
-        {/* Other Topics Bucket */}
+        {/* Pathways Topics Bucket */}
         <div className="bucket">
-          <button className="bucket-button" onClick={() => setOtherOpen(!otherOpen)}>
-          Pathways
+          <button className="bucket-button" onClick={() => setPathwaysOpen(!pathwaysOpen)}>
+            Pathways
           </button>
-          {otherOpen && (
+          {pathwaysOpen && (
             <ul className="bucket-content">
-              {otherTopics.length > 0 ? (
-                otherTopics.map((record) => (
+              {pathwaysTopics.length > 0 ? (
+                pathwaysTopics.map((record) => (
                   <li key={record.id}>
                     <Link to={`/content/${record.id}`} className="button-link-topics">
                       {record.id} {/* Display the ID as the topic */}
@@ -107,7 +107,7 @@ const TopicsPage = () => {
                   </li>
                 ))
               ) : (
-                <li>No Other Topics found.</li>
+                <li>No Pathways Topics found.</li>
               )}
             </ul>
           )}
