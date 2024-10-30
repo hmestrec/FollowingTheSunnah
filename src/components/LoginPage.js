@@ -35,7 +35,7 @@ function SimpleApiTestContent({ user, signOut }) {
 
   const fetchRecords = async () => {
     try {
-      const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
+      const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/editor`;
       const response = await fetch(apiUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
       if (response.ok) {
         const data = await response.json();
@@ -52,7 +52,7 @@ function SimpleApiTestContent({ user, signOut }) {
 
   const handleEdit = async (record) => {
     try {
-      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/edit/${record.id}`;
+      const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/editor/edit/${record.id}`;
       const response = await fetch(apiUrl, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -81,8 +81,8 @@ function SimpleApiTestContent({ user, signOut }) {
     // Determine whether this is a new post (POST) or an update (PUT)
     const method = isEditing ? 'PUT' : 'POST';
     const apiUrl = isEditing
-      ? `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${id}`
-      : `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor`;
+      ? `${process.env.REACT_APP_API_BASE_URL}/editor/${id}`
+      : `${process.env.REACT_APP_API_BASE_URL}/editor`;
 
     // Construct the request body
     const body = JSON.stringify({ id, content, status, category, userId });
@@ -144,7 +144,7 @@ function SimpleApiTestContent({ user, signOut }) {
 
   const handleUnlockContent = async (id, userId) => {
     try {
-      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/unlock/${id}`;
+      const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/editor/unlock/${id}`;
       const response = await fetch(apiUrl, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -162,7 +162,7 @@ function SimpleApiTestContent({ user, signOut }) {
 
   const handleDelete = async (recordId) => {
     try {
-      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${recordId}`;
+      const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/editor/${recordId}`;
       const response = await fetch(apiUrl, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },

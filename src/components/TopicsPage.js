@@ -10,7 +10,7 @@ const TopicsPage = () => {
   // Function to fetch all records from DynamoDB
   const fetchRecords = async () => {
     try {
-      const apiUrl = 'https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor';
+      const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/editor`;
       const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {

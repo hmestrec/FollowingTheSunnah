@@ -13,7 +13,7 @@ const ContentPage = () => {
   const fetchContent = async () => {
     try {
       const encodedId = encodeURIComponent(id); // Encode the ID for the URL
-      const apiUrl = `https://i17il7jb0c.execute-api.us-east-1.amazonaws.com/dev/editor/${encodedId}`;
+      const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/editor/${encodedId}`;
   
       console.log("Fetching content based on the provided ID..."); // General log message
   

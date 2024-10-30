@@ -22,10 +22,42 @@
         "editorFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-dev-2bf7d-deployment",
           "s3Key": "amplify-builds/editorFunction-6a415630526a796e7547-build.zip"
-        }
+        },
+        "editorcontent": {}
       },
       "api": {
         "editorAPI": {}
+      }
+    }
+  },
+  "prd": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-followingthesunnah-prd-647c3-authRole",
+      "UnauthRoleArn": "arn:aws:iam::730335296670:role/amplify-followingthesunnah-prd-647c3-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::730335296670:role/amplify-followingthesunnah-prd-647c3-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+      "UnauthRoleName": "amplify-followingthesunnah-prd-647c3-unauthRole",
+      "StackName": "amplify-followingthesunnah-prd-647c3",
+      "StackId": "arn:aws:cloudformation:us-east-1:730335296670:stack/amplify-followingthesunnah-prd-647c3/a28752f0-96fb-11ef-a135-0e3d474ca71b",
+      "AmplifyAppId": "d3showifiypepy"
+    },
+    "categories": {
+      "auth": {
+        "followingthesunnaha2b3202b": {}
+      },
+      "function": {
+        "editorFunction": {
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/editorFunction-6a415630526a796e7547-build.zip"
+        },
+        "editorcontent": {}
+      },
+      "api": {
+        "editorAPI": {}
+      },
+      "storage": {
+        "editorcontent": {}
       }
     }
   }
