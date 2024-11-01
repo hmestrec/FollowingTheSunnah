@@ -1,76 +1,125 @@
-/* Center the entire page content */
-.page-container {
-  display: flex;
-  flex-direction: column;  /* Align content vertically */
-  justify-content: center;  /* Center vertically */
-  align-items: center;      /* Center horizontally */
-  min-height: 100vh;        /* Full viewport height */
-  padding: 20px;            /* Add padding around the content */
-  box-sizing: border-box;
+/* Full height for body and html to allow scrolling */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; /* Allow scrolling */
 }
 
-/* Center the login form with a floating window effect */
+/* Page container with full scroll support */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh; /* Ensure the container at least fills the viewport */
+  padding: 2vw;
+  box-sizing: border-box;
+  overflow-y: auto; /* Enable vertical scrolling */
+  width: 100%; /* Full width */
+}
+
+/* Login and editor containers */
 .login-container, .editor-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 800px; /* Adjust width as needed */
-  padding: 40px;
+  width: 80vw;
+  max-width: 800px;
+  padding: 4vw;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Creates a nice shadow for the floating effect */
+  border-radius: 1vw;
+  box-shadow: 0px 1vw 3vw rgba(0, 0, 0, 0.2);
   text-align: center;
-  z-index: 1000; /* Ensures it stays above other elements */
-  margin: auto;
+  z-index: 1000;
+  margin: 2vw auto;
+  overflow-y: auto; /* Allow internal scrolling if content exceeds height */
+  max-height: 90vh; /* Optional: Limit height to 90% of viewport */
+}
+
+/* Ensure the celestial background is fixed */
+.sun-moon-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* Hide scrollbar while keeping scroll functionality */
+.page-container::-webkit-scrollbar, .editor-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.page-container {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+/* Ensure the celestial background is fixed and does not scroll */
+.sun-moon-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Place it behind content */
+  overflow: hidden; /* Prevent the background from scrolling */
 }
 
 /* Center the h1 title */
-.h1 {
-  color: #000000;
+.h1, .content-title {
+  font-size: 2.5rem;
+  color: white;
+
   text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 /* Center the input field */
 .input-field {
-  width: 500px;
-  margin-bottom: 20px; /* Add space below the input field */
+  width: 80vw; /* Use relative units for width */
+  max-width: 500px; /* Limit the maximum width */
+  margin-bottom: 2vw; /* Add space below the input field */
 }
 
 /* Center the Quill editor */
 .quill-editor {
-  width: 1000px;
-  margin-bottom: 20px;
+  width: 90vw; /* Use relative units for width */
+  max-width: 1000px; /* Limit the maximum width */
+  margin-bottom: 2vw;
   box-sizing: border-box; /* Ensure padding and border are accounted for */
 }
 
 .button-container {
   display: flex; /* Use flexbox for layout */
   justify-content: space-between; /* Space out buttons */
-  margin-top: 20px; /* Space above the button container */
+  margin-top: 2vw; /* Space above the button container */
 }
 
 /* Edit Button */
 .edit-button, .submit-button, .delete-button, .sign-out-button {
   width: auto;  /* Increased button width */
-  padding: 15px;
-  margin-top: 20px;
+  padding: 1.5vw;
+  margin-top: 2vw;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.8vw;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  height: 50px;
+  height: 5vw;
 }
 
 .clear-button {
   background-color: cyan; /* Clear button color */
   color: black; /* Text color */
-  margin-top: 20px;
+  margin-top: 2vw;
   width: auto;
-  padding: 15px;
+  padding: 1.5vw;
   border: none; /* Remove border */
-  border-radius: 5px; /* Rounded corners */
+  border-radius: 0.5vw; /* Rounded corners */
 }
 
 .dropdown-button.ready {
@@ -85,7 +134,7 @@
 
 .clear-button:hover {
   background-color: #4a4b4d; /* Gray on hover */
-  transform: translateY(-3px); /* Slight lift */
+  transform: translateY(-0.3vw); /* Slight lift */
 }
 
 .edit-button {
@@ -95,7 +144,7 @@
 
 .edit-button:hover {
   background-color: #4a4b4d; /* Gray on hover */
-  transform: translateY(-3px); /* Slight lift */
+  transform: translateY(-0.3vw); /* Slight lift */
 }
 
 .submit-button {
@@ -105,7 +154,7 @@
 
 .submit-button:hover {
   background-color: #4a4b4d; /* Gray on hover */
-  transform: translateY(-3px); /* Slight lift */
+  transform: translateY(-0.3vw); /* Slight lift */
 }
 
 /* Delete Button */
@@ -116,7 +165,7 @@
 
 .delete-button:hover {
   background-color: #4a4b4d; /* Gray on hover */
-  transform: translateY(-3px); /* Slight lift */
+  transform: translateY(-0.3vw); /* Slight lift */
 }
 
 /* Sign Out Button */
@@ -127,18 +176,18 @@
 
 .sign-out-button:hover {
   background-color: #4a4b4d; /* Gray on hover */
-  transform: translateY(-3px); /* Slight lift */
+  transform: translateY(-0.3vw); /* Slight lift */
 }
 
 /* Dropdown style for Saved Records */
 .record-list {
   list-style: none;
   padding: 0;
-  margin: 20px 0;
+  margin: 2vw 0;
 }
 
 .record-item {
-  margin-bottom: 10px;
+  margin-bottom: 1vw;
 }
 
 .dropdown-button {
@@ -146,10 +195,10 @@
   background-color: #0d6efd;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 1vw 1.5vw;
   cursor: pointer;
   font-weight: bold;
-  border-radius: 5px;
+  border-radius: 0.5vw;
   text-align: left;
   transition: background-color 0.3s ease;
 }
@@ -159,11 +208,11 @@
 }
 
 .dropdown-content {
-  padding: 10px 15px;
+  padding: 1vw 1.5vw;
   background-color: #f9f9f9;
-  border-left: 2px solid #0d6efd;
-  border-radius: 0 5px 5px 5px;
-  margin-top: 5px;
+  border-left: 0.2vw solid #0d6efd;
+  border-radius: 0 0.5vw 0.5vw 0.5vw;
+  margin-top: 0.5vw;
   transition: height 0.3s ease;
 }
 
@@ -172,14 +221,13 @@
   font-weight: normal;
   font-size: 0.9em;
   color: #ccc;
-  margin-left: 10px;
+  margin-left: 1vw;
 }
 
 /* Adjust button styles inside the dropdown */
 .record-item .edit-button, .record-item .delete-button {
-  margin-right: 10px;
+  margin-right: 1vw;
 }
-
 
 /* Tabs Styling - Display tabs stacked vertically */
 .amplify-tabs {
@@ -187,8 +235,8 @@
   flex-direction: column; /* Stack tabs vertically */
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px; /* Space below the tabs */
-  margin-top: 10px; /* Adjust spacing above the form */
+  margin-bottom: 2vw; /* Space below the tabs */
+  margin-top: 1vw; /* Adjust spacing above the form */
   position: relative;
   width: 100%;
   z-index: 1001;
@@ -199,12 +247,12 @@
   background-color: #0d6efd; /* Button background color */
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 1vw 2vw;
   cursor: pointer;
   font-weight: bold;
-  border-radius: 5px;
+  border-radius: 0.5vw;
   transition: background-color 0.3s ease;
-  margin: 5px 0; /* Spacing between buttons in vertical stack */
+  margin: 0.5vw 0; /* Spacing between buttons in vertical stack */
   width: 100%; /* Make sure buttons take full width */
 }
 
@@ -217,25 +265,25 @@
   color: white;
 }
 
-/* Center the login form with a floating window effect */
-.login-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  padding: 40px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2); /* Creates a nice shadow for the floating effect */
-  text-align: center;
-  z-index: 1000; /* Ensures it stays above other elements */
-}
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+  .login-container, .editor-container {
+    width: 90vw; /* Adjust width for smaller screens */
+    padding: 5vw;
+    max-height: 70vh; /* Adjust height for smaller screens */
+  }
 
-/* Form elements inside the login window */
-.amplify-form {
-  padding: 20px;
-  width: 100%; /* Set form width to full */
-  max-width: 400px; /* Limit the maximum width */
-  margin: 0 auto; /* Center the form */
+  .input-field, .quill-editor {
+    width: 90vw;
+  }
+
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .edit-button, .submit-button, .delete-button, .sign-out-button, .clear-button {
+    width: 90%; /* Full width buttons */
+    margin-top: 2vw;
+  }
 }

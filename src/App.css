@@ -1,60 +1,392 @@
-html, body {
-  overflow-x: hidden;
+/* Enable scrolling on body and html */
+body, html {
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
-  margin: 0px;
-  padding: 0px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f7fa; /* Light grey background */
-  color: #333;
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-sizing: border-box;
 }
 
+.sun-moon-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Keeps it behind main content */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-mode {
+  background-color: #87CEEB; /* Sky blue */
+}
+
+.night-mode {
+  background-color: #001f3f; /* Dark night sky */
+}
+
+
+.sun {
+  background-color: #FFD700; /* Golden sun */
+  box-shadow: 0 0 20px #FFD700;
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333; /* Dark text for contrast */
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  z-index: 10; /* Ensure it is above other elements */
+}
+
+.moon {
+  background-color: #c2be99; /* Pale moon */
+  box-shadow: 0 0 20px #F0E68C;
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333; /* Dark text for contrast */
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  z-index: 10; /* Ensure it is above other elements */
+}
+
+.full-moon {
+  background-color: #c2be99; /* Pale moon */
+}
+
+/* Stars styling */
+.star {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  opacity: 0.8;
+  animation: twinkle 2s infinite, move 30s linear infinite; /* Add twinkle and move animations */
+}
+
+/* Twinkling animation */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Random moving animation */
+@keyframes move {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(20px, -20px);
+  }
+  50% {
+    transform: translate(-20px, 30px);
+  }
+  75% {
+    transform: translate(30px, 10px);
+  }
+  100% {
+    transform: translate(-10px, -40px);
+  }
+}
+
+/* Tab Styles */
+.tab {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tab button {
+  background-color: #d4a373; /* Terracotta buttons */
+  color: #fff; /* Light text */
+  border: 2px solid #000000;
+  padding: 10px 15px;
+  margin-left: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.tab button:hover {
+  background-color: #336b3d; /* Darker terracotta on hover */
+  color: #fff;
+  transform: translateY(-3px); /* Slight lift */
+}
+
+.tab button.active {
+  background-color: #b5838d; /* Darker terracotta when active */
+  color: #fff;
+}
+
+.tabcontent {
+  display: none;
+  padding: 30px;
+  background-color: #91582c; /* Sandy beige background for content */
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.tabcontent.active {
+  display: block;
+}
+
+/* Button Styles */
+.button-link, .Podcast-button, .back-button, .button-link-topics, .button-link-form {
+  display: inline-block;
+  background-color: #d4a373; /* Terracotta background */
+  color: #fff;
+  border: 2px solid #ffffff;
+  padding: 12px 24px;
+  margin: 15px;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.button-link:hover, .Podcast-button:hover, .back-button:hover, .button-link-topics:hover, .button-link-form:hover {
+  background-color: #336b3d; /* Darker terracotta on hover */
+  transform: translateY(-3px); /* Slight lift */
+}
+
+/* Topics Page */
+.buckets-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Space between the buckets */
+}
+
+.bucket {
+  flex: 1; /* Each bucket takes equal space */
+}
+
+.bucket-button {
+  background-color: #d4a373; /* Terracotta background */
+  color: #fff; /* Light text */
+  padding: 10px; /* Padding inside the button */
+  border: none; /* No border */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 1.2em; /* Font size */
+  width: 100%; /* Full width */
+  text-align: center; /* Center text */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.bucket-button:hover {
+  background-color: #b5838d; /* Darker terracotta on hover */
+}
+
+.bucket-content {
+  margin-top: 10px; /* Space above content */
+  list-style: none; /* Remove list bullets */
+  padding: 0; /* Remove padding */
+}
+
+.button-link-topics {
+  display: block; /* Make it a block element */
+  background-color: #d4a373; /* Terracotta background */
+  color: #fff; /* Light text */
+  border: 2px solid #000000;
+  padding: 8px; /* Padding inside the button */
+  text-decoration: none; /* No underline */
+  border-radius: 4px; /* Rounded corners */
+  margin-top: 5px; /* Space above the button */
+}
+
+.button-link-topics:hover {
+  background-color: #b5838d; /* Darker terracotta on hover */
+}
+
+/* Message Display Styles */
+.message-display {
+  background-color: #fff; /* White background for contrast */
+  color: #333; /* Dark text color */
+  padding: 20px; /* Space around the text */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  text-align: center; /* Center the text */
+  margin: 20px auto; /* Center with auto margin */
+  max-width: 600px; /* Limit width for better readability */
+}
+
+/* Title inside message display */
+.message-display h2 {
+  font-size: 24px; /* Larger font size for title */
+  margin-bottom: 10px; /* Space below title */
+  color: #d4a373; /* Terracotta color for title */
+}
+
+/* Paragraph inside message display */
+.message-display p {
+  font-size: 16px; /* Standard font size for content */
+  line-height: 1.5; /* Improve readability */
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+    align-items: center;
+  }
+
+  .submit-button, .clear-button {
+    width: 90%; /* Full width for smaller screens */
+    margin-bottom: 1rem;
+    font-size: 0.9rem; /* Slightly smaller font size */
+  }
+}
+
+
+/* Wrapper to hold main content above the footer */
+.wrapper {
+  display: flex;
+  flex-direction: column; /* Arrange children in a column */
+  min-height: 100vh; /* Full viewport height */
+}
+
+/* Main content area */
+.main-content {
+  flex: 1; /* This allows the main content area to expand and fill available space */
+}
+
+/* Footer styles */
+footer {
+  background-color: #d4a373; /* Terracotta footer */
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  flex: 0 0 auto; /* Ensures footer has fixed height and doesn't shrink */
+  z-index: 5; /* Ensure it is below the sun and moon */
+}
+
+/* Header Styles */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #216fd4; /* Deep blue header */
-  color: rgb(0, 0, 0);
+  background-color: #d4a373; /* Terracotta color */
+  color: #fff;
   padding: 15px 30px;
-  border-radius: 0px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  flex-wrap: wrap; /* Enable wrapping on smaller screens */
   position: relative;
   z-index: 1000;
 }
 
-main {
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 800px; /* To control the width of the text container */
-  font-size: 18px; /* Increase the font size */
-  line-height: 1.6; /* Improve readability with increased line spacing */
-  color: #333; /* Set the color of the text */
-  background-color: #f9f9f9; /* Optional: set a background color */
-  border-radius: 10px; /* Optional: rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+/* Logo and Brand Name */
+/* Logo Styling */
+.home-link {
+  font-size: 2.5vw; /* Responsive font size for logo */
+  color: #fff;
+  font-family: 'Georgia', 'Times New Roman', serif; /* Classic serif font for logo */
+  font-weight: bold;
+  margin: 0;
+  flex-grow: 1;
+  text-align: left;
+  text-transform: uppercase; /* Make it uppercase for a bold look */
+  letter-spacing: 0.1em; /* Space out letters for a logo effect */
+  text-decoration: none; /* Ensure no underline */
 }
-header h1 {
-  font-size: 36px; /* Make the heading larger */
-  color: #ffffff; /* Keep it consistent with your brand color */
+/* Navigation Menu */
+nav {
+  display: flex;
+  gap: 1.5vw;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-grow: 2; /* Pushes nav to the right on larger screens */
+}
+
+h1 {
+  display: block;
+  color: white;
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+}
+
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5vw;
+  padding: 0.5vw 1vw;
+  border-radius: 20px;
+  transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+  background-color: #b5838d; /* Darker terracotta */
+}
+
+.logo {
+  font-size: 5vw; /* Larger font size on mobile */
   text-align: center;
-  margin-bottom: 20px; /* Add space below the heading */
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  margin-bottom: 10px;
 }
 
-.podcast-title {
-  color: black;
+/* Responsive Styles */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px;
+  }
+
+  header h1 {
+    font-size: 4vw; /* Larger font size on mobile */
+    margin-bottom: 10px;
+    text-align: center;
+  
+  }
+
+  nav {
+    width: 100%;
+    justify-content: center; /* Center nav items on mobile */
+  }
+
+  nav a {
+    font-size: 3.5vw; /* Adjust font size for mobile */
+    padding: 1vw 2vw;
+  }
 }
 
-.topics-title {
-  color: #000000
-}
-
-.Content-Title {
-  color: black;
+@media (max-width: 480px) {
+  .logo {
+    font-size: 6vw;
+  }
+  nav a {
+    font-size: 4vw;
+    padding: 1vw 3vw;
+  }
 }
 
 .header-scrolled {
-  background-color: #1669c1; /* Slightly darker blue on scroll */
+  background-color: #b5838d; /* Slightly darker terracotta on scroll */
   padding: 10px 20px;
   position: fixed;
   top: 0;
@@ -66,481 +398,4 @@ header h1 {
   max-width: 120px;
   height: auto;
   border-radius: 5px;
-}
-
-.tab {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.tab button {
-  background-color: #ffffff; /* White buttons */
-  color: #1a73e8; /* Blue text */
-  border: 2px solid #1a73e8;
-  padding: 10px 15px;
-  margin-left: 10px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.tab button:hover {
-  background-color: #4a4b4d; /* Gray on hover */
-  color: white;
-  transform: translateY(-3px); /* Slight lift */
-}
-
-.tab button.active {
-  background-color: #000000; /* Darker blue when active */
-  color: white;
-}
-
-.tabcontent {
-  display: none;
-  padding: 30px;
-  background-color: #ffffff; /* White background for content */
-  border-radius: 10px;
-  margin: 20px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-}
-
-.tabcontent.active {
-  display: block;
-}
-
-.button-link {
-  display: inline-block;
-  background-color: #1a73e8; /* Blue background for buttons */
-  color: white;
-  padding: 12px 24px;
-  margin: 10px 0;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
-}
-
-.button-link:hover {
-  background-color: #4a4b4d; /* Gray on hover */
-  transform: translateY(-3px); /* Slight lift */
-}
-
-footer {
-  background-color: #1a73e8; /* Deep blue for footer */
-  color: white;
-  padding: 20px;
-  text-align: center;
-  border-radius: 0 0 10px 10px;
-  margin-top: 20px;
-  position: relative;
-  width: 100%;
-  bottom: 0;
-}
-
-.Podcast-button {
-  display: inline-block;
-  background-color: #1a73e8; /* Blue background */
-  color: white;
-  padding: 12px 24px;
-  margin: 15px;
-  border-radius: 8px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 18px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-.Podcast-button:hover {
-  background-color: #4a4b4d; /* Darker blue on hover */
-  transform: translateY(-3px); /* Slight lift */
-}
-
-p {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 16px;
-  color: #333;
-}
-
-#homeContent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px; /* Adjust based on layout */
-  background-color: #f9f9f9; /* Light grey */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  margin: 20px auto;
-  padding: 20px;
-  text-align: center;
-  width: 80%;
-  max-width: 800px; /* Max width for responsiveness */
-}
-
-#homeContent p {
-  font-size: 24px;
-  color: #1a73e8; /* Matching blue */
-  font-weight: bold;
-}
-
-.back-button {
-  display: inline-block;
-  background-color: #1a73e8; /* Blue background */
-  color: white;
-  padding: 12px 24px;
-  margin: 15px;
-  border-radius: 8px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 18px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-.back-button:hover {
-  background-color: #4a4b4d; /* Gray on hover */
-  transform: translateY(-3px); /* Slight lift */
-}
-
-.button-link {
-  background-color: #ffffff; /* White buttons */
-  color: #1a73e8; /* Blue text */
-  border: 2px solid #1a73e8;
-  padding: 10px 15px;
-  margin-left: 10px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.button-link:hover {
-  background-color: #4a4b4d; /* Gray on hover */
-  color: white;
-  transform: translateY(-3px); /* Slight lift */
-}
-
-.button-link-topics {
-  display: inline-block;
-  background-color: #1a73e8; /* Blue background */
-  color: white;
-  padding: 12px 24px;
-  margin: 15px;
-  border-radius: 8px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 18px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-.button-link-topics:hover {
-  background-color: #4a4b4d; /* Darker blue on hover */
-  transform: translateY(-3px); /* Slight lift */
-}
-
-.email-section {
-  background-color: #1a73e8;
-  padding: 20px;
-  border-radius: 10px;
-  color: white;
-  text-align: center;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.email-section h3 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #ffffff;
-}
-
-.email-section input, .email-section textarea {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.email-section button {
-  background-color: #ffffff;
-  color: #1a73e8;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.email-section button:hover {
-  background-color: #4a4b4d;
-  color: white;
-  transform: translateY(-3px);
-}
-
-#formStatus {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #fff;
-}
-
-
-.contact-button {
-  padding: 12px 24px;
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.contact-button:hover {
-  background-color: #0d5abf;
-}
-
-/* General styling for the contact form */
-.container {
-  border: none;
-  background-color: #f4f7fa; /* Light background to match website */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-.col-md-6.bg-primary {
-  background-color: #1a73e8; /* Matching deep blue */
-  padding: 40px;
-  border-radius: 10px 0 0 10px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Slight inner shadow */
-}
-
-.col-md-6.border-left {
-  border-left: 2px solid #f4f7fa;
-  padding: 40px;
-  background-color: #ffffff; /* White background for form */
-  border-radius: 0 10px 10px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  color: #ffffff; /* White text on blue background */
-  font-size: 36px;
-  text-align: left;
-}
-
-h4 {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #ffffff;
-  font-size: 20px;
-  margin-top: 20px;
-}
-
-form h1 {
-  color: #333333;
-  font-size: 28px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  margin-bottom: 20px;
-}
-
-/* Styling form elements */
-.form-control {
-  border-radius: 5px;
-  border: 1px solid #cccccc;
-  padding: 12px;
-  font-size: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow for inputs */
-}
-
-.form-control:focus {
-  border-color: #1a73e8; /* Blue border on focus */
-  box-shadow: 0 0 5px rgba(26, 115, 232, 0.5); /* Blue glow on focus */
-}
-
-label {
-  font-size: 16px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
-  color: #333333;
-}
-
-/* Button styling */
-.btn-primary {
-  background-color: #1a73e8; /* White buttons */
-  color: #ffffff; /* Blue text */
-  border: 2px solid #1a73e8;
-  padding: 10px 15px;
-  margin-left: 10px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #4a4b4d; /* Gray on hover */
-  color: white;
-  transform: translateY(-3px); /* Slight lift */
-}
-
-.button-link-form {
-  background-color: #1a73e8; /* White buttons */
-  color: #ffffff; /* Blue text */
-  border: 2px solid #1a73e8;
-  padding: 10px 15px;
-  margin-left: 10px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.button-link-form:hover {
-  background-color: #4a4b4d; /* Gray on hover */
-  color: white;
-  transform: translateY(-3px); /* Slight lift */
-}
-
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-/* Topics Page */
-
-.buckets-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.bucket {
-  flex: 1;
-}
-
-.bucket-button {
-  background-color: #163f6b;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2em;
-  width: 100%;
-  text-align: center;
-  border-radius: 10px;
-  
-}
-
-.bucket-button:hover {
-  background-color: #0056b3;
-}
-
-.bucket-content {
-  margin-top: 10px;
-  list-style: none;
-  padding: 0;
-}
-
-.button-link-topics {
-  display: block;
-  background-color: #007bff;
-  color: white;
-  padding: 8px;
-  text-decoration: none;
-  border-radius: 4px;
-  margin-top: 5px;
-}
-
-.button-link-topics:hover {
-  background-color: #0056b3;
-}
-
-
-/* Adjusting responsive design */
-@media screen and (max-width: 600px) {
-  .col-md-6 {
-    padding: 20px;
-    border-radius: 10px;
-  }
-
-  h1 {
-    font-size: 24px;
-  }
-
-  h4 {
-    font-size: 18px;
-  }
-
-  .btn-primary {
-    width: 100%;
-    padding: 15px;
-    font-size: 18px;
-  }
-}
-
-
-@media screen and (max-width: 600px) {
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .main {
-    width: 100%;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-
-  .tab {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .tab button {
-    width: 100%;
-    margin: 5px 0;
-  }
-
-  .back-link {
-    font-size: 14px; /* Smaller font size */
-    padding: 8px 12px; /* Smaller padding */
-    width: 100%; /* Make the button take full width of its container */
-}
-
-  /* Adjust the episode buttons to stack vertically */
-  .Podcast-button {
-    width: 70%;
-    margin: 10px 0; /* Add space between stacked buttons */
-    text-align: center;
-  }
-
-  #homeContent {
-    width: 90%; /* Responsive for mobile */
-  }
-
-  #homeContent p {
-    font-size: 18px; /* Smaller font for mobile */
-  }
 }

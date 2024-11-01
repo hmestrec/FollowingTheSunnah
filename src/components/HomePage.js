@@ -17,13 +17,14 @@ const HomePage = () => {
         const nextIndex = (messages.indexOf(prevMessage) + 1) % messages.length;
         return messages[nextIndex];
       });
-    }, 10000);
+    }, 10000); // Change message every 10 seconds
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div id="homeContent">
+    <div id="homeContent" className="message-display">
+      <h2>Daily</h2> {/* Optional Title */}
       <p id="dynamicMessage">{currentMessage}</p>
     </div>
   );

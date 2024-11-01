@@ -1,24 +1,65 @@
-/* contentpage.css */
-
-body {
-  font-family: 'Roboto', 'sans-serif', 'monospace';
+/* Define CSS Variables for the Theme */
+:root {
+  --primary-color: #007bff; /* Blue */
+  --secondary-color: #6c757d; /* Gray */
+  --background-color: #f8f9fa; /* Light gray background */
+  --text-color: #343a40; /* Dark gray text */
+  --font-family: 'Roboto', 'sans-serif', 'monospace';
 }
 
-.content-title {
-  font-size: 2em;
-  color: #333;
+/* Global Styles */
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+/* Page Container */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Titles and Headings */
+.h1, .content-title {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  text-align: center;
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .error-message {
   color: red;
   font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
 }
 
+/* Content Display */
 .content-display {
   font-size: 1.2em;
   line-height: 1.6;
-  color: #444;
+  color: var(--text-color);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Font size classes */
@@ -58,18 +99,21 @@ body {
 
 /* Heading styles */
 .content-display h1 {
-  font-size: 1.8em; /* Adjusted size */
-  margin: 0.25em 0;
+  font-size: 2em;
+  margin: 0.5em 0;
+  color: var(--primary-color);
 }
 
 .content-display h2 {
-  font-size: 1.5em; /* Adjusted size */
-  margin: 0.25em 0;
+  font-size: 1.75em;
+  margin: 0.5em 0;
+  color: var(--primary-color);
 }
 
 .content-display h3 {
-  font-size: 0.9em; /* Adjusted size */
-  margin: 0.25em 0;
+  font-size: 1.5em;
+  margin: 0.5em 0;
+  color: var(--primary-color);
 }
 
 /* Additional styles for formatting */
@@ -97,4 +141,129 @@ body {
 .content-display ol {
   list-style-type: decimal;
   margin-left: 20px;
+}
+
+/* Form and Buttons */
+.editor-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-field,
+.quill-editor,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submit-button,
+.clear-button,
+.sign-out-button,
+.edit-button,
+.delete-button {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.sign-out-button {
+  background-color: var(--secondary-color);
+}
+
+.delete-button {
+  background-color: var(--secondary-color);
+}
+
+.submit-button:hover,
+.clear-button:hover,
+.sign-out-button:hover,
+.edit-button:hover,
+.delete-button:hover {
+  background-color: darken(var(--primary-color), 10%);
+  transform: scale(1.05);
+}
+
+.sign-out-button:hover,
+.delete-button:hover {
+  background-color: darken(var(--secondary-color), 10%);
+}
+
+/* Record List */
+.record-list {
+  list-style: none;
+  padding: 0;
+}
+
+.record-item {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-button {
+  background-color: transparent;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: left;
+  width: 100%;
+}
+
+.dropdown-content {
+  margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 10px;
+  }
+
+  .h1, .content-title {
+    font-size: 2rem;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .submit-button,
+  .clear-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .content-display {
+    padding: 15px;
+    font-size: 1em;
+  }
+
+  .content-display h1 {
+    font-size: 1.75em;
+  }
+
+  .content-display h2 {
+    font-size: 1.5em;
+  }
+
+  .content-display h3 {
+    font-size: 1.25em;
+  }
 }

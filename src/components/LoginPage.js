@@ -204,7 +204,6 @@ function SimpleApiTestContent({ user, signOut }) {
       ['clean'],                      // Remove formatting
     ],
   };
-  
 
   const handleSignOut = async () => {
     if (editingRecordId) {
@@ -344,7 +343,7 @@ function SimpleApiTestContent({ user, signOut }) {
 
 function SimpleApiTest() {
   return (
-    <Authenticator>
+    <Authenticator hideDefault={true}>
       {({ signOut, user }) => (
         user ? <SimpleApiTestContent user={user} signOut={signOut} /> : (
           <div className="login-container">
