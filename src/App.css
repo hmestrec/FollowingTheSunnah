@@ -48,8 +48,8 @@ body, html {
 }
 
 .moon {
-  background-color: #c2be99; /* Pale moon */
-  box-shadow: 0 0 20px #F0E68C;
+  background-color: #cccbc4; /* Pale moon */
+  box-shadow: 0 0 20px #726f58;
   position: absolute;
   width: 80px;
   height: 80px;
@@ -65,7 +65,9 @@ body, html {
 }
 
 .full-moon {
-  background-color: #c2be99; /* Pale moon */
+  background-color: #dbdbd5; /* Pale moon */
+  box-shadow: 0 0 20px #726f58;
+  color: #333; /* Dark text for contrast */
 }
 
 /* Stars styling */
