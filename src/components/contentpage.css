@@ -32,6 +32,30 @@ body {
   font-weight: bold;
 }
 
+h2 {
+  display: block;
+  font-size: 1.5em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+  color: white;
+}
+
+h3 {
+  display: block;
+  color: white;
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+}
+
 .error-message {
   color: red;
   font-weight: bold;
@@ -166,42 +190,6 @@ select {
   justify-content: space-between;
 }
 
-.submit-button,
-.clear-button,
-.sign-out-button,
-.edit-button,
-.delete-button {
-  background-color: var(--primary-color);
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.sign-out-button {
-  background-color: var(--secondary-color);
-}
-
-.delete-button {
-  background-color: var(--secondary-color);
-}
-
-.submit-button:hover,
-.clear-button:hover,
-.sign-out-button:hover,
-.edit-button:hover,
-.delete-button:hover {
-  background-color: darken(var(--primary-color), 10%);
-  transform: scale(1.05);
-}
-
-.sign-out-button:hover,
-.delete-button:hover {
-  background-color: darken(var(--secondary-color), 10%);
-}
-
 /* Record List */
 .record-list {
   list-style: none;
@@ -265,5 +253,28 @@ select {
 
   .content-display h3 {
     font-size: 1.25em;
+  }
+}
+
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+  .login-container, .editor-container {
+    width: 90vw; /* Adjust width for smaller screens */
+    padding: 5vw;
+    max-height: 70vh; /* Adjust height for smaller screens */
+  }
+
+  .input-field, .quill-editor {
+    width: 90vw;
+  }
+
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .edit-button, .submit-button, .delete-button, .sign-out-button, .clear-button {
+    width: 35%; /* Full width buttons */
+    margin-top: 2vw;
   }
 }

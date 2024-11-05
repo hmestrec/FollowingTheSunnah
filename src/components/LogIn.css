@@ -19,7 +19,7 @@ body, html {
   width: 100%; /* Full width */
 }
 
-/* Login and editor containers */
+/* Center the login and editor containers on the page */
 .login-container, .editor-container {
   display: flex;
   flex-direction: column;
@@ -33,7 +33,7 @@ body, html {
   box-shadow: 0px 1vw 3vw rgba(0, 0, 0, 0.2);
   text-align: center;
   z-index: 1000;
-  margin: 2vw auto;
+  margin: auto; /* Center horizontally and vertically */
   overflow-y: auto; /* Allow internal scrolling if content exceeds height */
   max-height: 90vh; /* Optional: Limit height to 90% of viewport */
 }
@@ -99,28 +99,6 @@ body, html {
   margin-top: 2vw; /* Space above the button container */
 }
 
-/* Edit Button */
-.edit-button, .submit-button, .delete-button, .sign-out-button {
-  width: auto;  /* Increased button width */
-  padding: 1.5vw;
-  margin-top: 2vw;
-  border: none;
-  border-radius: 0.8vw;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  height: 5vw;
-}
-
-.clear-button {
-  background-color: cyan; /* Clear button color */
-  color: black; /* Text color */
-  margin-top: 2vw;
-  width: auto;
-  padding: 1.5vw;
-  border: none; /* Remove border */
-  border-radius: 0.5vw; /* Rounded corners */
-}
 
 .dropdown-button.ready {
   background-color: green;  /* Ready records with green background */
@@ -132,14 +110,40 @@ body, html {
   color: black; /* Optional: Adjust text color for better readability */
 }
 
+.sign-out-button {
+  background-color: black;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  position: absolute;
+  top: 80px; /* Adjust this value based on the height of your header */
+  right: 27px; /* Adjust this value based on your preference */
+  z-index: 1005; /* Ensure it appears above other elements */
+}
+
+.clear-button{
+  background-color: rgb(50, 148, 151);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
 .clear-button:hover {
-  background-color: #4a4b4d; /* Gray on hover */
+  background-color: #83b830; /* Gray on hover */
   transform: translateY(-0.3vw); /* Slight lift */
 }
 
 .edit-button {
-  background-color: #0d6efd;
-  color: white;
+  background-color: black;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .edit-button:hover {
@@ -148,8 +152,12 @@ body, html {
 }
 
 .submit-button {
-  background-color: #399b35;
-  color: white;
+  background-color:green;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .submit-button:hover {
@@ -159,8 +167,12 @@ body, html {
 
 /* Delete Button */
 .delete-button {
-  background-color: #c01414;
-  color: white;
+  background-color: rgb(129, 14, 14);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .delete-button:hover {
@@ -168,11 +180,6 @@ body, html {
   transform: translateY(-0.3vw); /* Slight lift */
 }
 
-/* Sign Out Button */
-.sign-out-button {
-  background-color: #000000;
-  color: white;
-}
 
 .sign-out-button:hover {
   background-color: #4a4b4d; /* Gray on hover */
@@ -204,16 +211,7 @@ body, html {
 }
 
 .dropdown-button:hover {
-  background-color: #0056b3;
-}
-
-.dropdown-content {
-  padding: 1vw 1.5vw;
-  background-color: #f9f9f9;
-  border-left: 0.2vw solid #0d6efd;
-  border-radius: 0 0.5vw 0.5vw 0.5vw;
-  margin-top: 0.5vw;
-  transition: height 0.3s ease;
+  background-color: #eb8585;
 }
 
 /* Last Updated Span */
@@ -229,22 +227,48 @@ body, html {
   margin-right: 1vw;
 }
 
-/* Tabs Styling - Display tabs stacked vertically */
-.amplify-tabs {
+/* Parent container (page-container) to center content vertically and horizontally */
+.page-container {
   display: flex;
-  flex-direction: column; /* Stack tabs vertically */
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2vw; /* Space below the tabs */
-  margin-top: 1vw; /* Adjust spacing above the form */
-  position: relative;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  min-height: 100vh; /* Full viewport height */
   width: 100%;
-  z-index: 1001;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* Individual Tab Button Styling */
-.amplify-tabs button {
-  background-color: #0d6efd; /* Button background color */
+legend {
+  display: block;
+  unicode-bidi: isolate;
+  padding-inline: 2px;
+  color: rgb(209, 104, 19);
+}
+
+label {
+  cursor: default;
+  color: rgb(209, 104, 19);
+}
+
+/* Center the Amplify tabs within the page */
+.amplify-tabs {
+  background-color: #3a3f46;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 0.5vw;
+  transition: background-color 0.3s ease;
+  margin: auto; /* Center horizontally */
+  width: 250px; /* Fixed width for consistent sizing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center content vertically */
+  box-sizing: border-box;
+}
+
+.amplify-tabs-sign-in {
+  background-color: #a13030;
   color: white;
   border: none;
   padding: 1vw 2vw;
@@ -254,14 +278,36 @@ body, html {
   transition: background-color 0.3s ease;
   margin: 0.5vw 0; /* Spacing between buttons in vertical stack */
   width: 100%; /* Make sure buttons take full width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Individual Tab Button Styling */
+.amplify-tabs button {
+  background-color: #0d6efd; /* Button background color */
+  color: white;
+  border: none;
+  padding: 1vw .5vw;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 0.5vw;
+  transition: background-color 0.3s ease;
+  margin: 0.5vw 0; /* Spacing between buttons in vertical stack */
+  width: 100%; /* Make sure buttons take full width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .amplify-tabs button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #bbab1f; /* Darker blue on hover */
+  transition: background-color 0.3s ease;
+  transform: translateY(-0.3vw); /* Slight lift */
 }
 
 .amplify-tabs button[aria-selected="true"] {
-  background-color: #0056b3; /* Active tab styling */
+  background-color: #147511; /* Active tab styling */
   color: white;
 }
 
@@ -282,8 +328,43 @@ body, html {
     align-items: center;
   }
 
+  
+
   .edit-button, .submit-button, .delete-button, .sign-out-button, .clear-button {
-    width: 90%; /* Full width buttons */
+    width: 35%; /* Full width buttons */
     margin-top: 2vw;
+  }
+
+  .amplify-tabs {
+    background-color: #3a3f46; /* Button background color */
+    color: white;
+    border: none;
+    padding: 1vw 2vw;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 0.5vw;
+    transition: background-color 0.3s ease;
+    margin: .8vw 0; /* Spacing between buttons in vertical stack */
+    width: auto; /* Make sure buttons take full width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center content vertically */
+  }
+
+  .amplify-tabs button {
+    background-color: #0d6efd; /* Button background color */
+    color: white;
+    border: none;
+    padding: 1vw 1vw;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 0.5vw;
+    transition: background-color 0.3s ease;
+    margin: .8vw 0; /* Spacing between buttons in vertical stack */
+    width: 90%; /* Make sure buttons take full width */
+    display:inline-flex;
+    flex-direction: column;
+    align-items: center;
   }
 }

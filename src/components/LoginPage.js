@@ -88,15 +88,12 @@ function SimpleApiTestContent({ user, signOut }) {
     const body = JSON.stringify({ id, content, status, category, userId });
 
     try {
-      console.log(`Sending ${method} request to: ${apiUrl} with body:`, body); // Log request details for debugging
 
       const response = await fetch(apiUrl, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body,
       });
-
-      console.log(`Response status: ${response.status}`); // Log response status for debugging
 
       if (response.ok) {
         toast.success('Content saved successfully!');

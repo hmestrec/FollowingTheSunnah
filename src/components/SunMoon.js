@@ -24,7 +24,6 @@ const SunMoon = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("Raw API Data:", data);
 
         const dateStr = data.results.date;
         const sunriseTimeStr = `${dateStr} ${data.results.sunrise}`;
