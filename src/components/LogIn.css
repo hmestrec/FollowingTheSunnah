@@ -251,36 +251,26 @@ label {
 }
 
 /* Center the Amplify tabs within the page */
+/* Center the Amplify tabs within the page */
 .amplify-tabs {
   background-color: #3a3f46;
   color: white;
   cursor: pointer;
   font-weight: bold;
-  border-radius: 0.5vw;
+  border-radius: 10px; /* Rounded corners */
   transition: background-color 0.3s ease;
-  margin: auto; /* Center horizontally */
-  width: 250px; /* Fixed width for consistent sizing */
+  margin: 0 auto; /* Center horizontally */
+  margin-top: 50px;
+  width: 100%;
+  max-width: 350px; /* Limit width for larger screens */
+  padding: 20px; /* Padding for spacing */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center content vertically */
+  justify-content: center;
   box-sizing: border-box;
-}
-
-.amplify-tabs-sign-in {
-  background-color: #a13030;
-  color: white;
-  border: none;
-  padding: 1vw 2vw;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 0.5vw;
-  transition: background-color 0.3s ease;
-  margin: 0.5vw 0; /* Spacing between buttons in vertical stack */
-  width: 100%; /* Make sure buttons take full width */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center; /* Center-align text */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 /* Individual Tab Button Styling */
@@ -288,22 +278,21 @@ label {
   background-color: #0d6efd; /* Button background color */
   color: white;
   border: none;
-  padding: 1vw .5vw;
+  padding: 10px 15px;
   cursor: pointer;
   font-weight: bold;
-  border-radius: 0.5vw;
+  border-radius: 5px; /* Rounded corners */
   transition: background-color 0.3s ease;
-  margin: 0.5vw 0; /* Spacing between buttons in vertical stack */
-  width: 100%; /* Make sure buttons take full width */
+  margin: 5px 0; /* Spacing between buttons */
+  width: 100%; /* Full width for buttons */
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .amplify-tabs button:hover {
-  background-color: #bbab1f; /* Darker blue on hover */
-  transition: background-color 0.3s ease;
-  transform: translateY(-0.3vw); /* Slight lift */
+  background-color: #bbab1f; /* Darker color on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
 }
 
 .amplify-tabs button[aria-selected="true"] {
@@ -311,60 +300,46 @@ label {
   color: white;
 }
 
+/* Sign-In Button in Amplify */
+.amplify-tabs-sign-in {
+  background-color: #a13030;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px; /* Spacing between buttons */
+  width: 100%; /* Full width */
+  text-align: center;
+}
+
+/* Container to center Amplify content */
+.center-amplify-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px); /* Full viewport height minus header space */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 /* Media queries for smaller screens */
 @media (max-width: 768px) {
-  .login-container, .editor-container {
-    width: 90vw; /* Adjust width for smaller screens */
-    padding: 5vw;
-    max-height: 70vh; /* Adjust height for smaller screens */
+  .amplify-tabs {
+    width: 90%; /* Responsive width for smaller screens */
+    max-width: 350px; /* Limit the width on larger screens */
+    padding: 20px; /* Padding for inner spacing */
+    margin-top:50px; /* Center horizontally and vertically if possible */
+    border-radius: 15px; /* More rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    box-sizing: border-box;
   }
-
-  .input-field, .quill-editor {
-    width: 90vw;
-  }
-
-  .button-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
   
 
-  .edit-button, .submit-button, .delete-button, .sign-out-button, .clear-button {
-    width: 35%; /* Full width buttons */
-    margin-top: 2vw;
-  }
-
-  .amplify-tabs {
-    background-color: #3a3f46; /* Button background color */
-    color: white;
-    border: none;
-    padding: 1vw 2vw;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 0.5vw;
-    transition: background-color 0.3s ease;
-    margin: .8vw 0; /* Spacing between buttons in vertical stack */
-    width: auto; /* Make sure buttons take full width */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Center content vertically */
-  }
-
   .amplify-tabs button {
-    background-color: #0d6efd; /* Button background color */
-    color: white;
-    border: none;
-    padding: 1vw 1vw;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 0.5vw;
-    transition: background-color 0.3s ease;
-    margin: .8vw 0; /* Spacing between buttons in vertical stack */
-    width: 90%; /* Make sure buttons take full width */
-    display:inline-flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 10px; /* Increase padding for better usability */
+    font-size: 1rem;
   }
 }
+
