@@ -358,13 +358,13 @@ nav a:hover {
 /* Centering container */
 /* Centering container with adjusted height */
 /* Centering container with adjusted height for responsiveness */
+/* Default styling for larger screens (desktop) */
 .center-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 280px); /* Full viewport height minus header height */
-  margin-top: 50px; /* Adjust spacing below the header */
-  padding: 0 20px; /* Add padding on smaller screens */
+  display: block; /* No flex centering on larger screens */
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -399,9 +399,9 @@ nav a:hover {
 }
 
 .date-info {
-  font-size: 1em;
-  color: #888;
-  margin-top: 5px;
+  font-size: 4.0em;
+  font-weight: bold;
+  color: #000000;
 }
 
 .prayer-times-container {
@@ -457,7 +457,6 @@ nav a:hover {
 }
 
 
-
 /* Responsive Styles */
 @media (max-width: 768px) {
   header {
@@ -500,17 +499,38 @@ nav a:hover {
 }
 
 /* Responsive styles for smaller screens */
+/* Centering for smaller screens (responsive mode) */
 @media (max-width: 768px) {
   .center-container {
-    padding: 0 10px; /* Reduce padding on very small screens */
-    margin-top: 45px; /* Reduce space under the header */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack elements vertically */
+    min-height: 100vh; /* Full viewport height for vertical centering */
+    padding: 20px;
+    width: 100%; /* Ensure it takes the full width of the screen */
+    margin: 0; /* Remove auto margin */
+    box-sizing: border-box;
   }
 
+  /* Optional: Styling for content inside the center-container */
+  .center-container > * {
+    width: 90%; /* Make sure inner content doesn’t exceed screen width */
+    max-width: 400px; /* Limit max-width on smaller screens */
+    padding: 20px;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: white; /* Background for inner content */
+    text-align: center;
+  }
+}
+
   .message-display {
+    margin-top: 0px; /* Adjust margin for better spacing */
     max-width: 90%; /* Adjust max-width to fit smaller screens */
     padding: 15px; /* Adjust padding for a better look on mobile */
   }
-}
+
 
 .header-scrolled {
   background-color: #b5838d; /* Slightly darker terracotta on scroll */
