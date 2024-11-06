@@ -228,17 +228,6 @@ body, html {
   background-color: #b5838d; /* Darker terracotta on hover */
 }
 
-/* Message Display Styles */
-.message-display {
-  background-color: #fff; /* White background for contrast */
-  color: #333; /* Dark text color */
-  padding: 20px; /* Space around the text */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  text-align: center; /* Center the text */
-  margin: 20px auto; /* Center with auto margin */
-  max-width: 600px; /* Limit width for better readability */
-}
 
 /* Title inside message display */
 .message-display h2 {
@@ -368,25 +357,33 @@ nav a:hover {
 /* Adhan Page */
 /* Centering container */
 /* Centering container with adjusted height */
+/* Centering container with adjusted height for responsiveness */
 .center-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px; /* Optional: fine-tune spacing between header and content */
+  min-height: calc(100vh - 80px); /* Full viewport height minus header height */
+  margin-top: 50px; /* Adjust spacing below the header */
+  padding: 0 20px; /* Add padding on smaller screens */
+  box-sizing: border-box;
 }
 
 /* Fixed size for the main content block */
 .message-display {
-  width: 700px; /* Fixed width */
-  height: 600px; /* Fixed height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 700px;
+  height: auto;
   padding: 20px;
-  background-color: white; /* Adjust as needed */
+  background-color: white;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
-  overflow-y: auto; /* Enable scrolling if content exceeds height */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  text-align: center; /* Center-align text */
 }
-
-
 
 .clock-display {
   display: flex;
@@ -499,6 +496,19 @@ nav a:hover {
   nav a {
     font-size: 4vw;
     padding: 3vw 3vw;
+  }
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .center-container {
+    padding: 0 10px; /* Reduce padding on very small screens */
+    margin-top: 10px; /* Reduce space under the header */
+  }
+
+  .message-display {
+    max-width: 90%;
+    padding: 15px;
   }
 }
 

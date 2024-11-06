@@ -131,45 +131,45 @@ const calculateLastThird = (ishaTime, fajrTime) => {
   };
 
   return (
-  <div class="center-container">
-    <div id="homeContent" className="message-display">
-      <h2>Daily</h2>
-      <p id="dynamicMessage">{currentMessage}</p>
-
-      <div className="clock-display">
-        <div className="clock-time">{formatTime(currentTime)}</div>
-        <div className="date-info" style={{ fontFamily: "Arial, sans-serif", fontSize: "1em", color: "#888", direction: "rtl" }}>
-          {hijriDate}
+    <div className="center-container">
+      <div id="homeContent" className="message-display">
+        <h2>Daily</h2>
+        <p id="dynamicMessage">{currentMessage}</p>
+  
+        <div className="clock-display">
+          <div className="clock-time">{formatTime(currentTime)}</div>
+          <div className="date-info" style={{ fontFamily: "Arial, sans-serif", fontSize: "1em", color: "#888", direction: "rtl" }}>
+            {hijriDate}
+          </div>
         </div>
-      </div>
-
-      <div className="prayer-times-container">
-        <div className="prayer-times">
-          <h3>Prayer Times</h3>
-          {loading ? (
-            <p>Loading prayer times...</p>
-          ) : (
-            <table className="prayer-times-table">
-              <thead>
-                <tr>
-                  <th>Salah</th>
-                  <th>Adhan</th>
-                </tr>
-              </thead>
-              <tbody>
-                {prayerOrder.map(prayer => (
-                  <tr key={prayer} className={prayer === currentPrayer ? "highlight" : ""}>
-                    <td>{prayer}</td>
-                    <td>{prayerTimes[prayer]}</td>
+  
+        <div className="prayer-times-container">
+          <div className="prayer-times">
+            <h3>Prayer Times</h3>
+            {loading ? (
+              <p>Loading prayer times...</p>
+            ) : (
+              <table className="prayer-times-table">
+                <thead>
+                  <tr>
+                    <th>Salah</th>
+                    <th>Adhan</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+                </thead>
+                <tbody>
+                  {prayerOrder.map(prayer => (
+                    <tr key={prayer} className={prayer === currentPrayer ? "highlight" : ""}>
+                      <td>{prayer}</td>
+                      <td>{prayerTimes[prayer]}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         </div>
       </div>
     </div>
-  </div>
   );
 };
 
