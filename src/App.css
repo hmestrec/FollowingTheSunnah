@@ -80,6 +80,14 @@ body, html {
   animation: twinkle 2s infinite, move 30s linear infinite; /* Add twinkle and move animations */
 }
 
+/* Pillar text styling inside sun/moon */
+.pillar-text {
+  font-size: 1rem; /* Adjust font size as needed */
+  color: #333; /* Dark color for contrast */
+  text-align: center;
+}
+
+
 /* Twinkling animation */
 @keyframes twinkle {
   0%, 100% {
@@ -356,6 +364,102 @@ nav a:hover {
   text-align: center;
   margin-bottom: 10px;
 }
+
+/* Adhan Page */
+/* Centering container */
+/* Centering container with adjusted height */
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px; /* Optional: fine-tune spacing between header and content */
+}
+
+/* Fixed size for the main content block */
+.message-display {
+  width: 700px; /* Fixed width */
+  height: 600px; /* Fixed height */
+  padding: 20px;
+  background-color: white; /* Adjust as needed */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+  overflow-y: auto; /* Enable scrolling if content exceeds height */
+}
+
+
+
+.clock-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.clock-time {
+  font-size: 3em;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.date-info {
+  font-size: 1em;
+  color: #888;
+  margin-top: 5px;
+}
+
+.prayer-times-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.prayer-times {
+  width: 90%;
+  max-width: 400px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.prayer-times h3 {
+  text-align: center;
+  font-size: 1.5em;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.prayer-times-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1em;
+}
+
+.prayer-times-table th, .prayer-times-table td {
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.prayer-times-table th {
+  background-color: #eaeaea;
+  color: #555;
+  font-weight: bold;
+}
+
+.prayer-times-table tr:nth-child(odd) {
+  background-color: #f7f7f7;
+}
+
+.prayer-times-table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.prayer-times-table .highlight {
+  color: #007bff;
+  font-weight: bold;
+}
+
+
 
 /* Responsive Styles */
 @media (max-width: 768px) {

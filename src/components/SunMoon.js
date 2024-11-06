@@ -5,9 +5,12 @@ const SunMoon = () => {
   const [isDaytime, setIsDaytime] = useState(true);
   const [celestialPosition, setCelestialPosition] = useState({ x: 0, y: 0 });
   const [stars, setStars] = useState([]);
-  const [currentTime, setCurrentTime] = useState('');
   const [sunrise, setSunrise] = useState(null);
   const [sunset, setSunset] = useState(null);
+  const [currentPillarIndex, setCurrentPillarIndex] = useState(0);
+
+  // Define the 5 Pillars of Islam
+  const pillarsOfIslam = ["Shahada", "Salah", "Zakat", "Sawm", "Hajj"];
 
   const updateCelestialPosition = () => {
     const celestialBodySize = 10; // Size of the sun/moon in vw units
@@ -65,11 +68,19 @@ const SunMoon = () => {
   }, []);
 
   useEffect(() => {
-    const updateCurrentTime = () => {
-      const now = new Date();
-      setCurrentTime(now.toLocaleTimeString());
+    const updatePillar = () => {
+      setCurrentPillarIndex((prevIndex) => (prevIndex + 1) % pillarsOfIslam.length);
+    };
 
+    // Cycle through pillars every 5 seconds
+    const pillarInterval = setInterval(updatePillar, 5000);
+    return () => clearInterval(pillarInterval);
+  }, []);
+
+  useEffect(() => {
+    const updateCurrentTime = () => {
       if (sunrise && sunset) {
+        const now = new Date();
         const isDaytime = now >= sunrise && now <= sunset;
         setIsDaytime(isDaytime);
 
@@ -118,7 +129,7 @@ const SunMoon = () => {
         className={`celestial-body ${isDaytime ? 'sun' : 'moon full-moon'}`}
         style={{ left: `${celestialPosition.x}vw`, top: `${celestialPosition.y}vh`, transition: 'left 5s ease-in-out, top 5s ease-in-out' }}
       >
-        <span className="time-remaining">{currentTime}</span>
+        <div className="pillar-text">{pillarsOfIslam[currentPillarIndex]}</div>
       </div>
     </div>
   );
