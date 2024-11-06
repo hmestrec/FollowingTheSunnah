@@ -362,7 +362,7 @@ nav a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px); /* Full viewport height minus header height */
+  min-height: calc(100vh - 280px); /* Full viewport height minus header height */
   margin-top: 50px; /* Adjust spacing below the header */
   padding: 0 20px; /* Add padding on smaller screens */
   box-sizing: border-box;
@@ -503,12 +503,12 @@ nav a:hover {
 @media (max-width: 768px) {
   .center-container {
     padding: 0 10px; /* Reduce padding on very small screens */
-    margin-top: 10px; /* Reduce space under the header */
+    margin-top: 45px; /* Reduce space under the header */
   }
 
   .message-display {
-    max-width: 90%;
-    padding: 15px;
+    max-width: 90%; /* Adjust max-width to fit smaller screens */
+    padding: 15px; /* Adjust padding for a better look on mobile */
   }
 }
 

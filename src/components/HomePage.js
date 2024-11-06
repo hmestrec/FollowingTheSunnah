@@ -104,25 +104,43 @@ const calculateLastThird = (ishaTime, fajrTime) => {
   const updateCurrentPrayer = () => {
     const now = new Date();
     let activePrayer = null;
-
+  
     for (let i = 0; i < prayerOrder.length; i++) {
       const prayer = prayerOrder[i];
+  
+      // Skip "Sunrise" and "Lastthird" in the highlight logic
+      if (prayer === "Sunrise" || prayer === "Lastthird") {
+        continue;
+      }
+  
       const [hour, minute] = prayerTimes[prayer]?.split(":").map(Number) || [];
       if (hour === undefined || minute === undefined) continue;
-
+  
       const prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
-      const nextPrayerTime = i < prayerOrder.length - 1
-        ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...prayerTimes[prayerOrder[i + 1]].split(":").map(Number))
-        : new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
-
+  
+      // Set the end time for the current prayer as the start time of the next valid prayer
+      let nextPrayerTime;
+      for (let j = i + 1; j < prayerOrder.length; j++) {
+        if (prayerOrder[j] !== "Sunrise" && prayerOrder[j] !== "Lastthird") {
+          const [nextHour, nextMinute] = prayerTimes[prayerOrder[j]].split(":").map(Number);
+          nextPrayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), nextHour, nextMinute);
+          break;
+        }
+      }
+  
+      // If no valid next prayer time is found (i.e., it's the last prayer of the day), set to end of the day
+      nextPrayerTime = nextPrayerTime || new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
+  
+      // Highlight the prayer if the current time is within its time range
       if (now >= prayerTime && now < nextPrayerTime) {
         activePrayer = prayer;
         break;
       }
     }
-
+  
+    // Set active prayer
     setCurrentPrayer(activePrayer);
-  };
+  };  
 
   const handleVisibilityChange = () => {
     if (!document.hidden) {
