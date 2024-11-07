@@ -1,0 +1,12 @@
+{
+  "resourceName": "Comments",
+  "tableName": "Comments",
+  "partitionKey": {
+    "fieldName": "commentId",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": [
+    "createCommentsTableFunction"
+  ]
+}

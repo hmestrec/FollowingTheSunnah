@@ -9,6 +9,7 @@ import HomePage from './components/HomePage';
 import ContentPage from './components/ContentPage';
 import Footer from './components/Footer';
 import SunMoon from './components/SunMoon';
+import Comments from './components/Comments';
 import './App.css'; // Ensure this path is correct
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/content/:id" element={<ContentPage />} />
             <Route path="/" element={<HomePage />} />
+            <Route path="/comments" element={<Comments />} />
           </Routes>
         </main>
         <Footer />

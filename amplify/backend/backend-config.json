@@ -1,5 +1,19 @@
 {
   "api": {
+    "CommentsAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "createCommentsTableFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "editorAPI": {
       "dependsOn": [
         {
@@ -44,6 +58,22 @@
     }
   },
   "function": {
+    "createCommentsTableFunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "Comments"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "editorFunction": {
       "build": true,
       "dependsOn": [
@@ -65,6 +95,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_createCommentsTableFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createCommentsTableFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_createCommentsTableFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createCommentsTableFunction"
+        }
+      ]
+    },
     "AMPLIFY_function_editorFunction_deploymentBucketName": {
       "usedBy": [
         {
@@ -83,6 +129,10 @@
     }
   },
   "storage": {
+    "Comments": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "editorcontent": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"

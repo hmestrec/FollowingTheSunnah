@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const messages = [
   '"O you who believe, obey Allah and obey the Messenger..."',
@@ -8,8 +9,7 @@ const messages = [
   '"And speak to people good [words]."'
 ];
 
-// Define the order and include Lastthird
-const prayerOrder = ["Fajr","Dhuhr", "Asr", "Maghrib", "Isha", "Sunrise","Lastthird"];
+const prayerOrder = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha", "Sunrise", "Lastthird"];
 
 const HomePage = () => {
   const [currentMessage, setCurrentMessage] = useState(messages[0]);
@@ -19,8 +19,9 @@ const HomePage = () => {
   const [hijriDate, setHijriDate] = useState("");
   const [currentPrayer, setCurrentPrayer] = useState("");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    // Change message every 10 seconds
     const messageInterval = setInterval(() => {
       setCurrentMessage((prevMessage) => {
         const nextIndex = (messages.indexOf(prevMessage) + 1) % messages.length;
@@ -32,10 +33,8 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch initial prayer times
     fetchPrayerTimes();
 
-    // Update clock every second and re-evaluate current prayer
     const clockInterval = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
@@ -74,28 +73,23 @@ const HomePage = () => {
     });
   };
 
-// Calculate "Lastthird" of the night based on Isha and Fajr
-const calculateLastThird = (ishaTime, fajrTime) => {
-  const [ishaHour, ishaMinute] = ishaTime.split(":").map(Number);
-  const [fajrHour, fajrMinute] = fajrTime.split(":").map(Number);
+  const calculateLastThird = (ishaTime, fajrTime) => {
+    const [ishaHour, ishaMinute] = ishaTime.split(":").map(Number);
+    const [fajrHour, fajrMinute] = fajrTime.split(":").map(Number);
 
-  const ishaDate = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), ishaHour, ishaMinute);
-  const fajrDate = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate() + 1, fajrHour, fajrMinute);
+    const ishaDate = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), ishaHour, ishaMinute);
+    const fajrDate = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate() + 1, fajrHour, fajrMinute);
 
-  const nightDuration = fajrDate - ishaDate;
-  const lastThirdTime = new Date(ishaDate.getTime() + (nightDuration * 2) / 3);
+    const nightDuration = fajrDate - ishaDate;
+    const lastThirdTime = new Date(ishaDate.getTime() + (nightDuration * 2) / 3);
 
-  // Format to display in 24-hour format without AM/PM
-  return lastThirdTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-};
+    return lastThirdTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+  };
 
-
-  // Helper function to format the time
   const formatTime = (date) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Convert numbers to Arabic numerals
   const convertToArabicNumerals = (str) => {
     const arabicNumbers = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
     return str.replace(/\d/g, (digit) => arabicNumbers[digit]);
@@ -104,21 +98,15 @@ const calculateLastThird = (ishaTime, fajrTime) => {
   const updateCurrentPrayer = () => {
     const now = new Date();
     let activePrayer = null;
-  
+
     for (let i = 0; i < prayerOrder.length; i++) {
       const prayer = prayerOrder[i];
-  
-      // Skip "Sunrise" and "Lastthird" in the highlight logic
-      if (prayer === "Sunrise" || prayer === "Lastthird") {
-        continue;
-      }
-  
+      if (prayer === "Sunrise" || prayer === "Lastthird") continue;
+
       const [hour, minute] = prayerTimes[prayer]?.split(":").map(Number) || [];
       if (hour === undefined || minute === undefined) continue;
-  
+
       const prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
-  
-      // Set the end time for the current prayer as the start time of the next valid prayer
       let nextPrayerTime;
       for (let j = i + 1; j < prayerOrder.length; j++) {
         if (prayerOrder[j] !== "Sunrise" && prayerOrder[j] !== "Lastthird") {
@@ -127,20 +115,15 @@ const calculateLastThird = (ishaTime, fajrTime) => {
           break;
         }
       }
-  
-      // If no valid next prayer time is found (i.e., it's the last prayer of the day), set to end of the day
       nextPrayerTime = nextPrayerTime || new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
-  
-      // Highlight the prayer if the current time is within its time range
+
       if (now >= prayerTime && now < nextPrayerTime) {
         activePrayer = prayer;
         break;
       }
     }
-  
-    // Set active prayer
     setCurrentPrayer(activePrayer);
-  };  
+  };
 
   const handleVisibilityChange = () => {
     if (!document.hidden) {
@@ -153,14 +136,14 @@ const calculateLastThird = (ishaTime, fajrTime) => {
       <div id="homeContent" className="message-display">
         <h2>Daily</h2>
         <p id="dynamicMessage">{currentMessage}</p>
-  
+
         <div className="clock-display">
           <div className="clock-time">{formatTime(currentTime)}</div>
           <div className="date-info" style={{ fontFamily: "Arial, sans-serif", fontSize: "1em", color: "#888", direction: "rtl" }}>
             {hijriDate}
           </div>
         </div>
-  
+
         <div className="prayer-times-container">
           <div className="prayer-times">
             <h3>Prayer Times</h3>
@@ -186,6 +169,11 @@ const calculateLastThird = (ishaTime, fajrTime) => {
             )}
           </div>
         </div>
+
+        {/* Button to navigate to the comments page */}
+        <button onClick={() => navigate('/Comments')} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}>
+          Go to Comments
+        </button>
       </div>
     </div>
   );
