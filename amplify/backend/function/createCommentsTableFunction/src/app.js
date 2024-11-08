@@ -1,79 +1,92 @@
-const express = require('express');
-const bodyParser = require('body-parser');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, GetCommand, PutCommand, ScanCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
+const express = require('express');
+const bodyParser = require('body-parser');
+const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+
+// Initialize DynamoDB Client and Document Client
+const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
+const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
+
+// Define table name with the environment suffix if present
+const tableName = process.env.ENV ? `Comments-${process.env.ENV}` : 'Comments-prd';
 
 const app = express();
 app.use(bodyParser.json());
+app.use(awsServerlessExpressMiddleware.eventContext());
 
-// Set up DynamoDB client and table name
-const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION || 'us-east-1' });
-const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
-const tableName = "Comments-prd";
-
-// Enable CORS for all routes
+// Enable CORS
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Content-Type");
-    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+    res.header("Access-Control-Allow-Headers", "*");
     next();
 });
 
-// GET /createTable - Retrieve all comments
+/************************************
+ * HTTP Get method to retrieve all comments
+ ************************************/
 app.get('/createTable', async (req, res) => {
-    const params = {
-        TableName: tableName,
-        Select: 'ALL_ATTRIBUTES',
-    };
-
+    const params = { TableName: tableName };
     try {
         const data = await ddbDocClient.send(new ScanCommand(params));
-        res.json(data.Items);
-    } catch (err) {
-        res.status(500).json({ error: 'Could not load comments: ' + err.message });
+        res.status(200).json(data.Items);
+    } catch (error) {
+        console.error("Error fetching data from DynamoDB:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 });
 
-// POST /createTable - Add a new comment
+/************************************
+ * HTTP Post method to add a new comment
+ ************************************/
 app.post('/createTable', async (req, res) => {
     const { postId, userId, content } = req.body;
-    const commentId = new Date().getTime().toString(); // Unique ID for each comment
-    const timestamp = new Date().toISOString();
+
+    if (!postId || !userId || !content) {
+        return res.status(400).json({ error: 'Missing required fields: postId, userId, or content' });
+    }
 
     const params = {
         TableName: tableName,
         Item: {
-            commentId,
+            commentId: new Date().getTime().toString(),
             postId,
             userId,
             content,
-            timestamp,
+            timestamp: new Date().toISOString(),
         },
     };
 
     try {
         await ddbDocClient.send(new PutCommand(params));
-        res.json({ success: 'Comment added successfully!', commentId });
+        res.status(201).json({ message: 'Comment added successfully' });
     } catch (err) {
-        res.status(500).json({ error: 'Could not add comment: ' + err.message });
+        console.error("Error saving comment:", err);
+        res.status(500).json({ error: 'Could not save comment: ' + err.message });
     }
 });
 
-// DELETE /createTable/:id - Delete a specific comment by ID
+/************************************
+ * HTTP Delete method to delete a comment by ID
+ ************************************/
 app.delete('/createTable/:id', async (req, res) => {
-    const id = decodeURIComponent(req.params.id);
-
+    const commentId = decodeURIComponent(req.params.id);  // Decode the ID
+  
     const params = {
-        TableName: tableName,
-        Key: { commentId: id },
+      TableName: "Comments-prd",  // Ensure this matches your DynamoDB table name
+      Key: { commentId },  // Ensure this matches the primary key name in your table
     };
-
+  
     try {
-        await ddbDocClient.send(new DeleteCommand(params));
-        res.json({ success: 'Comment deleted successfully!', commentId: id });
-    } catch (err) {
-        res.status(500).json({ error: 'Could not delete comment: ' + err.message });
+      await ddbDocClient.send(new DeleteCommand(params));
+      res.status(200).json({ message: 'Comment deleted successfully', commentId });
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      res.status(500).json({ message: 'Internal server error', error: error.message });
     }
-});
+  });
+  
+
+  
 
 module.exports = app;
