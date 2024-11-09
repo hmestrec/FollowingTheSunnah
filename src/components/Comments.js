@@ -13,12 +13,19 @@ Amplify.configure(awsconfig);
 const API_URL = 'https://uss6ririzj.execute-api.us-east-1.amazonaws.com/prd';
 const ADMIN_EMAIL = 'hectormestre1234@gmail.com';
 
+const stripHtmlTags = (html) => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  return div.textContent || div.innerText || '';
+};
+
 const CommentsContent = ({ user, signOut }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [postId, setPostId] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
-
+  const [replyContent, setReplyContent] = useState({});
+  
   useEffect(() => {
     const email = user?.signInDetails?.loginId;
     if (email === ADMIN_EMAIL) setIsAdmin(true);
@@ -31,7 +38,11 @@ const CommentsContent = ({ user, signOut }) => {
         const errorText = await response.text();
         throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
-      const data = await response.json();
+      let data = await response.json();
+      
+      // Sort comments from newest to oldest
+      data = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      
       setComments(data || []);
     } catch (error) {
       console.error('Failed to fetch comments:', error);
@@ -51,6 +62,7 @@ const CommentsContent = ({ user, signOut }) => {
       postId,
       userId: userEmail,
       content: newComment,
+      replies: [],  // Initialize replies as an empty array
     };
   
     try {
@@ -72,6 +84,38 @@ const CommentsContent = ({ user, signOut }) => {
     }
   };
 
+  const postReply = async (commentId) => {
+    const replyText = replyContent[commentId];
+    if (!replyText) {
+      toast.error('Reply content cannot be empty.');
+      return;
+    }
+
+    const replyData = {
+      userId: user?.signInDetails?.loginId || 'Unknown User',
+      content: replyText,
+      timestamp: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/createTable/${commentId}/reply`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(replyData),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+      toast.success('Reply added successfully!');
+      setReplyContent((prev) => ({ ...prev, [commentId]: '' }));
+      fetchComments();
+    } catch (error) {
+      console.error('Failed to post reply:', error);
+      toast.error('Failed to post reply.');
+    }
+  };
+
   const deleteComment = async (commentId) => {
     if (!isAdmin) {
       toast.error('Only admin users can delete comments.');
@@ -88,12 +132,35 @@ const CommentsContent = ({ user, signOut }) => {
         fetchComments();
       } else {
         const errorText = await response.text();
-        console.error("Delete failed:", errorText);
         throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
     } catch (error) {
       console.error('Failed to delete comment:', error);
       toast.error('Failed to delete comment.');
+    }
+  };
+
+  const deleteReply = async (commentId, replyIndex) => {
+    if (!isAdmin) {
+      toast.error('Only admin users can delete replies.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/createTable/${commentId}/reply/${replyIndex}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        toast.success('Reply deleted successfully!');
+        fetchComments();
+      } else {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Failed to delete reply:', error);
+      toast.error('Failed to delete reply.');
     }
   };
 
@@ -111,11 +178,6 @@ const CommentsContent = ({ user, signOut }) => {
       hour12: true,
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     }).format(new Date(timestamp));
-  };
-
-  const stripHtmlTags = (html) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || "";
   };
 
   return (
@@ -151,6 +213,26 @@ const CommentsContent = ({ user, signOut }) => {
               {isAdmin && (
                 <button onClick={() => deleteComment(comment.commentId)}>Delete Comment</button>
               )}
+              {/* Display replies */}
+              <div className="replies">
+                {comment.replies && comment.replies.map((reply, index) => (
+                  <div key={index} className="reply-item">
+                    <p><strong>Reply from {reply.userId}:</strong> {stripHtmlTags(reply.content)}</p>
+                    <p><strong>Timestamp:</strong> {formatTimestamp(reply.timestamp)}</p>
+                    {isAdmin && (
+                      <button onClick={() => deleteReply(comment.commentId, index)}>Delete Reply</button>
+                    )}
+                  </div>
+                ))}
+                <div className="reply-form">
+                  <ReactQuill
+                    value={replyContent[comment.commentId] || ''}
+                    onChange={(value) => setReplyContent((prev) => ({ ...prev, [comment.commentId]: value }))}
+                    placeholder="Write your reply here..."
+                  />
+                  <button onClick={() => postReply(comment.commentId)}>Add Reply</button>
+                </div>
+              </div>
             </div>
           ))
         ) : (

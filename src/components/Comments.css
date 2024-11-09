@@ -77,13 +77,52 @@ h2, h3 {
 }
 
 .comment-content {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #fff;
+  font-weight: bold;
 }
 
 .comment-text {
   margin-top: 10px;
   color: #e0e0e0;
+}
+
+.replies {
+  margin-top: 15px;
+  border-left: 3px solid #ffca28;
+  padding-left: 15px;
+  padding-top: 10px;
+  background-color: #2a2d34;
+  border-radius: 5px;
+}
+
+.reply-item {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #333842;
+  color: #fff;
+  border-radius: 5px;
+  transition: box-shadow 0.2s ease;
+}
+
+.reply-item:hover {
+  box-shadow: 0 4px 8px rgba(255, 202, 40, 0.3);
+}
+
+.reply-meta {
+  font-size: 0.85rem;
+  color: #bbb;
+}
+
+.reply-content {
+  font-size: 0.95rem;
+  color: #ddd;
+}
+
+.reply-form {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #666;
 }
 
 .toast-container {

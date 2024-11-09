@@ -54,7 +54,7 @@
         "editorcontent": {},
         "createCommentsTableFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/createCommentsTableFunction-52524d65617944734b4a-build.zip"
+          "s3Key": "amplify-builds/createCommentsTableFunction-435275567731376a766d-build.zip"
         }
       },
       "api": {
