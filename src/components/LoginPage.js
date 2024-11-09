@@ -10,6 +10,8 @@ import './LogIn.css';
 
 Amplify.configure(awsconfig);
 
+const ADMIN_EMAIL = 'hectormestre1234@gmail.com';
+
 function SimpleApiTestContent({ user, signOut }) {
   const [content, setContent] = useState('');
   const [id, setId] = useState('');
@@ -23,15 +25,15 @@ function SimpleApiTestContent({ user, signOut }) {
   const userEmail = user?.signInDetails?.loginId || 'User';
 
   useEffect(() => {
-    fetchRecords();
-    // Polling to fetch records every 5 seconds
-    const interval = setInterval(() => {
+    if (userEmail !== ADMIN_EMAIL) {
+      toast.error('Access Denied: This page is only for admin users.');
+      signOut();
+    } else {
       fetchRecords();
-    }, 5000);
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(interval);
-  }, [user]);
+      const interval = setInterval(fetchRecords, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [userEmail]);
 
   const fetchRecords = async () => {
     try {
@@ -77,18 +79,13 @@ function SimpleApiTestContent({ user, signOut }) {
   const handleSaveContent = async (e) => {
     e.preventDefault();
     const userId = userEmail;
-
-    // Determine whether this is a new post (POST) or an update (PUT)
     const method = isEditing ? 'PUT' : 'POST';
     const apiUrl = isEditing
       ? `${process.env.REACT_APP_API_BASE_URL}/editor/${id}`
       : `${process.env.REACT_APP_API_BASE_URL}/editor`;
-
-    // Construct the request body
     const body = JSON.stringify({ id, content, status, category, userId });
 
     try {
-
       const response = await fetch(apiUrl, {
         method,
         headers: { 'Content-Type': 'application/json' },
@@ -99,12 +96,12 @@ function SimpleApiTestContent({ user, signOut }) {
         toast.success('Content saved successfully!');
         setIsEditing(false);
         setEditingRecordId(null);
-        await handleUnlockContent(id, userId); // Unlock asynchronously after saving
-        setId(''); // Reset ID
-        setContent(''); // Reset content
-        setStatus('In Progress'); // Reset status
-        setCategory('Journey'); // Reset category
-        fetchRecords(); // Fetch the updated records immediately after saving
+        await handleUnlockContent(id, userId);
+        setId('');
+        setContent('');
+        setStatus('In Progress');
+        setCategory('Journey');
+        fetchRecords();
       } else {
         const errorText = await response.text();
         console.error(`Failed ${method} request. Status: ${response.status}, Error: ${errorText}`);
@@ -126,16 +123,12 @@ function SimpleApiTestContent({ user, signOut }) {
         return;
       }
     }
-
-    // Reset state after unlocking
     setId('');
     setContent('');
     setStatus('In Progress');
     setCategory('Journey');
     setIsEditing(false);
     setEditingRecordId(null);
-
-    // Fetch updated records to reflect changes in editing status
     fetchRecords();
   };
 
@@ -153,7 +146,7 @@ function SimpleApiTestContent({ user, signOut }) {
       }
     } catch (error) {
       console.error('Failed to unlock content:', error);
-      throw error; // Re-throw error to be caught by the caller
+      throw error;
     }
   };
 
@@ -166,7 +159,7 @@ function SimpleApiTestContent({ user, signOut }) {
       });
       if (response.ok) {
         toast.success('Item deleted successfully!');
-        fetchRecords(); // Fetch the updated records after deletion
+        fetchRecords();
       } else {
         const errorText = await response.text();
         throw new Error(`Error ${response.status}: ${errorText}`);
@@ -190,15 +183,15 @@ function SimpleApiTestContent({ user, signOut }) {
 
   const modules = {
     toolbar: [
-      [{ header: [1, 2, 3, false] }],  // Allows headers of sizes 1, 2, 3
-      [{ 'font': [] }],                // Allows choosing different font styles
-      [{ 'size': ['small', false, 'large', 'huge'] }], // Allows choosing font size
-      [{ 'color': [] }, { 'background': [] }], // Font color and background color
-      ['bold', 'italic', 'underline', 'strike'], // Formatting options
-      [{ list: 'ordered' }, { list: 'bullet' }], // List options
-      [{ align: [] }],                // Text alignment options
-      ['link', 'image'],              // Add link and image options
-      ['clean'],                      // Remove formatting
+      [{ header: [1, 2, 3, false] }],
+      [{ 'font': [] }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'color': [] }, { 'background': [] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ align: [] }],
+      ['link', 'image'],
+      ['clean'],
     ],
   };
 
@@ -206,7 +199,6 @@ function SimpleApiTestContent({ user, signOut }) {
     if (editingRecordId) {
       await handleUnlockContent(editingRecordId, userEmail);
     }
-    // Clear all the state variables when signing out
     setContent('');
     setId('');
     setStatus('In Progress');
@@ -215,7 +207,6 @@ function SimpleApiTestContent({ user, signOut }) {
     setEditingRecordId(null);
     setOpenRecord(null);
     setRecords([]);
-    // Call signOut to log out the user
     signOut();
   };
 
@@ -231,7 +222,7 @@ function SimpleApiTestContent({ user, signOut }) {
           id="id"
           className="input-field"
           value={id}
-          onChange={(e) => setId(e.target.value)} // Allow modifying the ID
+          onChange={(e) => setId(e.target.value)}
         />
 
         <div style={{ marginTop: '20px' }}>
@@ -273,10 +264,10 @@ function SimpleApiTestContent({ user, signOut }) {
         {records.filter(record => !record.status || record.status?.toLowerCase() === 'in progress').length > 0 ? (
           records.filter(record => !record.status || record.status?.toLowerCase() === 'in progress').map((record) => (
             <li key={record.id} className="record-item">
-              <button 
-                className="dropdown-button in-progress" 
+              <button
+                className="dropdown-button in-progress"
                 onClick={() => toggleRecord(record.id)}
-              > 
+              >
                 <strong>ID:</strong> {record.id}
                 <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
                 <span className="current-editor"> | Editing User: {record.currentUserId ? record.currentUserId : 'None'}</span>
@@ -310,8 +301,8 @@ function SimpleApiTestContent({ user, signOut }) {
         {records.filter(record => record.status?.toLowerCase() === 'ready').length > 0 ? (
           records.filter(record => record.status?.toLowerCase() === 'ready').map((record) => (
             <li key={record.id} className="record-item">
-              <button 
-                className="dropdown-button ready" 
+              <button
+                className="dropdown-button ready"
                 onClick={() => toggleRecord(record.id)}
               >
                 <strong>ID:</strong> {record.id}

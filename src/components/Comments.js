@@ -25,10 +25,10 @@ const CommentsContent = ({ user, signOut }) => {
   const [postId, setPostId] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [replyContent, setReplyContent] = useState({});
-  
+
   useEffect(() => {
     const email = user?.signInDetails?.loginId;
-    if (email === ADMIN_EMAIL) setIsAdmin(true);
+    setIsAdmin(email === ADMIN_EMAIL);
   }, [user]);
 
   const fetchComments = async () => {
@@ -39,10 +39,7 @@ const CommentsContent = ({ user, signOut }) => {
         throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
       let data = await response.json();
-      
-      // Sort comments from newest to oldest
       data = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-      
       setComments(data || []);
     } catch (error) {
       console.error('Failed to fetch comments:', error);
@@ -55,16 +52,16 @@ const CommentsContent = ({ user, signOut }) => {
       toast.error('Post ID and Comment Content are required.');
       return;
     }
-  
+
     const userEmail = user?.signInDetails?.loginId || 'Unknown User';
-  
+
     const commentData = {
       postId,
       userId: userEmail,
-      content: newComment,
-      replies: [],  // Initialize replies as an empty array
+      content: stripHtmlTags(newComment),
+      replies: [],
     };
-  
+
     try {
       const response = await fetch(`${API_URL}/createTable`, {
         method: 'POST',
@@ -93,7 +90,7 @@ const CommentsContent = ({ user, signOut }) => {
 
     const replyData = {
       userId: user?.signInDetails?.loginId || 'Unknown User',
-      content: replyText,
+      content: stripHtmlTags(replyText),
       timestamp: new Date().toISOString(),
     };
 
@@ -213,7 +210,6 @@ const CommentsContent = ({ user, signOut }) => {
               {isAdmin && (
                 <button onClick={() => deleteComment(comment.commentId)}>Delete Comment</button>
               )}
-              {/* Display replies */}
               <div className="replies">
                 {comment.replies && comment.replies.map((reply, index) => (
                   <div key={index} className="reply-item">
