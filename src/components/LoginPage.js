@@ -7,6 +7,7 @@ import awsconfig from '../aws-exports';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './LogIn.css';
+import RestrictedPage from './RestrictedPage'; // Import the RestrictedPage component
 
 Amplify.configure(awsconfig);
 
@@ -26,14 +27,17 @@ function SimpleApiTestContent({ user, signOut }) {
 
   useEffect(() => {
     if (userEmail !== ADMIN_EMAIL) {
-      toast.error('Access Denied: This page is only for admin users.');
-      signOut();
-    } else {
-      fetchRecords();
-      const interval = setInterval(fetchRecords, 5000);
-      return () => clearInterval(interval);
+      return; // Skip data fetching if not an admin
     }
+    fetchRecords();
+    const interval = setInterval(fetchRecords, 5000);
+    return () => clearInterval(interval);
   }, [userEmail]);
+
+  if (userEmail !== ADMIN_EMAIL) {
+    return <RestrictedPage />; // Render the RestrictedPage if not an admin
+  }
+
 
   const fetchRecords = async () => {
     try {
