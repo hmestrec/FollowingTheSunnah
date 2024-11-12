@@ -227,6 +227,23 @@ body, html {
   margin-right: 1vw;
 }
 
+/* Restricted Page */
+.restricted-page {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.restricted-page h2 {
+  color: red;
+  font-size: 2rem;
+}
+
+.restricted-page p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+
 /* Parent container (page-container) to center content vertically and horizontally */
 .page-container {
   display: flex;
