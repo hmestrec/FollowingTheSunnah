@@ -23,6 +23,7 @@ const SunMoon = () => {
     const fetchSunriseSunset = async (latitude, longitude) => {
       try {
         const response = await fetch(`https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}&timezone=auto`);
+        console.log(latitude, longitude);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

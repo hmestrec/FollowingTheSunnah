@@ -180,17 +180,8 @@ const HomePage = () => {
         >
           Support Muslim Businesses
         </button>
-        <button
-          onClick={() => {
-            console.log('Navigating to Business Management');
-            navigate('/business-management');
-          }}
-          style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}
-        >
-          Manage Businesses
-        </button>
 
-      </div>
+       </div>
     </div>
   );
 };
