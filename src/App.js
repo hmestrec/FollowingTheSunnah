@@ -9,7 +9,10 @@ import HomePage from './components/HomePage';
 import ContentPage from './components/ContentPage';
 import Footer from './components/Footer';
 import SunMoon from './components/SunMoon';
+import EditingPage from './components/EditingPage';
 import Comments from './components/Comments';
+import MuslimBusinesses from './components/MuslimBusinesses'; // Import the new component
+import BusinessManagement from './components/BusinessManagement'; // Import the management component
 import './App.css'; // Ensure this path is correct
 
 function App() {
@@ -28,7 +31,10 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/content/:id" element={<ContentPage />} />
             <Route path="/" element={<HomePage />} />
+            <Route path="/editing" element={<EditingPage />} />
             <Route path="/comments" element={<Comments />} />
+            <Route path="/muslim-businesses" element={<MuslimBusinesses />} />
+            <Route path="/business-management" element={<BusinessManagement />} /> {/* New Management Route */}
           </Routes>
         </main>
         <Footer />

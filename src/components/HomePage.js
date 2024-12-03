@@ -174,6 +174,22 @@ const HomePage = () => {
         <button onClick={() => navigate('/Comments')} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}>
           Go to Comments
         </button>
+        <button
+          onClick={() => navigate('/muslim-businesses')}
+          style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}
+        >
+          Support Muslim Businesses
+        </button>
+        <button
+          onClick={() => {
+            console.log('Navigating to Business Management');
+            navigate('/business-management');
+          }}
+          style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}
+        >
+          Manage Businesses
+        </button>
+
       </div>
     </div>
   );

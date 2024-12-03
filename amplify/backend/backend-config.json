@@ -14,6 +14,20 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
+    "businessAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "businessHandler"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "editorAPI": {
       "dependsOn": [
         {
@@ -58,6 +72,25 @@
     }
   },
   "function": {
+    "businessHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "BusinessTable"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createCommentsTableFunction": {
       "build": true,
       "dependsOn": [
@@ -95,6 +128,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_businessHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "businessHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_businessHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "businessHandler"
+        }
+      ]
+    },
     "AMPLIFY_function_createCommentsTableFunction_deploymentBucketName": {
       "usedBy": [
         {
@@ -129,6 +178,10 @@
     }
   },
   "storage": {
+    "BusinessTable": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "Comments": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"

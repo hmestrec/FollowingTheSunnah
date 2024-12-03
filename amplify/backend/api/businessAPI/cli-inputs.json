@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/businesses": {
+      "name": "/businesses",
+      "lambdaFunction": "businessHandler",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

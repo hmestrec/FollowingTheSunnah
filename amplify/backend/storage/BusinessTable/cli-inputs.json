@@ -1,0 +1,10 @@
+{
+  "resourceName": "BusinessTable",
+  "tableName": "BusinessTable",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

@@ -55,15 +55,21 @@
         "createCommentsTableFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
           "s3Key": "amplify-builds/createCommentsTableFunction-435275567731376a766d-build.zip"
+        },
+        "businessHandler": {
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/businessHandler-7158794e314a45396444-build.zip"
         }
       },
       "api": {
         "editorAPI": {},
-        "CommentsAPI": {}
+        "CommentsAPI": {},
+        "businessAPI": {}
       },
       "storage": {
         "editorcontent": {},
-        "Comments": {}
+        "Comments": {},
+        "BusinessTable": {}
       }
     }
   }

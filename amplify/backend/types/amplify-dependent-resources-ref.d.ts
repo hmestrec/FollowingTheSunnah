@@ -5,6 +5,11 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
+    "businessAPI": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
     "editorAPI": {
       "ApiId": "string",
       "ApiName": "string",
@@ -23,6 +28,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "businessHandler": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "createCommentsTableFunction": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -39,6 +51,14 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
+    "BusinessTable": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
+      "StreamArn": "string"
+    },
     "Comments": {
       "Arn": "string",
       "Name": "string",
