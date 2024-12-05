@@ -11,7 +11,6 @@ const MuslimBusinesses = () => {
   useEffect(() => {
     fetchBusinesses();
   }, []);
-
   const getApiUrl = () => {
     const apiUrl = awsconfig.aws_cloud_logic_custom.find(
       (api) => api.name === 'businessAPI'
