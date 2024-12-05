@@ -1,27 +1,27 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PodcastPage from './components/PodcastPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Authenticator } from '@aws-amplify/ui-react';
+import './App.css';
+import SunMoon from './components/SunMoon';
 import Header from './components/Header';
+import Footer from './components/Footer';
+import PodcastPage from './components/PodcastPage';
 import TopicsPage from './components/TopicsPage';
 import FormPage from './components/FormPage';
 import LoginPage from './components/LoginPage';
-import HomePage from './components/HomePage';
 import ContentPage from './components/ContentPage';
-import Footer from './components/Footer';
-import SunMoon from './components/SunMoon';
+import HomePage from './components/HomePage';
 import EditingPage from './components/EditingPage';
 import Comments from './components/Comments';
-import MuslimBusinesses from './components/MuslimBusinesses'; // Import the new component
-import BusinessManagement from './components/BusinessManagement'; // Import the management component
-import './App.css'; // Ensure this path is correct
+import MuslimBusinesses from './components/MuslimBusinesses';
+import BusinessManagement from './components/BusinessManagement';
+import ChatBot from './components/chatbot'; // Corrected import statement
 
 function App() {
   return (
     <Router>
       <div className="wrapper">
-        {/* Sun and Moon background animation */}
         <SunMoon />
-
         <Header />
         <main className="main-content">
           <Routes>
@@ -34,9 +34,10 @@ function App() {
             <Route path="/editing" element={<EditingPage />} />
             <Route path="/comments" element={<Comments />} />
             <Route path="/muslim-businesses" element={<MuslimBusinesses />} />
-            <Route path="/business-management" element={<BusinessManagement />} /> {/* New Management Route */}
+            <Route path="/business-management" element={<BusinessManagement />} />
           </Routes>
         </main>
+        <ChatBot /> {/* Render ChatBot */}
         <Footer />
       </div>
     </Router>

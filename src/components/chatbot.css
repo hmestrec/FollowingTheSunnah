@@ -1,0 +1,133 @@
+/* Chatbot container positioned in the bottom-right corner */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    max-height: 500px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #f9f9f9;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out, bottom 0.3s ease-in-out;
+  }
+  
+  /* Ensure the container is responsive for smaller screens */
+  @media (max-width: 768px) {
+    .chatbot-container {
+      width: 90%;
+      right: 5%;
+      bottom: 10px;
+    }
+  }
+  
+  /* Chatbot header (button to open/close) */
+  .chatbot-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .chatbot-header:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Chatbot body styling */
+  .chatbot-body {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+  }
+  
+  /* Chat window to display messages */
+  .chat-window {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: white;
+  }
+  
+  /* User messages (right-aligned, blue background) */
+  .chat-message.user {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    text-align: right;
+    display: inline-block;
+    transition: all 0.3s ease; /* Smooth resizing */
+    min-height: 40px; /* Minimum height for short messages */
+    height: auto; /* Automatically adjusts height based on content */
+    max-width: 250px; /* Optional: cap width for very long messages */
+  }
+  
+  /* Chatbot messages (left-aligned, light gray background) */
+  .chat-message.assistant {
+    align-self: flex-start;
+    background-color: #f1f1f1;
+    color: black;
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    text-align: left;
+    display: inline-block;
+    transition: all 0.3s ease; /* Smooth resizing */
+    min-height: 40px; /* Minimum height for short messages */
+    height: auto; /* Automatically adjusts height based on content */
+    max-width: 250px; /* Optional: cap width for very long messages */
+  }
+  
+  /* Chat input area */
+  .chat-input {
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .chat-input button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  /* Typing indicator for assistant */
+.chat-message.typing {
+    font-style: italic;
+    color: #888;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 12px;
+    align-self: flex-start;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  
+  
+  .chat-input button:hover {
+    background-color: #0056b3;
+  }
+
+
+  
+  

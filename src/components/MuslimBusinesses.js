@@ -34,7 +34,7 @@ const MuslimBusinesses = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('Fetched businesses:', data); // Log the fetched data
+        //console.log('Fetched businesses:', data); // Log the fetched data
         setBusinesses(data);
       } else {
         const errorText = await response.text();
