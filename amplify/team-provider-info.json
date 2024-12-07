@@ -62,7 +62,7 @@
         },
         "chatbotFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/chatbotFunction-784c7839664f7762512f-build.zip"
+          "s3Key": "amplify-builds/chatbotFunction-64744f517934726a7942-build.zip"
         }
       },
       "api": {
