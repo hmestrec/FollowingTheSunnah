@@ -1,5 +1,15 @@
-const serverless = require('serverless-http');
-const app = require('./app');
+const awsServerlessExpress = require('aws-serverless-express');
+const app = require('./app'); // Import your Express app
 
-// Export the Express app wrapped in serverless
-module.exports.handler = serverless(app);
+/**
+ * @type {import('http').Server}
+ */
+const server = awsServerlessExpress.createServer(app);
+
+/**
+ * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
+ */
+exports.handler = (event, context) => {
+  console.log(`EVENT: ${JSON.stringify(event)}`);
+  return awsServerlessExpress.proxy(server, event, context, 'PROMISE').promise;
+};
