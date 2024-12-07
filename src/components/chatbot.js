@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Authenticator } from '@aws-amplify/ui-react';
 import './chatbot.css';
 
-const API_URL = 'https://gys32ivdv4.execute-api.us-east-1.amazonaws.com/prd/openai'; // Updated to include the correct endpoint
+const API_URL = awsmobile.aws_cloud_logic_custom.find(api => api.name === 'chatbot')?.endpoint;
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,38 +15,46 @@ const ChatBot = () => {
   const fetchChatResponse = async (userMessage) => {
     setIsGenerating(true);
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userMessage }), // Pass userMessage to your API
-      });
+        console.log('Sending message:', userMessage);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Error: ${errorText}`);
-      }
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userMessage }),
+        });
 
-      const data = await response.json();
+        console.log('Raw response:', response);
 
-      // Add the assistant's response to the chat messages
-      if (data.assistantMessage) {
-        setMessages((prev) => [
-          ...prev,
-          { role: 'user', content: userMessage },
-          { role: 'assistant', content: data.assistantMessage },
-        ]);
-      } else {
-        throw new Error('No response from the server');
-      }
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API Error Response:', errorText);
+            throw new Error(`Error: ${errorText}`);
+        }
+
+        const data = await response.json();
+        console.log('Parsed response:', data);
+
+        // Extract assistant's message from the response
+        if (data.choices && data.choices.length > 0 && data.choices[0].message.content) {
+            const assistantMessage = data.choices[0].message.content;
+
+            setMessages((prev) => [
+                ...prev,
+                { role: 'user', content: userMessage },
+                { role: 'assistant', content: assistantMessage },
+            ]);
+        } else {
+            throw new Error('No valid response from the server');
+        }
     } catch (error) {
-      console.error('Failed to fetch chat response:', error);
-      toast.error(error.message || 'Something went wrong. Please try again.');
+        console.error('Failed to fetch chat response:', error);
+        toast.error(error.message || 'Something went wrong. Please try again.');
     } finally {
-      setIsGenerating(false);
+        setIsGenerating(false);
     }
-  };
+};
 
   const handleSend = () => {
     if (userInput.trim()) {
