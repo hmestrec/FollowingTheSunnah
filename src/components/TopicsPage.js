@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import awsmobile from "../aws-exports"; // Import AWS exports
 
 const TopicsPage = () => {
   const [records, setRecords] = useState([]); // State to hold records fetched from the API
@@ -7,29 +8,37 @@ const TopicsPage = () => {
   const [fundamentalsOpen, setFundamentalsOpen] = useState(false);
   const [pathwaysOpen, setPathwaysOpen] = useState(false);
 
+  // Get the API URL dynamically
+  const apiUrl = awsmobile.aws_cloud_logic_custom.find(api => api.name === "editorAPI")?.endpoint;
+
   // Function to fetch all records from DynamoDB
   const fetchRecords = async () => {
+    if (!apiUrl) {
+      console.error("API URL not found in aws-exports.js");
+      alert("Failed to find the API URL.");
+      return;
+    }
+
     try {
-      const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/editor`;
-      const response = await fetch(apiUrl, {
-        method: 'GET',
+      const response = await fetch(`${apiUrl}/editor`, {
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (response.ok) {
         const data = await response.json();
         // Filter only records with status 'Ready'
-        const readyRecords = data.filter(record => record.status?.toLowerCase() === 'ready');
+        const readyRecords = data.filter(record => record.status?.toLowerCase() === "ready");
         setRecords(readyRecords); // Set the filtered records to state
       } else {
-        console.error('Failed to fetch records:', response);
-        alert('Failed to fetch records.');
+        console.error("Failed to fetch records:", response);
+        alert("Failed to fetch records.");
       }
     } catch (error) {
-      console.error('Error fetching records:', error);
-      alert('Error fetching records.');
+      console.error("Error fetching records:", error);
+      alert("Error fetching records.");
     }
   };
 
@@ -39,9 +48,9 @@ const TopicsPage = () => {
   }, []);
 
   // Separate records into different buckets based on category
-  const journeyTopics = records.filter(record => record.category?.toLowerCase() === 'journey');
-  const fundamentalsTopics = records.filter(record => record.category?.toLowerCase() === 'fundamentals');
-  const pathwaysTopics = records.filter(record => record.category?.toLowerCase() === 'pathways');
+  const journeyTopics = records.filter(record => record.category?.toLowerCase() === "journey");
+  const fundamentalsTopics = records.filter(record => record.category?.toLowerCase() === "fundamentals");
+  const pathwaysTopics = records.filter(record => record.category?.toLowerCase() === "pathways");
 
   return (
     <main>
