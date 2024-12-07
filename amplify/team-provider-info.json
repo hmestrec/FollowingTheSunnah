@@ -59,12 +59,17 @@
         "businessHandler": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
           "s3Key": "amplify-builds/businessHandler-7158794e314a45396444-build.zip"
+        },
+        "chatbotFunction": {
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/chatbotFunction-784c7839664f7762512f-build.zip"
         }
       },
       "api": {
         "editorAPI": {},
         "CommentsAPI": {},
-        "businessAPI": {}
+        "businessAPI": {},
+        "chatbot": {}
       },
       "storage": {
         "editorcontent": {},

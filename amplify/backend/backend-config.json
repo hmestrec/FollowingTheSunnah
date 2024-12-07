@@ -28,6 +28,20 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
+    "chatbot": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "chatbotFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "editorAPI": {
       "dependsOn": [
         {
@@ -91,6 +105,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "chatbotFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createCommentsTableFunction": {
       "build": true,
       "dependsOn": [
@@ -141,6 +160,22 @@
         {
           "category": "function",
           "resourceName": "businessHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_chatbotFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "chatbotFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_chatbotFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "chatbotFunction"
         }
       ]
     },
