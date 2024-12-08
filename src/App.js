@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Authenticator } from '@aws-amplify/ui-react';
+import { AuthProvider } from './components/AuthContext';
 import './App.css';
 import SunMoon from './components/SunMoon';
 import Header from './components/Header';
@@ -15,32 +15,39 @@ import EditingPage from './components/EditingPage';
 import Comments from './components/Comments';
 import MuslimBusinesses from './components/MuslimBusinesses';
 import BusinessManagement from './components/BusinessManagement';
-import ChatBot from './components/chatbot'; // Corrected import statement
+import ChatBot from './components/chatbot';
 
 function App() {
   return (
-    <Router>
-      <div className="wrapper">
-        <SunMoon />
-        <Header />
-        <main className="main-content">
-          <Routes>
-            <Route path="/podcast" element={<PodcastPage />} />
-            <Route path="/topics" element={<TopicsPage />} />
-            <Route path="/form" element={<FormPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/content/:id" element={<ContentPage />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/editing" element={<EditingPage />} />
-            <Route path="/comments" element={<Comments />} />
-            <Route path="/muslim-businesses" element={<MuslimBusinesses />} />
-            <Route path="/business-management" element={<BusinessManagement />} />
-          </Routes>
-        </main>
-        <ChatBot /> {/* Render ChatBot */}
-        <Footer />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="wrapper">
+          <SunMoon />
+          <Header />
+          <main className="main-content">
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/podcast" element={<PodcastPage />} />
+              <Route path="/topics" element={<TopicsPage />} />
+              <Route path="/form" element={<FormPage />} />
+              <Route path="/content/:id" element={<ContentPage />} />
+              <Route path="/muslim-businesses" element={<MuslimBusinesses />} />
+              <Route path="/business-management" element={<BusinessManagement />} />
+              <Route path="/editing" element={<EditingPage />} />
+
+              {/* Login page */}
+              <Route path="/login" element={<LoginPage />} />
+
+              {/* Protected routes */}
+              <Route path="/comments" element={<Comments />} />
+            </Routes>
+          </main>
+          <ChatBot />
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

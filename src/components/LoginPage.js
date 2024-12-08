@@ -1,54 +1,79 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Auth } from '@aws-amplify/auth';
-import { Authenticator } from '@aws-amplify/ui-react';
+import LoginWindow from './LoginWindow'; // Import the reusable component
+import awsconfig from '../aws-exports';
+
+// Configure Auth
+Auth.configure(awsconfig);
 
 const LoginPage = () => {
     const navigate = useNavigate();
-    const [isAdmin, setIsAdmin] = useState(false);
     const [user, setUser] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    const checkIfAdmin = async () => {
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const currentUser = await Auth.currentAuthenticatedUser();
+                setUser(currentUser);
+                checkIfAdmin(currentUser);
+            } catch (error) {
+                console.error('Error fetching current user:', error);
+                setUser(null);
+            }
+        };
+
+        fetchCurrentUser();
+    }, []);
+
+    const checkIfAdmin = async (currentUser) => {
         try {
             const session = await Auth.currentSession();
-            const groups = session.getAccessToken().decodePayload()['cognito:groups'] || [];
-            console.log('User Groups:', groups);
+            const payload = session.getAccessToken().decodePayload();
+            const groups = payload['cognito:groups'] || [];
             setIsAdmin(groups.includes('Admin'));
         } catch (error) {
-            console.error('Error checking admin status:', error);
+            console.error('Error fetching user groups:', error);
         }
     };
 
-    useEffect(() => {
-        if (user) {
-            checkIfAdmin();
+    const handleSignOut = async () => {
+        try {
+            await Auth.signOut();
+            setUser(null);
+            setIsAdmin(false);
+        } catch (error) {
+            console.error('Sign-out error:', error);
         }
-    }, [user]);
+    };
+
+    if (!user) {
+        return (
+            <div className="login-container">
+                <LoginWindow onLoginSuccess={(currentUser) => {
+                    setUser(currentUser);
+                    checkIfAdmin(currentUser);
+                }} />
+            </div>
+        );
+    }
 
     return (
-        <div className="login-container">
-            <h1>Login</h1>
-            <Authenticator>
-                {({ user: currentUser, signOut }) => {
-                    if (!user && currentUser) setUser(currentUser);
-
-                    return currentUser ? (
-                        <div>
-                            <h2>Welcome, {currentUser.attributes?.email || 'User'}!</h2>
-                            {!isAdmin && <p style={{ color: 'red', fontWeight: 'bold' }}>Admin Only</p>}
-                            {isAdmin && (
-                                <div>
-                                    <button onClick={() => navigate('/editing')}>Go to Editing Page</button>
-                                    <button onClick={() => navigate('/business-management')}>Manage Businesses</button>
-                                </div>
-                            )}
-                            <button onClick={signOut}>Sign Out</button>
-                        </div>
-                    ) : (
-                        <p>Please log in to continue.</p>
-                    );
-                }}
-            </Authenticator>
+        <div className="dashboard-container">
+            <h2>Welcome, {user.attributes?.email || 'User'}!</h2>
+            {isAdmin ? (
+                <div>
+                    <p style={{ color: 'green', fontWeight: 'bold' }}>You are an Admin.</p>
+                    <button onClick={() => navigate('/editing')}>Go to Editing Page</button>
+                    <button onClick={() => navigate('/business-management')}>
+                        Manage Businesses
+                    </button>
+                </div>
+            ) : (
+                <p style={{ color: 'red', fontWeight: 'bold' }}>Admin Only</p>
+            )}
+            <button onClick={handleSignOut}>Sign Out</button>
         </div>
     );
 };

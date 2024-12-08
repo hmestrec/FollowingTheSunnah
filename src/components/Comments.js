@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
-import { Authenticator } from '@aws-amplify/ui-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from './AuthContext'; // Use global AuthContext
 import awsconfig from '../aws-exports';
 import './Comments.css';
 
@@ -19,7 +19,8 @@ const stripHtmlTags = (html) => {
   return div.textContent || div.innerText || '';
 };
 
-const CommentsContent = ({ user, signOut }) => {
+const CommentsContent = () => {
+  const { user, signOut } = useAuth(); // Use global AuthContext
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [postId, setPostId] = useState('');
@@ -27,8 +28,10 @@ const CommentsContent = ({ user, signOut }) => {
   const [replyContent, setReplyContent] = useState({});
 
   useEffect(() => {
-    const email = user?.signInDetails?.loginId;
-    setIsAdmin(email === ADMIN_EMAIL);
+    if (user) {
+      const email = user?.attributes?.email; // Get user email from AuthContext
+      setIsAdmin(email === ADMIN_EMAIL);
+    }
   }, [user]);
 
   const fetchComments = async () => {
@@ -53,7 +56,7 @@ const CommentsContent = ({ user, signOut }) => {
       return;
     }
 
-    const userEmail = user?.signInDetails?.loginId || 'Unknown User';
+    const userEmail = user?.attributes?.email || 'Unknown User';
 
     const commentData = {
       postId,
@@ -89,7 +92,7 @@ const CommentsContent = ({ user, signOut }) => {
     }
 
     const replyData = {
-      userId: user?.signInDetails?.loginId || 'Unknown User',
+      userId: user?.attributes?.email || 'Unknown User',
       content: stripHtmlTags(replyText),
       timestamp: new Date().toISOString(),
     };
@@ -177,6 +180,10 @@ const CommentsContent = ({ user, signOut }) => {
     }).format(new Date(timestamp));
   };
 
+  if (!user) {
+    return <p>Please log in to view and add comments.</p>;
+  }
+
   return (
     <div className="comments-container">
       <h2>Comments</h2>
@@ -242,11 +249,9 @@ const CommentsContent = ({ user, signOut }) => {
 
 const Comments = () => {
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <CommentsContent user={user} signOut={signOut} />
-      )}
-    </Authenticator>
+    <div className="comments-page">
+      <CommentsContent />
+    </div>
   );
 };
 

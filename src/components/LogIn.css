@@ -19,24 +19,6 @@ body, html {
   width: 100%; /* Full width */
 }
 
-/* Center the login and editor containers on the page */
-.login-container, .editor-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 80vw;
-  max-width: 800px;
-  padding: 4vw;
-  background-color: white;
-  border-radius: 1vw;
-  box-shadow: 0px 1vw 3vw rgba(0, 0, 0, 0.2);
-  text-align: center;
-  z-index: 1000;
-  margin: auto; /* Center horizontally and vertically */
-  overflow-y: auto; /* Allow internal scrolling if content exceeds height */
-  max-height: 90vh; /* Optional: Limit height to 90% of viewport */
-}
 
 /* Ensure the celestial background is fixed */
 .sun-moon-container {

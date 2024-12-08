@@ -1,25 +1,14 @@
-import { getCurrentUser } from '@aws-amplify/auth'; // Use the correct import
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
-const ProtectedRoute = ({ element: Component }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await getCurrentUser(); // Use the correct method
-        setIsAuthenticated(true);
-      } catch (err) {
-        setIsAuthenticated(false);
-      }
-    };
-    checkAuth();
-  }, []);
+  if (loading) return <div>Loading...</div>; // Show a loading state
+  if (!user) return <Navigate to="/login" replace />; // Redirect to login if not authenticated
 
-  if (isAuthenticated === null) {
-    return <div>Loading...</div>;
-  }
-
-  return isAuthenticated ? <Component /> : <Navigate to="/login" />;
+  return children; // Render protected content
 };
 
 export default ProtectedRoute;
