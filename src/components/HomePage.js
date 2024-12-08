@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
-const messages = [
-  '"O you who believe, obey Allah and obey the Messenger..."',
-  '"And whosoever fears Allah... He will make a way for him to get out..."',
-  '"Verily, with hardship, there is relief."',
-  '"Indeed, the prayer prohibits immorality and wrongdoing..."',
-  '"And speak to people good [words]."'
-];
-
-const prayerOrder = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha", "Sunrise", "Lastthird"];
+const prayerOrder = ["Fajr","Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha", "Lastthird"];
 
 const HomePage = () => {
-  const [currentMessage, setCurrentMessage] = useState(messages[0]);
+  const [currentMessage, setCurrentMessage] = useState({ arabic: "Loading...", english: "Loading..." });
   const [prayerTimes, setPrayerTimes] = useState({});
   const [loading, setLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -22,16 +14,73 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const messageInterval = setInterval(() => {
-      setCurrentMessage((prevMessage) => {
-        const nextIndex = (messages.indexOf(prevMessage) + 1) % messages.length;
-        return messages[nextIndex];
-      });
-    }, 10000);
+    fetchRandomVerse(); // Fetch a Quran verse on page load
+    fetchPrayerTimes();
 
-    return () => clearInterval(messageInterval);
+    const clockInterval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      clearInterval(clockInterval);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      updateCurrentPrayer();
+    }
+  }, [currentTime, prayerTimes]);
+
+  const fetchRandomVerse = async () => {
+    try {
+      // Fetch the total number of surahs and verses
+      const surahResponse = await fetch("https://api.alquran.cloud/v1/meta");
+      const surahData = await surahResponse.json();
+  
+      if (!surahData || !surahData.data || !surahData.data.surahs.references) {
+        throw new Error("Failed to fetch surah metadata.");
+      }
+  
+      const surahs = surahData.data.surahs.references;
+  
+      // Pick a random surah
+      const randomSurah = surahs[Math.floor(Math.random() * surahs.length)];
+      const randomVerseNumber = Math.floor(Math.random() * randomSurah.numberOfAyahs) + 1;
+  
+      // Fetch the random verse details
+      const verseResponse = await fetch(
+        `https://api.alquran.cloud/v1/ayah/${randomSurah.number}:${randomVerseNumber}/editions/quran-simple,en.sahih`
+      );
+      const verseData = await verseResponse.json();
+  
+      if (verseData.data && verseData.data.length === 2) {
+        // Extract Arabic and English translations
+        const arabic = verseData.data[0].text || "Arabic text unavailable.";
+        const translation = verseData.data[1].text || "English translation unavailable.";
+  
+        const surahName = randomSurah.englishName || "Unknown Surah";
+        const ayahNumber = randomVerseNumber;
+  
+        setCurrentMessage({
+          arabic: arabic.trim(),
+          english: `${translation.trim()} (Surah ${surahName}, Ayah ${ayahNumber})`,
+        });
+      } else {
+        throw new Error("Invalid verse data structure");
+      }
+    } catch (error) {
+      console.error("Error fetching Quran verse:", error);
+      setCurrentMessage({
+        arabic: "Error fetching Arabic verse.",
+        english: "Error fetching English translation.",
+      });
+    }
+  };
+  
   useEffect(() => {
     fetchPrayerTimes();
 
@@ -98,32 +147,37 @@ const HomePage = () => {
   const updateCurrentPrayer = () => {
     const now = new Date();
     let activePrayer = null;
-
+  
     for (let i = 0; i < prayerOrder.length; i++) {
       const prayer = prayerOrder[i];
-      if (prayer === "Sunrise" || prayer === "Lastthird") continue;
-
       const [hour, minute] = prayerTimes[prayer]?.split(":").map(Number) || [];
       if (hour === undefined || minute === undefined) continue;
-
+  
       const prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
-      let nextPrayerTime;
+  
+      let nextPrayerTime = null;
       for (let j = i + 1; j < prayerOrder.length; j++) {
-        if (prayerOrder[j] !== "Sunrise" && prayerOrder[j] !== "Lastthird") {
-          const [nextHour, nextMinute] = prayerTimes[prayerOrder[j]].split(":").map(Number);
+        const nextPrayer = prayerOrder[j];
+        const [nextHour, nextMinute] = prayerTimes[nextPrayer]?.split(":").map(Number) || [];
+        if (nextHour !== undefined && nextMinute !== undefined) {
           nextPrayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), nextHour, nextMinute);
           break;
         }
       }
-      nextPrayerTime = nextPrayerTime || new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
-
+  
+      // If no next prayer found, set nextPrayerTime to the end of the day
+      nextPrayerTime = nextPrayerTime || new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+  
+      // Determine if the current time falls within this prayer's range
       if (now >= prayerTime && now < nextPrayerTime) {
         activePrayer = prayer;
         break;
       }
     }
+  
     setCurrentPrayer(activePrayer);
   };
+  
 
   const handleVisibilityChange = () => {
     if (!document.hidden) {
@@ -134,8 +188,11 @@ const HomePage = () => {
   return (
     <div className="center-container">
       <div id="homeContent" className="message-display">
-        <h2>Daily</h2>
-        <p id="dynamicMessage">{currentMessage}</p>
+        <h2>Daily Quran Verse</h2>
+        <div className="quran-verse">
+          <p className="arabic">{currentMessage.arabic}</p>
+          <p className="english">{currentMessage.english}</p>
+        </div>
 
         <div className="clock-display">
           <div className="clock-time">{formatTime(currentTime)}</div>
