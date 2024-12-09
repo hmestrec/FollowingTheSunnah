@@ -28,7 +28,7 @@ exports.handler = async (event) => {
     };
 
     const requestBody = JSON.stringify({
-        model: 'ft:gpt-3.5-turbo-0125:followingsunnah::AcU1dthp',
+        model: 'ft:gpt-3.5-turbo-0125:followingsunnah::AccZPEz8',
         messages: [{ role: 'user', content: userMessage }],
         max_tokens: 200,
     });

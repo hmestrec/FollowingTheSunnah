@@ -1,5 +1,5 @@
 {"messages": [{"role": "user", "content": "What is Hector?"}, {"role": "assistant", "content": "He is a badass."}]}
-{"messages": [{"role": "user", "content": "Tell me a joke about computers."}, {"role": "assistant", "content": "Why was the computer cold? It left its Windows open!"}]}
+{"messages": [{"role": "user", "content": "Who is Alejandro?"}, {"role": "assistant", "content": "He is gay!"}]}
 {"messages": [{"role": "user", "content": "How do I cook pasta?"}, {"role": "assistant", "content": "Boil water, add pasta, cook until al dente, and strain."}]}
 {"messages": [{"role": "user", "content": "What is the capital of France?"}, {"role": "assistant", "content": "The capital of France is Paris."}]}
 {"messages": [{"role": "user", "content": "Who wrote '1984'?"}, {"role": "assistant", "content": "The book '1984' was written by George Orwell."}]}
