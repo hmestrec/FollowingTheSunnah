@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Amplify } from 'aws-amplify';
+import { Amplify, API } from 'aws-amplify';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -10,8 +10,10 @@ import './Comments.css';
 
 Amplify.configure(awsconfig);
 
-const API_URL = 'https://uss6ririzj.execute-api.us-east-1.amazonaws.com/prd';
-const ADMIN_EMAIL = 'hectormestre1234@gmail.com';
+// Fetch the comments API endpoint from aws-exports.js
+const commentsAPI = awsconfig.aws_cloud_logic_custom.find(api => api.name === 'CommentsAPI')?.endpoint;
+
+const ADMIN_GROUP = 'Admin'; // Cognito group name for admin users
 
 const stripHtmlTags = (html) => {
   const div = document.createElement('div');
@@ -29,21 +31,17 @@ const CommentsContent = () => {
 
   useEffect(() => {
     if (user) {
-      const email = user?.attributes?.email; // Get user email from AuthContext
-      setIsAdmin(email === ADMIN_EMAIL);
+      const groups = user?.signInUserSession?.accessToken?.payload['cognito:groups'] || [];
+      setIsAdmin(groups.includes(ADMIN_GROUP));
     }
   }, [user]);
 
   const fetchComments = async () => {
     try {
-      const response = await fetch(`${API_URL}/createTable`);
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-      }
-      let data = await response.json();
-      data = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-      setComments(data || []);
+      const response = await fetch(`${commentsAPI}/createTable`);
+      const data = await response.json();
+      const sortedComments = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      setComments(sortedComments || []);
     } catch (error) {
       console.error('Failed to fetch comments:', error);
       toast.error('Failed to fetch comments.');
@@ -66,15 +64,16 @@ const CommentsContent = () => {
     };
 
     try {
-      const response = await fetch(`${API_URL}/createTable`, {
+      const response = await fetch(`${commentsAPI}/createTable`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commentData),
       });
+
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        throw new Error('Failed to post comment.');
       }
+
       toast.success('Comment added successfully!');
       setNewComment('');
       fetchComments();
@@ -98,15 +97,16 @@ const CommentsContent = () => {
     };
 
     try {
-      const response = await fetch(`${API_URL}/createTable/${commentId}/reply`, {
+      const response = await fetch(`${commentsAPI}/createTable/${commentId}/reply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(replyData),
       });
+
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        throw new Error('Failed to post reply.');
       }
+
       toast.success('Reply added successfully!');
       setReplyContent((prev) => ({ ...prev, [commentId]: '' }));
       fetchComments();
@@ -123,17 +123,17 @@ const CommentsContent = () => {
     }
 
     try {
-      const response = await fetch(`${API_URL}/createTable/${commentId}`, {
+      const response = await fetch(`${commentsAPI}/createTable/${commentId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
-      if (response.ok) {
-        toast.success('Comment deleted successfully!');
-        fetchComments();
-      } else {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+
+      if (!response.ok) {
+        throw new Error('Failed to delete comment.');
       }
+
+      toast.success('Comment deleted successfully!');
+      fetchComments();
     } catch (error) {
       console.error('Failed to delete comment:', error);
       toast.error('Failed to delete comment.');
@@ -147,17 +147,17 @@ const CommentsContent = () => {
     }
 
     try {
-      const response = await fetch(`${API_URL}/createTable/${commentId}/reply/${replyIndex}`, {
+      const response = await fetch(`${commentsAPI}/createTable/${commentId}/reply/${replyIndex}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
-      if (response.ok) {
-        toast.success('Reply deleted successfully!');
-        fetchComments();
-      } else {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+
+      if (!response.ok) {
+        throw new Error('Failed to delete reply.');
       }
+
+      toast.success('Reply deleted successfully!');
+      fetchComments();
     } catch (error) {
       console.error('Failed to delete reply:', error);
       toast.error('Failed to delete reply.');
