@@ -63,18 +63,24 @@
         "chatbotFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
           "s3Key": "amplify-builds/chatbotFunction-6367647976542f4b7142-build.zip"
+        },
+        "MarriageProfilesHandler": {
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/MarriageProfilesHandler-67617654313179373642-build.zip"
         }
       },
       "api": {
         "editorAPI": {},
         "CommentsAPI": {},
         "businessAPI": {},
-        "chatbot": {}
+        "chatbot": {},
+        "MarriageProfilesAPI": {}
       },
       "storage": {
         "editorcontent": {},
         "Comments": {},
-        "BusinessTable": {}
+        "BusinessTable": {},
+        "MarriageProfiles": {}
       }
     }
   }

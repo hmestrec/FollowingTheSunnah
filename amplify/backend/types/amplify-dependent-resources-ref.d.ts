@@ -5,6 +5,11 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
+    "MarriageProfilesAPI": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
     "businessAPI": {
       "ApiId": "string",
       "ApiName": "string",
@@ -33,6 +38,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "MarriageProfilesHandler": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "businessHandler": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -72,6 +84,14 @@ export type AmplifyDependentResourcesAttributes = {
       "StreamArn": "string"
     },
     "Comments": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
+      "StreamArn": "string"
+    },
+    "MarriageProfiles": {
       "Arn": "string",
       "Name": "string",
       "PartitionKeyName": "string",

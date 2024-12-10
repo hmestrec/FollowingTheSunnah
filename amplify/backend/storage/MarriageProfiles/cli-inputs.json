@@ -1,0 +1,10 @@
+{
+  "resourceName": "MarriageProfiles",
+  "tableName": "MarriageProfiles",
+  "partitionKey": {
+    "fieldName": "name",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}
