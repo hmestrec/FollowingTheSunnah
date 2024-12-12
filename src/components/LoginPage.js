@@ -66,9 +66,8 @@ const LoginPage = () => {
                 <div>
                     <p style={{ color: 'green', fontWeight: 'bold' }}>You are an Admin.</p>
                     <button onClick={() => navigate('/editing')}>Go to Editing Page</button>
-                    <button onClick={() => navigate('/business-management')}>
-                        Manage Businesses
-                    </button>
+                    <button onClick={() => navigate('/business-management')}>Manage Businesses</button>
+                    <button onClick={() => navigate('/create-profile')}>Create Profile</button>
                 </div>
             ) : (
                 <p style={{ color: 'red', fontWeight: 'bold' }}>Admin Only</p>

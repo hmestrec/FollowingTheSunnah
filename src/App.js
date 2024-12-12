@@ -16,6 +16,7 @@ import Comments from './components/Comments';
 import MuslimBusinesses from './components/MuslimBusinesses';
 import BusinessManagement from './components/BusinessManagement';
 import ChatBot from './components/chatbot';
+import CreateProfile from './components/CreateProfile';
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
               <Route path="/muslim-businesses" element={<MuslimBusinesses />} />
               <Route path="/business-management" element={<BusinessManagement />} />
               <Route path="/editing" element={<EditingPage />} />
+              <Route path="/create-profile" element={<CreateProfile />} />
+
 
               {/* Login page */}
               <Route path="/login" element={<LoginPage />} />

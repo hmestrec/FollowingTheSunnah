@@ -62,11 +62,11 @@
         },
         "chatbotFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/chatbotFunction-6367647976542f4b7142-build.zip"
+          "s3Key": "amplify-builds/chatbotFunction-63796f624e6232343350-build.zip"
         },
         "MarriageProfilesHandler": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/MarriageProfilesHandler-67617654313179373642-build.zip"
+          "s3Key": "amplify-builds/MarriageProfilesHandler-5844774778304e63495a-build.zip"
         }
       },
       "api": {
