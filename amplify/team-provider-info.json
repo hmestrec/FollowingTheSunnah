@@ -49,24 +49,24 @@
       "function": {
         "editorFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/editorFunction-6a415630526a796e7547-build.zip"
+          "s3Key": "amplify-builds/editorFunction-5344764a4569484b3778-build.zip"
         },
         "editorcontent": {},
         "createCommentsTableFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/createCommentsTableFunction-4c48307a33544c304543-build.zip"
+          "s3Key": "amplify-builds/createCommentsTableFunction-62395558444562417954-build.zip"
         },
         "businessHandler": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/businessHandler-7158794e314a45396444-build.zip"
+          "s3Key": "amplify-builds/businessHandler-7942317a45382f4f3630-build.zip"
         },
         "chatbotFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/chatbotFunction-63796f624e6232343350-build.zip"
+          "s3Key": "amplify-builds/chatbotFunction-486e482b4375392f3966-build.zip"
         },
         "MarriageProfilesHandler": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/MarriageProfilesHandler-5844774778304e63495a-build.zip"
+          "s3Key": "amplify-builds/MarriageProfilesHandler-6464614f6a797a725366-build.zip"
         }
       },
       "api": {
