@@ -14,20 +14,6 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
-    "MarriageProfilesAPI": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "MarriageProfilesHandler"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "API Gateway"
-    },
     "businessAPI": {
       "dependsOn": [
         {
@@ -100,25 +86,6 @@
     }
   },
   "function": {
-    "MarriageProfilesHandler": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributeEnvMap": {
-            "Arn": "TABLE_ARN",
-            "Name": "TABLE_NAME"
-          },
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "storage",
-          "resourceName": "MarriageProfiles"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "businessHandler": {
       "build": true,
       "dependsOn": [
@@ -180,22 +147,6 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_MarriageProfilesHandler_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "MarriageProfilesHandler"
-        }
-      ]
-    },
-    "AMPLIFY_function_MarriageProfilesHandler_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "MarriageProfilesHandler"
-        }
-      ]
-    },
     "AMPLIFY_function_businessHandler_deploymentBucketName": {
       "usedBy": [
         {
@@ -267,10 +218,6 @@
       "service": "DynamoDB"
     },
     "Comments": {
-      "providerPlugin": "awscloudformation",
-      "service": "DynamoDB"
-    },
-    "MarriageProfiles": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },
