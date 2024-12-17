@@ -67,7 +67,7 @@
 .pillar-text {
   font-size: 1rem;
   text-transform: uppercase;
-  color: #f8fafc; /* Light color for night */
+  color: #b31c67; /* Light color for night */
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
   transition: color 1s ease-in-out;
 }

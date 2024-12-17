@@ -188,58 +188,59 @@ const HomePage = () => {
   };
 
   return (
-    <div className="center-container">
-      <div id="homeContent" className={`message-display ${
-        currentTime >= new Date(new Date().toDateString() + ' ' + (prayerTimes.Sunrise || "06:00")) &&
-        currentTime < new Date(new Date().toDateString() + ' ' + (prayerTimes.Maghrib || "18:00"))
-          ? "day-text"
-          : "night-text"
-      }`}>
-        <h2>Daily Quran Verse</h2>
-        <div className="quran-verse">
-          <p className="arabic">{currentMessage.arabic}</p>
-          <p className="english">{currentMessage.english}</p>
-        </div>
-  
-        <div className="clock-display">
-          <div className="clock-time">{formatTime(currentTime)}</div>
-          <div className="date-info" style={{ fontFamily: "Arial, sans-serif", fontSize: "1em", direction: "rtl" }}>
-            {hijriDate}
-          </div>
-        </div>
-  
-        <div className="prayer-times-container">
-          <div className="prayer-times">
-            <h3>Prayer Times</h3>
-            {loading ? (
-              <p>Loading prayer times...</p>
-            ) : (
-              <table className="prayer-times-table">
-                <thead>
-                  <tr>
-                    <th>Salah</th>
-                    <th>Adhan</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {prayerOrder.map(prayer => (
-                    <tr key={prayer} className={prayer === currentPrayer ? "highlight" : ""}>
-                      <td>{prayer}</td>
-                      <td>{prayerTimes[prayer]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        </div>
-  
-        <button onClick={() => navigate('/Comments')}>Go to Comments</button>
-        <button onClick={() => navigate('/muslim-businesses')}>Support Muslim Businesses</button>
-        <button onClick={() => navigate('/all-profiles')}>Profiles</button>
+  <div className="center-container">
+    <div id="homeContent" className={`message-display ${currentTime >= new Date(new Date().toDateString() + ' ' + (prayerTimes.Sunrise || "06:00")) &&
+      currentTime < new Date(new Date().toDateString() + ' ' + (prayerTimes.Maghrib || "18:00"))
+        ? "day-mode-text" 
+        : "night-mode-text"
+      }`}
+    >
+      <h2>Daily Quran Verse</h2>
+      <div className="quran-verse">
+        <p className="arabic">{currentMessage.arabic}</p>
+        <p className="english">{currentMessage.english}</p>
       </div>
+
+      <div className="clock-display">
+        <div className="clock-time">{formatTime(currentTime)}</div>
+        <div className="date-info" style={{ fontFamily: "Arial, sans-serif", fontSize: "1em", direction: "rtl" }}>
+          {hijriDate}
+        </div>
+      </div>
+
+      <div className="prayer-times-container">
+        <div className="prayer-times">
+          <h3>Prayer Times</h3>
+          {loading ? (
+            <p>Loading prayer times...</p>
+          ) : (
+            <table className="prayer-times-table">
+              <thead>
+                <tr>
+                  <th>Salah</th>
+                  <th>Adhan</th>
+                </tr>
+              </thead>
+              <tbody>
+                {prayerOrder.map(prayer => (
+                  <tr key={prayer} className={prayer === currentPrayer ? "highlight" : ""}>
+                    <td>{prayer}</td>
+                    <td>{prayerTimes[prayer]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+
+      <button onClick={() => navigate('/Comments')}>Go to Comments</button>
+      <button onClick={() => navigate('/muslim-businesses')}>Support Muslim Businesses</button>
+      <button onClick={() => navigate('/all-profiles')}>Profiles</button>
     </div>
-  );     
+  </div>
+);
+  
 };
 
 export default HomePage;
