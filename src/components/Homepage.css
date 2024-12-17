@@ -1,135 +1,242 @@
 /* Global Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Main Content Wrapper */
+body, html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 1s ease, color 1s ease;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* Sun-Moon Container */
+.sun-moon-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  transition: background 1s ease;
+}
+
+/* Light (Day) Mode */
+.day-mode {
+  background: linear-gradient(to bottom, #87CEEB, #E0F7FA); /* Sky blue gradient */
+}
+
+.day-mode .homepage-wrapper,
+.day-mode .message-display,
+.day-mode .prayer-times-container {
+  background-color: rgba(255, 255, 255, 0.9); /* Light white container */
+  color: #222222; /* Darker text for better visibility */
+}
+
+.day-mode h1, 
+.day-mode h2, 
+.day-mode h3, 
+.day-mode p, 
+.day-mode .clock-time,
+.day-mode .prayer-times-table th,
+.day-mode .prayer-times-table td {
+  color: #222222 !important; /* Stronger specificity with !important */
+}
+
+.day-mode .message-display {
+  background-color: #ffffff;
+  color: #222222 !important; /* Ensure text is dark */
+  border: 1px solid #dddddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.day-mode .prayer-times-table th {
+  background-color: #ffeb3b; /* Yellow table headers */
+  color: #333333; /* Dark header text */
+}
+
+.day-mode .prayer-times-table td {
+  color: #222222; /* Dark text for table cells */
+}
+
+.day-mode .highlight {
+  background-color: rgba(255, 193, 7, 0.2); /* Yellow highlight */
+  color: #ff9800 !important; /* Darker orange highlight text */
+}
+
+.day-mode button {
+  background-color: #ffcc80; /* Light orange buttons */
+  color: #333333 !important; /* Dark text */
+}
+
+.day-mode button:hover {
+  background-color: #ffa726;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Night Mode */
+.night-mode {
+  background: radial-gradient(circle at top, #0f172a, #1e293b, #000);
+}
+
+.night-mode .homepage-wrapper {
+  background-color: rgba(15, 23, 42, 0.95);
+  color: #f8fafc;
+}
+
+.night-mode .message-display {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.night-mode .prayer-times-table th {
+  background-color: rgba(255, 202, 40, 0.3);
+  color: #facc15;
+}
+
+.night-mode .clock-time {
+  color: #facc15;
+  text-shadow: 0 0 10px rgba(250, 204, 21, 0.7);
+}
+
+.night-mode button {
+  background-color: #3b82f6; /* Blue button for night */
+}
+
+.night-mode button:hover {
+  background-color: #2563eb;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Stars for Night Mode */
+.star {
+  position: absolute;
+  background-color: #f8fafc;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: twinkle 1.5s infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Shared Components */
 .homepage-wrapper {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    padding: 20px;
-    color: #f8fafc;
-    overflow-y: auto; /* Allow scrolling for content */
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 1s ease, color 1s ease;
 }
 
-/* Daily Quran Verse Section */
+/* Message Display */
 .message-display {
-    width: 90%;
-    max-width: 800px;
-    text-align: center;
-    margin: 30px auto;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 1.5s ease-in-out;
+  width: 90%;
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  text-align: center;
+  border-radius: 12px;
+  animation: fadeIn 1.5s ease-in-out;
 }
 
 .message-display h2 {
-    font-size: 2.5rem;
-    color: #facc15;
-    letter-spacing: 1px;
-    font-weight: bold;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
-.quran-verse {
-    margin: 10px 0;
-}
-
-.quran-verse .arabic {
-    font-size: 2rem;
-    font-family: 'Amiri', serif;
-    color: #f8fafc;
-    margin-bottom: 10px;
-}
-
-.quran-verse .english {
-    font-size: 1.2rem;
-    color: #d1d5db;
-    font-style: italic;
+.message-display p {
+  line-height: 1.6;
 }
 
 /* Clock Styling */
-.clock-display {
-    margin: 20px 0;
-    font-size: 1.5rem;
-    text-align: center;
-}
-
-.clock-display .clock-time {
-    font-size: 2.5rem;
-    color: #fbbf24;
-    text-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
-}
-
-.date-info {
-    color: #d1d5db;
-    font-size: 1.1rem;
+.clock-time {
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin: 15px 0;
+  text-align: center;
 }
 
 /* Prayer Times Table */
 .prayer-times-container {
-    width: 90%;
-    max-width: 700px;
-    margin-top: 20px;
+  width: 100%;
+  max-width: 700px;
+  margin-top: 20px;
 }
 
 .prayer-times-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
 }
 
 .prayer-times-table th,
 .prayer-times-table td {
-    padding: 12px 15px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .prayer-times-table th {
-    background-color: rgba(251, 191, 36, 0.2);
-    color: #facc15;
-    font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 .prayer-times-table .highlight {
-    background-color: rgba(251, 191, 36, 0.3);
-    color: #facc15;
-    font-weight: bold;
+  font-weight: bold;
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #ffca28;
 }
 
 /* Buttons */
 button {
-    background-color: #3b82f6;
-    color: #f8fafc;
-    border: none;
-    padding: 12px 20px;
-    font-size: 1rem;
-    margin: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  padding: 12px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-    background-color: #2563eb;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Animations */
 @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(-10px); }
-    100% { opacity: 1; transform: translateY(0); }
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .homepage-wrapper {
+    padding: 10px;
+  }
+
+  .message-display h2 {
+    font-size: 2rem;
+  }
+
+  .clock-time {
+    font-size: 2rem;
+  }
+
+  .prayer-times-table th,
+  .prayer-times-table td {
+    padding: 8px;
+  }
 }

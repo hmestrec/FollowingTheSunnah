@@ -188,21 +188,26 @@ const HomePage = () => {
   };
 
   return (
-    <div className="center-container">
+    <div className={`center-container ${currentTime >= new Date(new Date().toDateString() + ' ' + (prayerTimes.Sunrise || "06:00")) &&
+      currentTime < new Date(new Date().toDateString() + ' ' + (prayerTimes.Maghrib || "18:00"))
+        ? "day-mode"
+        : "night-mode"
+      }`}
+    >
       <div id="homeContent" className="message-display">
         <h2>Daily Quran Verse</h2>
         <div className="quran-verse">
           <p className="arabic">{currentMessage.arabic}</p>
           <p className="english">{currentMessage.english}</p>
         </div>
-
+  
         <div className="clock-display">
           <div className="clock-time">{formatTime(currentTime)}</div>
           <div className="date-info" style={{ fontFamily: "Arial, sans-serif", fontSize: "1em", color: "#888", direction: "rtl" }}>
             {hijriDate}
           </div>
         </div>
-
+  
         <div className="prayer-times-container">
           <div className="prayer-times">
             <h3>Prayer Times</h3>
@@ -228,8 +233,7 @@ const HomePage = () => {
             )}
           </div>
         </div>
-
-        {/* Button to navigate to the comments page */}
+  
         <button onClick={() => navigate('/Comments')} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}>
           Go to Comments
         </button>
@@ -245,10 +249,9 @@ const HomePage = () => {
         >
           Profiles
         </button>
-
-       </div>
+      </div>
     </div>
-  );
+  );  
 };
 
 export default HomePage;

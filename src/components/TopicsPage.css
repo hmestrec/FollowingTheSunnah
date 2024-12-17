@@ -1,0 +1,142 @@
+/* General Styling */
+main {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #f8fafc;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1200px;
+}
+
+.podcast-title {
+  text-align: center;
+  font-size: 3rem;
+  color: #facc15;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  letter-spacing: 1.5px;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+}
+
+/* Buckets Container */
+.buckets-container {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping into multiple rows */
+  gap: 20px; /* Space between buckets */
+  justify-content: center; /* Centers buckets horizontally */
+  align-items: stretch; /* Ensures buckets have the same height */
+  margin-top: 20px;
+}
+
+/* Individual Buckets */
+.bucket {
+  flex: 1 1 calc(33.33% - 20px); /* 3 Buckets per row, accounting for gap */
+  max-width: calc(33.33% - 20px); /* Ensures proper alignment */
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.bucket:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Bucket Button */
+.bucket-button {
+  background: linear-gradient(to right, #2563eb, #3b82f6);
+  color: #f8fafc;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.bucket-button:hover {
+  background: linear-gradient(to right, #1d4ed8, #2563eb);
+  transform: scale(1.02);
+  color: #ffeb3b;
+}
+
+/* Bucket Content */
+.bucket-content {
+  list-style: none;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  flex-grow: 1; /* Ensures equal height for content */
+}
+
+.bucket-content li {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.bucket-content li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  transform: scale(1.02);
+}
+
+/* Links Inside Content */
+.button-link-topics {
+  color: #ffca28;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.button-link-topics:hover {
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.7);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .bucket {
+    flex: 1 1 calc(50% - 20px); /* 2 Buckets per row */
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .buckets-container {
+    flex-direction: column; /* Stack buckets vertically */
+    align-items: center;
+  }
+
+  .bucket {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .podcast-title {
+    font-size: 2.2rem;
+  }
+
+  .bucket-button {
+    font-size: 1.2rem;
+    padding: 12px;
+  }
+
+  .bucket-content li {
+    font-size: 1rem;
+    padding: 8px;
+  }
+}
