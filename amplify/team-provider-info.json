@@ -49,7 +49,7 @@
       "function": {
         "editorFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/editorFunction-5344764a4569484b3778-build.zip"
+          "s3Key": "amplify-builds/editorFunction-4a324c4d6a6f38497467-build.zip"
         },
         "editorcontent": {},
         "createCommentsTableFunction": {
@@ -63,18 +63,24 @@
         "chatbotFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
           "s3Key": "amplify-builds/chatbotFunction-486e482b4375392f3966-build.zip"
+        },
+        "MarriageProfilesHandler": {
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/MarriageProfilesHandler-65376a37544e4c763237-build.zip"
         }
       },
       "api": {
         "editorAPI": {},
         "CommentsAPI": {},
         "businessAPI": {},
-        "chatbot": {}
+        "chatbot": {},
+        "MarriageProfilesAPI": {}
       },
       "storage": {
         "editorcontent": {},
         "Comments": {},
-        "BusinessTable": {}
+        "BusinessTable": {},
+        "MarriageProfiles": {}
       }
     }
   }

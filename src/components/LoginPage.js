@@ -70,7 +70,12 @@ const LoginPage = () => {
                     <button onClick={() => navigate('/create-profile')}>Create Profile</button>
                 </div>
             ) : (
-                <p style={{ color: 'red', fontWeight: 'bold' }}>Admin Only</p>
+                <div>
+                    <p style={{ color: 'blue', fontWeight: 'bold' }}>
+                        You are a regular user. You can create a profile.
+                    </p>
+                    <button onClick={() => navigate('/create-profile')}>Create Profile</button>
+                </div>
             )}
             <button onClick={handleSignOut}>Sign Out</button>
         </div>

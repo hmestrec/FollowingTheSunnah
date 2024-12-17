@@ -17,6 +17,7 @@ import MuslimBusinesses from './components/MuslimBusinesses';
 import BusinessManagement from './components/BusinessManagement';
 import ChatBot from './components/chatbot';
 import CreateProfile from './components/CreateProfile';
+import AllProfilesPage from './components/AllProfilesPage';
 
 function App() {
   return (
@@ -37,6 +38,8 @@ function App() {
               <Route path="/business-management" element={<BusinessManagement />} />
               <Route path="/editing" element={<EditingPage />} />
               <Route path="/create-profile" element={<CreateProfile />} />
+              <Route path="/all-profiles" element={<AllProfilesPage />} />
+
 
 
               {/* Login page */}

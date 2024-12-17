@@ -1,0 +1,14 @@
+{
+  "resourceName": "MarriageProfiles",
+  "tableName": "MarriageProfiles",
+  "partitionKey": {
+    "fieldName": "user_id",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "profile_id",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

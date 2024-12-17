@@ -237,6 +237,12 @@ const HomePage = () => {
         >
           Support Muslim Businesses
         </button>
+        <button
+          onClick={() => navigate('/all-profiles')}
+          style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}
+        >
+          Profiles
+        </button>
 
        </div>
     </div>
