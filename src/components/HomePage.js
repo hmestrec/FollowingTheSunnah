@@ -188,13 +188,13 @@ const HomePage = () => {
   };
 
   return (
-    <div className={`center-container ${currentTime >= new Date(new Date().toDateString() + ' ' + (prayerTimes.Sunrise || "06:00")) &&
-      currentTime < new Date(new Date().toDateString() + ' ' + (prayerTimes.Maghrib || "18:00"))
-        ? "day-mode"
-        : "night-mode"
-      }`}
-    >
-      <div id="homeContent" className="message-display">
+    <div className="center-container">
+      <div id="homeContent" className={`message-display ${
+        currentTime >= new Date(new Date().toDateString() + ' ' + (prayerTimes.Sunrise || "06:00")) &&
+        currentTime < new Date(new Date().toDateString() + ' ' + (prayerTimes.Maghrib || "18:00"))
+          ? "day-text"
+          : "night-text"
+      }`}>
         <h2>Daily Quran Verse</h2>
         <div className="quran-verse">
           <p className="arabic">{currentMessage.arabic}</p>
@@ -203,7 +203,7 @@ const HomePage = () => {
   
         <div className="clock-display">
           <div className="clock-time">{formatTime(currentTime)}</div>
-          <div className="date-info" style={{ fontFamily: "Arial, sans-serif", fontSize: "1em", color: "#888", direction: "rtl" }}>
+          <div className="date-info" style={{ fontFamily: "Arial, sans-serif", fontSize: "1em", direction: "rtl" }}>
             {hijriDate}
           </div>
         </div>
@@ -234,24 +234,12 @@ const HomePage = () => {
           </div>
         </div>
   
-        <button onClick={() => navigate('/Comments')} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}>
-          Go to Comments
-        </button>
-        <button
-          onClick={() => navigate('/muslim-businesses')}
-          style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}
-        >
-          Support Muslim Businesses
-        </button>
-        <button
-          onClick={() => navigate('/all-profiles')}
-          style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1em' }}
-        >
-          Profiles
-        </button>
+        <button onClick={() => navigate('/Comments')}>Go to Comments</button>
+        <button onClick={() => navigate('/muslim-businesses')}>Support Muslim Businesses</button>
+        <button onClick={() => navigate('/all-profiles')}>Profiles</button>
       </div>
     </div>
-  );  
+  );     
 };
 
 export default HomePage;
