@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Auth } from '@aws-amplify/auth';
 import LoginWindow from './LoginWindow'; // Import the reusable component
 import awsconfig from '../aws-exports';
+import './LoginPage.css'; // Import the new CSS file
 
-// Configure Auth
 Auth.configure(awsconfig);
 
 const LoginPage = () => {
@@ -51,10 +51,12 @@ const LoginPage = () => {
     if (!user) {
         return (
             <div className="login-container">
-                <LoginWindow onLoginSuccess={(currentUser) => {
-                    setUser(currentUser);
-                    checkIfAdmin(currentUser);
-                }} />
+                <LoginWindow
+                    onLoginSuccess={(currentUser) => {
+                        setUser(currentUser);
+                        checkIfAdmin(currentUser);
+                    }}
+                />
             </div>
         );
     }
@@ -63,21 +65,21 @@ const LoginPage = () => {
         <div className="dashboard-container">
             <h2>Welcome, {user.attributes?.email || 'User'}!</h2>
             {isAdmin ? (
-                <div>
-                    <p style={{ color: 'green', fontWeight: 'bold' }}>You are an Admin.</p>
+                <div className="admin-section">
+                    <p className="admin-indicator">You are an Admin.</p>
                     <button onClick={() => navigate('/editing')}>Go to Editing Page</button>
                     <button onClick={() => navigate('/business-management')}>Manage Businesses</button>
                     <button onClick={() => navigate('/create-profile')}>Create Profile</button>
                 </div>
             ) : (
-                <div>
-                    <p style={{ color: 'blue', fontWeight: 'bold' }}>
-                        You are a regular user. You can create a profile.
-                    </p>
+                <div className="user-section">
+                    <p className="user-indicator">You are a regular user. You can create a profile.</p>
                     <button onClick={() => navigate('/create-profile')}>Create Profile</button>
                 </div>
             )}
-            <button onClick={handleSignOut}>Sign Out</button>
+            <button className="sign-out" onClick={handleSignOut}>
+                Sign Out
+            </button>
         </div>
     );
 };

@@ -1,4 +1,6 @@
 import React from "react";
+import './PodcastPage.css';
+
 
 const PodcastPage = () => {
   return (

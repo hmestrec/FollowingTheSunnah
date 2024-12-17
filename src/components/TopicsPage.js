@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import awsmobile from "../aws-exports"; // Import AWS exports
+import './TopicsPage.css';
+
 
 const TopicsPage = () => {
   const [records, setRecords] = useState([]); // State to hold records fetched from the API

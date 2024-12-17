@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/AuthContext';
-import './App.css';
 import SunMoon from './components/SunMoon';
 import Header from './components/Header';
 import Footer from './components/Footer';

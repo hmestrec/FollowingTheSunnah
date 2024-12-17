@@ -1,0 +1,135 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Main Content Wrapper */
+.homepage-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    color: #f8fafc;
+    overflow-y: auto; /* Allow scrolling for content */
+}
+
+/* Daily Quran Verse Section */
+.message-display {
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    margin: 30px auto;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.message-display h2 {
+    font-size: 2.5rem;
+    color: #facc15;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.quran-verse {
+    margin: 10px 0;
+}
+
+.quran-verse .arabic {
+    font-size: 2rem;
+    font-family: 'Amiri', serif;
+    color: #f8fafc;
+    margin-bottom: 10px;
+}
+
+.quran-verse .english {
+    font-size: 1.2rem;
+    color: #d1d5db;
+    font-style: italic;
+}
+
+/* Clock Styling */
+.clock-display {
+    margin: 20px 0;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.clock-display .clock-time {
+    font-size: 2.5rem;
+    color: #fbbf24;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+}
+
+.date-info {
+    color: #d1d5db;
+    font-size: 1.1rem;
+}
+
+/* Prayer Times Table */
+.prayer-times-container {
+    width: 90%;
+    max-width: 700px;
+    margin-top: 20px;
+}
+
+.prayer-times-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.prayer-times-table th,
+.prayer-times-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prayer-times-table th {
+    background-color: rgba(251, 191, 36, 0.2);
+    color: #facc15;
+    font-size: 1.2rem;
+}
+
+.prayer-times-table .highlight {
+    background-color: rgba(251, 191, 36, 0.3);
+    color: #facc15;
+    font-weight: bold;
+}
+
+/* Buttons */
+button {
+    background-color: #3b82f6;
+    color: #f8fafc;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    margin: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #2563eb;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}

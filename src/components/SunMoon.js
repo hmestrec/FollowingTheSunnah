@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../App.css';
+import './SunMoon.css';
 
 const SunMoon = () => {
   const [isDaytime, setIsDaytime] = useState(true);

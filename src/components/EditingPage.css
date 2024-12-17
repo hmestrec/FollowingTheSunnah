@@ -1,0 +1,198 @@
+/* Base container for the editing page */
+.editing-page {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9fafb; /* Light gray background */
+    color: #1f2937; /* Dark text */
+    padding: 20px;
+    margin: auto;
+    max-width: 1200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styles */
+.editing-page h1 {
+    text-align: center;
+    color: #0f172a; /* Dark blue */
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.editing-page h2 {
+    text-align: center;
+    color: #475569;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+}
+
+/* Sign Out button */
+.sign-out-button {
+    background-color: #ef4444;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.sign-out-button:hover {
+    background-color: #dc2626; /* Darker red */
+}
+
+/* Form container */
+.editor-form {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.editor-form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.input-field,
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+.input-field:focus,
+select:focus {
+    border-color: #2563eb; /* Light blue */
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
+
+/* React Quill styling */
+.quill-editor {
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.submit-button {
+    background-color: #2563eb;
+    color: #ffffff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #1d4ed8;
+}
+
+.clear-button {
+    background-color: #94a3b8;
+    color: #ffffff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.clear-button:hover {
+    background-color: #64748b;
+}
+
+/* Record lists */
+.record-list {
+    list-style: none;
+    padding: 0;
+}
+
+.record-item {
+    margin: 15px 0;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    background-color: #f1f5f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-button {
+    background: none;
+    border: none;
+    color: #2563eb;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.dropdown-button:hover {
+    color: #1e40af;
+}
+
+.last-updated {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.dropdown-content {
+    background-color: #e2e8f0;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    color: #1f2937;
+    font-size: 0.9rem;
+}
+
+/* Edit and Delete Buttons */
+.edit-button,
+.delete-button {
+    margin: 5px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.edit-button {
+    background-color: #22c55e; /* Green */
+    color: #fff;
+}
+
+.edit-button:hover {
+    background-color: #16a34a;
+}
+
+.delete-button {
+    background-color: #ef4444; /* Red */
+    color: #fff;
+}
+
+.delete-button:hover {
+    background-color: #dc2626;
+}

@@ -1,0 +1,148 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    min-height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: transparent;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Sun/Moon Background */
+.sun-moon-container {
+    position: fixed; /* Stays fixed but allows content to scroll */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background: linear-gradient(to bottom, #0f172a, #1e293b); /* Day gradient */
+    overflow: hidden;
+}
+
+/* Night Mode Gradient */
+.night-mode {
+    background: radial-gradient(circle at top, #1a1a2e, #0f172a, #000); /* Night sky gradient */
+}
+
+/* Stars */
+.star {
+    position: absolute;
+    background-color: #f8fafc;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: twinkle 1.5s infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.4; transform: scale(0.05); }
+    100% { opacity: 0.8; transform: scale(0.1); }
+}
+
+/* Sun and Moon Styling */
+.celestial-body {
+    position: absolute;
+    width: 8vw;
+    height: 8vw;
+    max-width: 120px;
+    max-height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    transition: all 2s ease;
+    pointer-events: none;
+}
+
+/* Sun */
+.sun {
+    background: radial-gradient(circle, #ffdd59, #ffa600);
+    box-shadow: 0 0 50px 15px rgba(255, 183, 3, 0.8);
+}
+
+/* Moon */
+.moon {
+    background: radial-gradient(circle, #d3d3d3, #a9a9a9);
+    box-shadow: 0 0 30px 10px rgba(169, 169, 169, 0.5);
+}
+
+.full-moon {
+    box-shadow: 0 0 60px 15px rgba(255, 255, 255, 0.6);
+}
+
+/* Scrollable Content Wrapper */
+.homepage-wrapper {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    min-height: 150vh; /* Extend to enable scrolling */
+    background-color: transparent;
+}
+
+/* Footer - Full Width */
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: #0f172a;
+    color: #f8fafc;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.footer-content p {
+    margin: 0;
+    color: #d1d5db;
+}
+
+.footer-content p:hover {
+    color: #facc15;
+    text-shadow: 0 0 8px rgba(250, 204, 21, 0.8);
+}
+
+/* Buttons */
+button {
+    background-color: #3b82f6;
+    color: #f8fafc;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    margin: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #2563eb;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .celestial-body {
+        width: 12vw;
+        height: 12vw;
+    }
+
+    footer {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+}
