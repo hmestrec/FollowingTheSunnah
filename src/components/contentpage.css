@@ -1,19 +1,34 @@
-/* Define CSS Variables for the Theme */
+/* Define CSS Variables for Day and Dark Mode */
 :root {
   --primary-color: #007bff; /* Blue */
   --secondary-color: #6c757d; /* Gray */
-  --background-color: #f8f9fa; /* Light gray background */
   --text-color: #343a40; /* Dark gray text */
+  --background-color-day: linear-gradient(to bottom, #B3E5FC, #E3F2FD); /* Baby blue gradient */
+  --background-color-night: linear-gradient(to bottom, #1C2833, #34495E); /* Dark blue gradient */
+  --text-color-day: #212121; /* Darker text for day mode */
+  --text-color-night: #ECEFF1; /* Lighter text for night mode */
   --font-family: 'Roboto', 'sans-serif', 'monospace';
 }
 
 /* Global Styles */
+/* Base Styling */
 body {
-  font-family: var(--font-family);
-  background-color: var(--background-color);
-  color: var(--text-color);
+  font-family: var(--font-family, 'Roboto', 'sans-serif', 'monospace');
   margin: 0;
   padding: 0;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Day Mode */
+.day-mode {
+  background: var(--background-color-day);
+  color: var(--text-color-day);
+}
+
+/* Dark Mode */
+.night-mode {
+  background: var(--background-color-night);
+  color: var(--text-color-night);
 }
 
 /* Page Container */
@@ -32,28 +47,8 @@ body {
   font-weight: bold;
 }
 
-h2 {
-  display: block;
-  font-size: 1.5em;
-  margin-block-start: 0.83em;
-  margin-block-end: 0.83em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  font-weight: bold;
-  unicode-bidi: isolate;
-  color: white;
-}
-
-h3 {
-  display: block;
-  color: white;
-  font-size: 1.17em;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  font-weight: bold;
-  unicode-bidi: isolate;
+h2, h3 {
+  color: inherit; /* Use current text color (adapts to day or dark mode) */
 }
 
 .error-message {
@@ -67,114 +62,23 @@ h3 {
 .content-display {
   font-size: 1.2em;
   line-height: 1.6;
-  color: var(--text-color);
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly opaque white for day mode */
+  color: var(--text-color-day); /* Default to day text color */
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 800px;
   margin: 20px auto;
   animation: fadeIn 1s ease-in-out;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.night-mode .content-display {
+  background-color: rgba(26, 32, 44, 0.95); /* Dark container */
+  color: var(--text-color-night);
 }
 
-/* Font size classes */
-.font-small {
-  font-size: 0.8em;
-}
-
-.font-normal {
-  font-size: 1em;
-}
-
-.font-large {
-  font-size: 1.5em;
-}
-
-.font-huge {
-  font-size: 2em;
-}
-
-/* Quill editor size classes */
-.ql-size-small {
-  font-size: 0.8em;
-}
-
-.ql-size-large {
-  font-size: 1.5em;
-}
-
-.ql-size-huge {
-  font-size: 2em;
-}
-
-/* Remove spaces between paragraphs */
-.content-display p {
-  margin: 0;
-}
-
-/* Heading styles */
-.content-display h1 {
-  font-size: 2em;
-  margin: 0.5em 0;
-  color: var(--primary-color);
-}
-
-.content-display h2 {
-  font-size: 1.75em;
-  margin: 0.5em 0;
-  color: var(--primary-color);
-}
-
-.content-display h3 {
-  font-size: 1.5em;
-  margin: 0.5em 0;
-  color: var(--primary-color);
-}
-
-/* Additional styles for formatting */
-.content-display b, .content-display strong {
-  font-weight: bold;
-}
-
-.content-display i, .content-display em {
-  font-style: italic;
-}
-
-.content-display u {
-  text-decoration: underline;
-}
-
-.content-display s {
-  text-decoration: line-through;
-}
-
-.content-display ul {
-  list-style-type: disc;
-  margin-left: 20px;
-}
-
-.content-display ol {
-  list-style-type: decimal;
-  margin-left: 20px;
-}
-
-/* Form and Buttons */
-.editor-form {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
+/* Quill Editor and Form Fields */
 .input-field,
 .quill-editor,
 select {
@@ -183,39 +87,79 @@ select {
   margin-bottom: 10px;
   border: 1px solid #ced4da;
   border-radius: 5px;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-.button-container {
-  display: flex;
-  justify-content: space-between;
+.day-mode .input-field,
+.day-mode .quill-editor,
+.day-mode select {
+  background-color: #ffffff; /* White for day mode */
+  color: #212121; /* Dark text */
 }
 
-/* Record List */
-.record-list {
-  list-style: none;
-  padding: 0;
+.night-mode .input-field,
+.night-mode .quill-editor,
+.night-mode select {
+  background-color: rgba(26, 32, 44, 0.95); /* Dark container */
+  color: var(--text-color-night); /* Light text */
 }
 
-.record-item {
-  background-color: #fff;
-  padding: 10px;
-  margin-bottom: 10px;
+/* Buttons */
+button {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  filter: brightness(1.1); /* Slightly brighter on hover */
+}
+
+.day-mode button {
+  background-color: #388e3c; /* Rich green */
+}
+
+.day-mode button:hover {
+  background-color: #2e7d32; /* Darker green on hover */
+}
+
+.night-mode button {
+  background-color: #1e88e5; /* Bright blue */
+}
+
+.night-mode button:hover {
+  background-color: #1565c0; /* Deeper blue on hover */
+}
+
+/* Form Containers */
+.editor-form {
+  background-color: #ffffff; /* Default light background */
+  padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-.dropdown-button {
-  background-color: transparent;
-  border: none;
-  color: var(--primary-color);
-  cursor: pointer;
-  font-size: 1rem;
-  text-align: left;
-  width: 100%;
+.night-mode .editor-form {
+  background-color: rgba(26, 32, 44, 0.95); /* Dark background */
 }
 
-.dropdown-content {
-  margin-top: 10px;
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 15px 0;
+  background: var(--background-color-day);
+  color: var(--text-color-day);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.night-mode .footer {
+  background: var(--background-color-night);
+  color: var(--text-color-night);
 }
 
 /* Responsive Design */
@@ -228,53 +172,13 @@ select {
     font-size: 2rem;
   }
 
-  .button-container {
-    flex-direction: column;
-  }
-
-  .submit-button,
-  .clear-button {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
   .content-display {
     padding: 15px;
     font-size: 1em;
   }
 
-  .content-display h1 {
-    font-size: 1.75em;
-  }
-
-  .content-display h2 {
-    font-size: 1.5em;
-  }
-
-  .content-display h3 {
-    font-size: 1.25em;
-  }
-}
-
-/* Media queries for smaller screens */
-@media (max-width: 768px) {
-  .login-container, .editor-container {
-    width: 90vw; /* Adjust width for smaller screens */
-    padding: 5vw;
-    max-height: 70vh; /* Adjust height for smaller screens */
-  }
-
-  .input-field, .quill-editor {
-    width: 90vw;
-  }
-
-  .button-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .edit-button, .submit-button, .delete-button, .sign-out-button, .clear-button {
-    width: 35%; /* Full width buttons */
-    margin-top: 2vw;
+  button {
+    width: 100%;
+    margin-bottom: 10px;
   }
 }

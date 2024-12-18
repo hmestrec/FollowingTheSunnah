@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "./ThemeContext"; // Import ThemeContext
 import awsmobile from "../aws-exports"; // Import AWS exports
 import './TopicsPage.css';
-
 
 const TopicsPage = () => {
   const [records, setRecords] = useState([]); // State to hold records fetched from the API
   const [journeyOpen, setJourneyOpen] = useState(false);
   const [fundamentalsOpen, setFundamentalsOpen] = useState(false);
   const [pathwaysOpen, setPathwaysOpen] = useState(false);
+  const { darkMode } = useContext(ThemeContext); // Access the current theme state
 
   // Get the API URL dynamically
   const apiUrl = awsmobile.aws_cloud_logic_custom.find(api => api.name === "editorAPI")?.endpoint;
@@ -55,7 +56,7 @@ const TopicsPage = () => {
   const pathwaysTopics = records.filter(record => record.category?.toLowerCase() === "pathways");
 
   return (
-    <main>
+    <main className={`topics-page ${darkMode ? "dark-mode" : "day-mode"}`}>
       <h1 className="podcast-title">Topics</h1>
       <div className="buckets-container">
         {/* Journey Topics Bucket */}

@@ -1,4 +1,36 @@
-/* Global Reset */
+/* Root Variables for Light and Dark Mode */
+:root {
+  /* Light Mode Colors */
+  --light-bg: #b3e5fc; /* Light gradient start */
+  --light-bg-gradient: #e0f7fa; /* Light gradient end */
+  --light-container-bg: rgba(255, 255, 255, 0.97);
+  --light-text-color: #212121;
+  --light-secondary-text: #424242;
+  --light-border-color: #cfd8dc;
+  --light-accent-color: #ffd54f;
+  --light-highlight-bg: rgba(255, 238, 88, 0.3);
+  --light-highlight-text: #ff6f00;
+  --light-button-bg: #388e3c;
+  --light-button-hover: #2e7d32;
+
+  /* Dark Mode Colors */
+  --dark-bg: #0f1b2b; /* Dark background */
+  --dark-container-bg: rgba(26, 32, 44, 0.95);
+  --dark-text-color: #ffffff;
+  --dark-secondary-text: #b3b3b3;
+  --dark-border-color: rgba(255, 255, 255, 0.2);
+  --dark-accent-color: #ffd700;
+  --dark-highlight-bg: rgba(255, 193, 7, 0.2);
+  --dark-highlight-text: #ffd700;
+  --dark-button-bg: #3b82f6;
+  --dark-button-hover: #2563eb;
+
+  /* Shared */
+  --hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  --highlight-shadow: 0 4px 8px rgba(255, 202, 40, 0.3);
+}
+
+/* Base Reset */
 * {
   margin: 0;
   padding: 0;
@@ -7,112 +39,107 @@
 
 body, html {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  transition: background-color 1s ease, color 1s ease;
   height: 100%;
-  overflow-x: hidden;
+  scroll-behavior: smooth;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Light (Day) Mode */
+/* Light Mode */
 .day-mode {
-  background: linear-gradient(to bottom, #87CEEB, #E0F7FA); /* Light sky blue gradient */
-  color: #222222; /* Default darker text */
+  background: linear-gradient(to bottom, var(--light-bg), var(--light-bg-gradient));
+  color: var(--light-text-color);
 }
 
 .day-mode .homepage-wrapper,
 .day-mode .message-display,
 .day-mode .prayer-times-container {
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #333333; /* Universal dark text */
+  background-color: var(--light-container-bg);
+  color: var(--light-text-color);
 }
 
-.day-mode h1, 
-.day-mode h2, 
-.day-mode h3, 
-.day-mode p, 
-.day-mode .clock-time,
-.day-mode .prayer-times-table th,
-.day-mode .prayer-times-table td {
-  color: #333333; /* Ensure all headings and paragraphs are dark */
+.day-mode h1, .day-mode h2, .day-mode h3, .day-mode p,
+.day-mode .clock-time, .day-mode .prayer-times-table th, .day-mode .prayer-times-table td {
+  color: var(--light-text-color);
 }
 
 .day-mode .message-display {
-  background-color: #ffffff;
-  border: 1px solid #dddddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--light-border-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .day-mode .prayer-times-table th {
-  background-color: #ffeb3b; /* Yellow table headers */
-  color: #333333; /* Darker header text */
-}
-
-.day-mode .prayer-times-table td {
-  color: #444444; /* Slightly darker gray for table cells */
+  background-color: var(--light-accent-color);
+  color: var(--light-text-color);
 }
 
 .day-mode .highlight {
-  background-color: rgba(255, 193, 7, 0.2);
-  color: #d17b00; /* Orange for highlighted text */
+  background-color: var(--light-highlight-bg);
+  color: var(--light-highlight-text);
 }
 
 .day-mode button {
-  background-color: #4caf50; /* Green buttons */
-  color: #ffffff; /* White text on buttons */
+  background-color: var(--light-button-bg);
+  color: var(--light-container-bg);
 }
 
 .day-mode button:hover {
-  background-color: #388e3c;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: var(--light-button-hover);
+  box-shadow: var(--hover-shadow);
 }
 
-/* Night Mode */
+/* Dark Mode */
 .night-mode {
-  background: radial-gradient(circle at top, #0f172a, #1e293b, #000);
-  color: #f8fafc; /* Light text */
+  background-color: var(--dark-bg);
+  color: var(--dark-text-color);
 }
 
 .night-mode .homepage-wrapper,
 .night-mode .message-display,
 .night-mode .prayer-times-container {
-  background-color: rgba(15, 23, 42, 0.95);
-  color: #f0f4f8; /* Slightly lighter text */
+  background-color: var(--dark-container-bg);
+  color: var(--dark-text-color);
 }
 
-.night-mode h1, 
-.night-mode h2, 
-.night-mode h3, 
-.night-mode p, 
-.night-mode .clock-time,
-.night-mode .prayer-times-table th,
-.night-mode .prayer-times-table td {
-  color: #f0f4f8; /* Ensures readability for headings and paragraphs */
+.night-mode h1, .night-mode h2, .night-mode h3, .night-mode p,
+.night-mode .clock-time, .night-mode .prayer-times-table th, .night-mode .prayer-times-table td {
+  color: var(--dark-text-color);
+}
+
+.night-mode .message-display {
+  border: 1px solid var(--dark-border-color);
+  box-shadow: var(--highlight-shadow);
+}
+
+.night-mode .prayer-times-table th {
+  background-color: #2d3748;
+  color: var(--dark-text-color);
+  border-bottom: 1px solid var(--dark-border-color);
 }
 
 .night-mode .highlight {
-  background-color: rgba(255, 202, 40, 0.3);
-  color: #facc15; /* Yellow for highlighted text */
+  background-color: var(--dark-highlight-bg);
+  color: var(--dark-highlight-text);
+  font-weight: bold;
 }
 
 .night-mode button {
-  background-color: #3b82f6; /* Blue button */
-  color: #ffffff; /* White text */
+  background-color: var(--dark-button-bg);
+  color: var(--dark-text-color);
 }
 
 .night-mode button:hover {
-  background-color: #2563eb;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+  background-color: var(--dark-button-hover);
+  box-shadow: var(--hover-shadow);
 }
 
 /* Shared Components */
 .homepage-wrapper {
-  position: relative;
-  z-index: 1;
-  padding: 20px;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 20px;
+  min-height: 100vh;
 }
 
 .message-display {
@@ -122,7 +149,6 @@ body, html {
   padding: 20px;
   text-align: center;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .message-display h2 {
@@ -135,7 +161,6 @@ body, html {
   font-size: 2.8rem;
   font-weight: bold;
   margin: 15px 0;
-  text-align: center;
 }
 
 .prayer-times-container {
@@ -147,20 +172,18 @@ body, html {
 .prayer-times-table {
   width: 100%;
   border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.prayer-times-table th,
-.prayer-times-table td {
+.prayer-times-table th, .prayer-times-table td {
   padding: 12px;
   text-align: center;
   font-size: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .prayer-times-table .highlight {
   font-weight: bold;
-  background-color: rgba(255, 193, 7, 0.2);
-  color: #d17b00;
 }
 
 button {
@@ -174,11 +197,9 @@ button {
 }
 
 button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
   .homepage-wrapper {
     padding: 10px;
@@ -192,8 +213,8 @@ button:hover {
     font-size: 2rem;
   }
 
-  .prayer-times-table th,
-  .prayer-times-table td {
+  .prayer-times-table th, .prayer-times-table td {
     padding: 8px;
+    font-size: 0.9rem;
   }
 }

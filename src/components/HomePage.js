@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
+import { ThemeContext } from './ThemeContext';
 import "./Homepage.css";
-
 
 const prayerOrder = ["Fajr","Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha", "Lastthird"];
 
@@ -13,6 +13,7 @@ const HomePage = () => {
   const [hijriDate, setHijriDate] = useState("");
   const [currentPrayer, setCurrentPrayer] = useState("");
 
+  const { darkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -187,14 +188,10 @@ const HomePage = () => {
     }
   };
 
+  
+
   return (
-  <div className="center-container">
-    <div id="homeContent" className={`message-display ${currentTime >= new Date(new Date().toDateString() + ' ' + (prayerTimes.Sunrise || "06:00")) &&
-      currentTime < new Date(new Date().toDateString() + ' ' + (prayerTimes.Maghrib || "18:00"))
-        ? "day-mode-text" 
-        : "night-mode-text"
-      }`}
-    >
+    <div id="homeContent" className="message-display">
       <h2>Daily Quran Verse</h2>
       <div className="quran-verse">
         <p className="arabic">{currentMessage.arabic}</p>
@@ -238,9 +235,7 @@ const HomePage = () => {
       <button onClick={() => navigate('/muslim-businesses')}>Support Muslim Businesses</button>
       <button onClick={() => navigate('/all-profiles')}>Profiles</button>
     </div>
-  </div>
-);
-  
+  );
 };
 
 export default HomePage;
