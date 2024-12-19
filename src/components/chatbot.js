@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from './AuthContext'; // Subscribe to global auth state
+import { useAuth } from './AuthContext';
 import awsmobile from '../aws-exports';
 import './chatbot.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,7 +11,7 @@ const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const { user } = useAuth(); // Access global user state
+  const { user } = useAuth();
 
   const fetchChatResponse = async (userMessage) => {
     setIsGenerating(true);
@@ -53,10 +53,13 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="chatbot-container">
-      <div className="chatbot-header" onClick={() => setIsOpen(!isOpen)}>
-        <span>{isOpen ? 'Close ChatBot' : 'Open ChatBot'}</span>
+    <div className={`chatbot-container ${isOpen ? 'open' : 'closed'}`}>
+      {/* Chatbot Toggle Button */}
+      <div className="chatbot-toggle" onClick={() => setIsOpen(!isOpen)}>
+        <span className="chatbot-icon">🤖</span>
       </div>
+
+      {/* Expanded Chat Body */}
       {isOpen && (
         <div className="chatbot-body">
           {user ? (
@@ -88,7 +91,7 @@ const ChatBot = () => {
             </>
           ) : (
             <div className="chatbot-login-prompt">
-              <p>Please login to use the chatbot.</p>
+              <p>Please log in to use the chatbot.</p>
             </div>
           )}
         </div>
