@@ -14,36 +14,57 @@ const ThemeProvider = ({ children }) => {
   const [isDaytime, setIsDaytime] = useState(true);
 
   useEffect(() => {
-    if (autoMode) {
-      const fetchSunriseSunset = async () => {
-        try {
-          // Replace with user's location if available
-          const lat = 36.7201600;
-          const lng = -4.4203400;
+    localStorage.setItem('darkMode', darkMode);
+  }, [darkMode]);
 
+  useEffect(() => {
+    localStorage.setItem('autoMode', autoMode);
+  }, [autoMode]);
+
+  useEffect(() => {
+    if (autoMode) {
+      const fetchSunriseSunset = async (lat = 36.72016, lng = -4.42034) => {
+        try {
           const response = await fetch(
             `https://api.sunrisesunset.io/json?lat=${lat}&lng=${lng}&timezone=auto`
           );
           const data = await response.json();
-          const dateStr = data.results.date;
-          const sunriseTime = new Date(`${dateStr} ${data.results.sunrise}`);
-          const sunsetTime = new Date(`${dateStr} ${data.results.sunset}`);
+
+          if (!data.results) throw new Error('No results in response');
 
           const now = new Date();
+          const sunriseTime = new Date(`${data.results.date} ${data.results.sunrise}`);
+          const sunsetTime = new Date(`${data.results.date} ${data.results.sunset}`);
           const isDay = now >= sunriseTime && now <= sunsetTime;
-          setIsDaytime(isDay);
 
-          if (isDay) {
-            setDarkMode(false);
-          } else {
-            setDarkMode(true);
-          }
+          setIsDaytime(isDay);
+          setDarkMode(!isDay);
         } catch (error) {
-          console.error('Failed to fetch sunrise and sunset times:', error);
+          console.error('Error fetching sunrise/sunset:', error);
+          // Fallback to manual mode if auto mode fails
+          setAutoMode(false);
         }
       };
 
-      fetchSunriseSunset();
+      const fetchUserLocation = () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              fetchSunriseSunset(latitude, longitude);
+            },
+            () => {
+              console.error('Failed to fetch user location. Using default.');
+              fetchSunriseSunset();
+            }
+          );
+        } else {
+          console.error('Geolocation is not supported by this browser.');
+          fetchSunriseSunset();
+        }
+      };
+
+      fetchUserLocation();
     }
   }, [autoMode]);
 
@@ -56,7 +77,6 @@ const ThemeProvider = ({ children }) => {
       document.body.classList.remove('night-mode');
     }
   }, [darkMode]);
-  
 
   const toggleDarkMode = () => {
     setAutoMode(false);

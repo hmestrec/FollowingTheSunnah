@@ -1,89 +1,152 @@
-/* Container for the gallery */
+/* Define Variables for Day and Night Modes */
+:root {
+  --primary-color: #4CAF50; /* Default green */
+  --secondary-color: #f44336; /* Default red */
+  --text-color-day: #212121; /* Darker text for day mode */
+  --text-color-night: #E0E0E0; /* Lighter text for night mode */
+  --card-background-day: #ffffff; /* White for cards in day mode */
+  --card-background-night: #2c2c3d; /* Dark gray for cards in night mode */
+  --button-hover-day: #388e3c; /* Dark green on hover */
+  --button-hover-night: #1565c0; /* Bright blue on hover */
+  --shadow-day: rgba(0, 0, 0, 0.2); /* Soft shadow for day mode */
+  --shadow-night: rgba(255, 255, 255, 0.1); /* Subtle shadow for night mode */
+}
+
+/* Global Reset */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  transition: color 0.4s ease;
+}
+
+/* Page Container */
 .all-profiles-container {
-    background: #f3f4f6;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 20px auto;
-    max-width: 1200px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  transition: color 0.4s ease;
+}
+
+.all-profiles-container h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.day-mode .all-profiles-container {
+  color: var(--text-color-day);
+}
+
+.night-mode .all-profiles-container {
+  color: var(--text-color-night);
+}
+
+/* Profiles Gallery */
+.profiles-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+  justify-items: center;
+}
+
+/* Profile Card */
+.profile-card {
+  background-color: var(--card-background-day);
+  color: var(--text-color-day);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 10px var(--shadow-day);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, color 0.4s ease;
+}
+
+.night-mode .profile-card {
+  background-color: var(--card-background-night);
+  color: var(--text-color-night);
+  box-shadow: 0 4px 10px var(--shadow-night);
+}
+
+.profile-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px var(--shadow-day);
+}
+
+.night-mode .profile-card:hover {
+  box-shadow: 0 8px 20px var(--shadow-night);
+}
+
+/* Profile Image Placeholder */
+.profile-image {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+/* Profile Details */
+.profile-details {
+  text-align: left;
+}
+
+.profile-details h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.profile-details p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+/* Delete Button */
+.delete-button {
+  background-color: var(--secondary-color);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: var(--button-hover-day);
+  transform: scale(1.05);
+}
+
+.night-mode .delete-button {
+  background-color: #d32f2f;
+}
+
+.night-mode .delete-button:hover {
+  background-color: var(--button-hover-night);
+}
+
+/* No Profiles Found */
+.profiles-gallery p {
+  font-size: 1.2rem;
+  color: var(--text-color-day);
+}
+
+.night-mode .profiles-gallery p {
+  color: var(--text-color-night);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .all-profiles-container h2 {
+    font-size: 2rem;
   }
-  
-  h2 {
-    text-align: center;
-    font-size: 2.2rem;
-    color: #1e3a8a;
-    margin-bottom: 20px;
-    font-weight: bold;
-    letter-spacing: 1px;
-  }
-  
-  /* Grid layout for profile cards */
-  .profiles-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
-  /* Individual card styling */
-  .profile-card {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: all 0.3s ease;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .profile-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Image placeholder (stylized background) */
-  .profile-image {
-    background: linear-gradient(to right, #2563eb, #3b82f6);
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 30px 0;
-  }
-  
-  /* Profile content styling */
-  .profile-details {
-    padding: 15px;
-    font-size: 0.9rem;
-    color: #4b5563;
-    line-height: 1.6;
-  }
-  
+
   .profile-details p {
-    margin: 5px 0;
+    font-size: 0.9rem;
   }
-  
-  /* Highlight profile name */
-  .profile-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #1e3a8a;
-    margin: 10px 0;
-  }
-  
-  /* Admin Delete button */
+
   .delete-button {
-    background-color: #e63946;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    margin: 10px auto;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    width: 100%;
   }
-  
-  .delete-button:hover {
-    background-color: #c62828;
-  }
-  
+}

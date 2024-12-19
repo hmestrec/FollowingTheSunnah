@@ -168,6 +168,7 @@ const MarriageProfiles = () => {
   };
 
   return (
+    <div className="marriage-profiles-container">
     <div style={{ maxWidth: '600px', margin: 'auto' }}>
       <h2>{isEditing ? 'Edit Your Marriage Profile' : 'Create Your Marriage Profile'}</h2>
       <form onSubmit={handleSaveProfile}>
@@ -210,6 +211,7 @@ const MarriageProfiles = () => {
           </button>
         )}
       </form>
+    </div>
     </div>
   );
 };

@@ -10,17 +10,17 @@ const Settings = () => {
       <h1>Settings</h1>
 
       {/* Manual Dark Mode Toggle */}
-      <div>
+      <div className="settings-item">
         <h3>Manual Theme Toggle</h3>
-        <button onClick={toggleDarkMode}>
+        <button onClick={toggleDarkMode} className="toggle-button">
           {darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
         </button>
       </div>
 
       {/* Automatic Theme Based on Sunset/Sunrise */}
-      <div>
+      <div className="settings-item">
         <h3>Auto Theme (Based on Sunrise & Sunset)</h3>
-        <label>
+        <label className="checkbox-label">
           <input
             type="checkbox"
             checked={autoMode}

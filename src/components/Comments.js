@@ -187,7 +187,9 @@ const CommentsContent = () => {
   return (
     <div className="comments-container">
       <h2>Comments</h2>
-      <button onClick={signOut}>Sign Out</button>
+      <button className="sign-out-button" onClick={signOut}>
+        Sign Out
+      </button>
       <div className="comment-form">
         <label>
           Post ID:
@@ -203,7 +205,9 @@ const CommentsContent = () => {
           onChange={setNewComment}
           placeholder="Write your comment here..."
         />
-        <button onClick={postComment}>Add Comment</button>
+      <button className="add-comment-button" onClick={postComment}>
+        Add Comment
+      </button>
       </div>
       <div className="comments-list">
         <h3>Comments List:</h3>
@@ -215,7 +219,12 @@ const CommentsContent = () => {
               <p><strong>User Email:</strong> {comment.userId}</p>
               <p><strong>Timestamp:</strong> {formatTimestamp(comment.timestamp)}</p>
               {isAdmin && (
-                <button onClick={() => deleteComment(comment.commentId)}>Delete Comment</button>
+                <button
+                className="delete-comment-button"
+                onClick={() => deleteComment(comment.commentId)}
+              >
+                Delete Comment
+              </button>
               )}
               <div className="replies">
                 {comment.replies && comment.replies.map((reply, index) => (
@@ -223,7 +232,12 @@ const CommentsContent = () => {
                     <p><strong>Reply from {reply.userId}:</strong> {stripHtmlTags(reply.content)}</p>
                     <p><strong>Timestamp:</strong> {formatTimestamp(reply.timestamp)}</p>
                     {isAdmin && (
-                      <button onClick={() => deleteReply(comment.commentId, index)}>Delete Reply</button>
+                      <button
+                      className="delete-reply-button"
+                      onClick={() => deleteReply(comment.commentId, index)}
+                    >
+                      Delete Reply
+                    </button>
                     )}
                   </div>
                 ))}
@@ -233,7 +247,9 @@ const CommentsContent = () => {
                     onChange={(value) => setReplyContent((prev) => ({ ...prev, [comment.commentId]: value }))}
                     placeholder="Write your reply here..."
                   />
-                  <button onClick={() => postReply(comment.commentId)}>Add Reply</button>
+                  <button className="add-reply-button" onClick={() => postReply(comment.commentId)}>
+                    Add Reply
+                  </button>
                 </div>
               </div>
             </div>
