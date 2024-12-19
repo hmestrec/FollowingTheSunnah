@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import { ToastContainer, toast } from 'react-toastify';
 import { Auth } from '@aws-amplify/auth';
-import awsconfig from '../aws-exports'; // Import aws-exports.js
+import awsconfig from '../aws-exports';
 import 'react-quill/dist/quill.snow.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -16,6 +16,8 @@ const EditingPage = ({ signOut }) => {
     const [openRecord, setOpenRecord] = useState(null);
     const [editingRecordId, setEditingRecordId] = useState(null);
     const [userEmail, setUserEmail] = useState('Loading...');
+
+    const POLL_INTERVAL = 5000; // 5 seconds
 
     // Fetch user email from Cognito
     useEffect(() => {
@@ -32,7 +34,6 @@ const EditingPage = ({ signOut }) => {
         fetchUserEmail();
     }, []);
 
-    // Fetch the editorAPI endpoint from aws-exports.js
     const editorAPI = awsconfig.aws_cloud_logic_custom.find(api => api.name === 'editorAPI')?.endpoint;
 
     if (!editorAPI) {
@@ -57,28 +58,35 @@ const EditingPage = ({ signOut }) => {
         }
     };
 
+    const unlockRecord = async (recordId) => {
+        try {
+            await fetch(`${editorAPI}/editor/unlock/${recordId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: userEmail }),
+            });
+        } catch (error) {
+            console.error('Error unlocking the record:', error);
+            toast.error('Error unlocking the record.');
+        }
+    };
+
     const handleSaveContent = async (e) => {
         e.preventDefault();
         const method = isEditing ? 'PUT' : 'POST';
         const url = isEditing
             ? `${editorAPI}/editor/${id}`
             : `${editorAPI}/editor`;
-    
+
         try {
             const response = await fetch(url, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id, content, status, category, userId: userEmail }),
             });
-    
+
             if (response.ok) {
-                // Unlock the record
-                await fetch(`${editorAPI}/editor/unlock/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId: userEmail }),
-                });
-    
+                await unlockRecord(id);
                 toast.success(isEditing ? 'Content updated successfully!' : 'Content saved successfully!');
                 setIsEditing(false);
                 clearForm();
@@ -91,7 +99,6 @@ const EditingPage = ({ signOut }) => {
             toast.error('Error saving content.');
         }
     };
-    
 
     const handleDelete = async (recordId) => {
         try {
@@ -116,14 +123,14 @@ const EditingPage = ({ signOut }) => {
             toast.error(`This record is currently being edited by ${record.currentUserId}.`);
             return;
         }
-    
+
         try {
             const response = await fetch(`${editorAPI}/editor/edit/${record.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: userEmail }),
             });
-    
+
             if (response.ok) {
                 setId(record.id);
                 setContent(record.content);
@@ -144,13 +151,9 @@ const EditingPage = ({ signOut }) => {
 
     const handleCancelEdit = async () => {
         try {
-            await fetch(`${editorAPI}/editor/unlock/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: userEmail }),
-            });
-    
-            setIsEditing(false);
+            if (id) {
+                await unlockRecord(id);
+            }
             clearForm();
             toast.info('Edit cancelled.');
         } catch (error) {
@@ -158,16 +161,28 @@ const EditingPage = ({ signOut }) => {
             toast.error('Error unlocking the record.');
         }
     };
-    
-    
 
-    const clearForm = () => {
+    const clearForm = async () => {
+        if (id) {
+            await unlockRecord(id);
+        }
         setId('');
         setContent('');
         setStatus('In Progress');
         setCategory('Journey');
         setIsEditing(false);
         setEditingRecordId(null);
+    };
+
+    const handleSignOut = async () => {
+        try {
+            if (isEditing && id) {
+                await unlockRecord(id);
+            }
+            signOut();
+        } catch (error) {
+            console.error('Error unlocking the record on logout:', error);
+        }
     };
 
     const toggleRecord = (recordId) => {
@@ -182,18 +197,13 @@ const EditingPage = ({ signOut }) => {
 
     useEffect(() => {
         fetchRecords();
+
+        // Set up polling to fetch records every POLL_INTERVAL
+        const intervalId = setInterval(fetchRecords, POLL_INTERVAL);
+
+        return () => clearInterval(intervalId); // Clear interval on component unmount
     }, []);
 
-    useEffect(() => {
-        return () => {
-            if (isEditing) {
-                handleCancelEdit();
-            }
-        };
-    }, []);
-    
-
-    // Filter records based on their status
     const inProgressRecords = records.filter(record => record.status === 'In Progress');
     const readyRecords = records.filter(record => record.status === 'Ready');
 
@@ -201,7 +211,7 @@ const EditingPage = ({ signOut }) => {
         <div className="editing-page">
             <h1 className="h1">Editing Page</h1>
             <h2>Welcome, {userEmail}!</h2>
-            <button className="sign-out-button" onClick={signOut}>Sign Out</button>
+            <button className="sign-out-button" onClick={handleSignOut}>Sign Out</button>
 
             <form onSubmit={handleSaveContent} className="editor-form">
                 <label htmlFor="id">Enter ID:</label>
@@ -240,7 +250,7 @@ const EditingPage = ({ signOut }) => {
                     <button type="submit" className={`submit-button ${isEditing ? 'edit-button' : 'save-button'}`}>
                         {isEditing ? 'Update Content' : 'Save Content'}
                     </button>
-                    <button type="button" className="clear-button" onClick={clearForm}>
+                    <button type="button" className="clear-button" onClick={handleCancelEdit}>
                         Clear
                     </button>
                 </div>
@@ -253,16 +263,23 @@ const EditingPage = ({ signOut }) => {
                         <button className="dropdown-button" onClick={() => toggleRecord(record.id)}>
                             <strong>ID:</strong> {record.id}
                             <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
+                            {record.isBeingEdited && record.currentUserId && (
+                                <span className="editing-status"> | Editing by: {record.currentUserId}</span>
+                            )}
                         </button>
                         {openRecord === record.id && (
                             <div className="dropdown-content">
                                 <strong>Content:</strong> {record.content}
-                                <button className="edit-button" onClick={() => handleEdit(record)}>
-                                    Edit
-                                </button>
-                                <button className="delete-button" onClick={() => handleDelete(record.id)}>
-                                    Delete
-                                </button>
+                                {!record.isBeingEdited && (
+                                    <>
+                                        <button className="edit-button" onClick={() => handleEdit(record)}>
+                                            Edit
+                                        </button>
+                                        <button className="delete-button" onClick={() => handleDelete(record.id)}>
+                                            Delete
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         )}
                     </li>
@@ -276,16 +293,23 @@ const EditingPage = ({ signOut }) => {
                         <button className="dropdown-button" onClick={() => toggleRecord(record.id)}>
                             <strong>ID:</strong> {record.id}
                             <span className="last-updated"> | Last Updated: {formatDate(record.lastUpdated)}</span>
+                            {record.isBeingEdited && record.currentUserId && (
+                                <span className="editing-status"> | Editing by: {record.currentUserId}</span>
+                            )}
                         </button>
                         {openRecord === record.id && (
                             <div className="dropdown-content">
                                 <strong>Content:</strong> {record.content}
-                                <button className="edit-button" onClick={() => handleEdit(record)}>
-                                    Edit
-                                </button>
-                                <button className="delete-button" onClick={() => handleDelete(record.id)}>
-                                    Delete
-                                </button>
+                                {!record.isBeingEdited && (
+                                    <>
+                                        <button className="edit-button" onClick={() => handleEdit(record)}>
+                                            Edit
+                                        </button>
+                                        <button className="delete-button" onClick={() => handleDelete(record.id)}>
+                                            Delete
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         )}
                     </li>
