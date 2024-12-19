@@ -19,6 +19,8 @@
     --day-footer-bg: linear-gradient(to right, #81D4FA, #29B6F6); /* Vibrant blue */
     --day-link: #1976D2; /* Medium blue links */
     --day-link-hover: #0D47A1; /* Darker blue hover */
+    --light-transparent-bg: transparent;
+
   
     /* Night Mode Colors */
     --night-background: linear-gradient(to bottom, #1B263B, #2C3E50); /* Deep navy and gray */
@@ -49,7 +51,12 @@
   .day-mode .wrapper {
     background: var(--day-background); /* Baby blue gradient */
   }
+
+  .day-mode{ /*this is for the content below header*/
+    background: var(--light-transparent-bg); /* Baby blue gradient */
+  }
   
+
   .day-mode .main-content {
     color: var(--day-text); /* Dark text for readability */
   }
@@ -59,7 +66,7 @@
     color: var(--day-text); /* Slightly darker text for contrast */
   }
   
-  .day-mode a {
+  .day-mode a {  
     color: var(--day-link); /* Bright blue links */
   }
   
@@ -74,6 +81,10 @@
   
   .night-mode .main-content {
     color: var(--night-text); /* Light text for readability */
+  }
+
+  .night-mode{ /*this is for the content below header*/
+    background: red; /* Baby blue gradient */
   }
   
   .night-mode .footer {

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import { ToastContainer, toast } from 'react-toastify';
+import { Auth } from '@aws-amplify/auth';
 import awsconfig from '../aws-exports'; // Import aws-exports.js
 import 'react-quill/dist/quill.snow.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-const EditingPage = ({ user, signOut }) => {
+const EditingPage = ({ signOut }) => {
     const [content, setContent] = useState('');
     const [id, setId] = useState('');
     const [status, setStatus] = useState('In Progress');
@@ -14,9 +15,22 @@ const EditingPage = ({ user, signOut }) => {
     const [records, setRecords] = useState([]);
     const [openRecord, setOpenRecord] = useState(null);
     const [editingRecordId, setEditingRecordId] = useState(null);
+    const [userEmail, setUserEmail] = useState('Loading...');
 
-    // Safeguard for user email
-    const userEmail = user?.attributes?.email || user?.email || 'Unknown User';
+    // Fetch user email from Cognito
+    useEffect(() => {
+        const fetchUserEmail = async () => {
+            try {
+                const user = await Auth.currentAuthenticatedUser();
+                setUserEmail(user.attributes.email || 'Email not available');
+            } catch (error) {
+                console.error('Error fetching user email:', error);
+                setUserEmail('Failed to fetch email');
+            }
+        };
+
+        fetchUserEmail();
+    }, []);
 
     // Fetch the editorAPI endpoint from aws-exports.js
     const editorAPI = awsconfig.aws_cloud_logic_custom.find(api => api.name === 'editorAPI')?.endpoint;
@@ -49,26 +63,35 @@ const EditingPage = ({ user, signOut }) => {
         const url = isEditing
             ? `${editorAPI}/editor/${id}`
             : `${editorAPI}/editor`;
-
+    
         try {
             const response = await fetch(url, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id, content, status, category, userId: userEmail }),
             });
+    
             if (response.ok) {
+                // Unlock the record
+                await fetch(`${editorAPI}/editor/unlock/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: userEmail }),
+                });
+    
                 toast.success(isEditing ? 'Content updated successfully!' : 'Content saved successfully!');
                 setIsEditing(false);
                 clearForm();
                 fetchRecords();
             } else {
-                toast.error('Failed to save content');
+                toast.error('Failed to save content.');
             }
         } catch (error) {
             console.error('Error saving content:', error);
-            toast.error('Error saving content');
+            toast.error('Error saving content.');
         }
     };
+    
 
     const handleDelete = async (recordId) => {
         try {
@@ -88,14 +111,55 @@ const EditingPage = ({ user, signOut }) => {
         }
     };
 
-    const handleEdit = (record) => {
-        setId(record.id);
-        setContent(record.content);
-        setStatus(record.status);
-        setCategory(record.category);
-        setIsEditing(true);
-        setEditingRecordId(record.id);
+    const handleEdit = async (record) => {
+        if (record.isBeingEdited && record.currentUserId !== userEmail) {
+            toast.error(`This record is currently being edited by ${record.currentUserId}.`);
+            return;
+        }
+    
+        try {
+            const response = await fetch(`${editorAPI}/editor/edit/${record.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: userEmail }),
+            });
+    
+            if (response.ok) {
+                setId(record.id);
+                setContent(record.content);
+                setStatus(record.status);
+                setCategory(record.category);
+                setIsEditing(true);
+                setEditingRecordId(record.id);
+                toast.success('Record locked for editing.');
+            } else {
+                const errorData = await response.json();
+                toast.error(errorData.error || 'Failed to lock the record.');
+            }
+        } catch (error) {
+            console.error('Error locking the record:', error);
+            toast.error('Error locking the record.');
+        }
     };
+
+    const handleCancelEdit = async () => {
+        try {
+            await fetch(`${editorAPI}/editor/unlock/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: userEmail }),
+            });
+    
+            setIsEditing(false);
+            clearForm();
+            toast.info('Edit cancelled.');
+        } catch (error) {
+            console.error('Error unlocking the record:', error);
+            toast.error('Error unlocking the record.');
+        }
+    };
+    
+    
 
     const clearForm = () => {
         setId('');
@@ -119,6 +183,15 @@ const EditingPage = ({ user, signOut }) => {
     useEffect(() => {
         fetchRecords();
     }, []);
+
+    useEffect(() => {
+        return () => {
+            if (isEditing) {
+                handleCancelEdit();
+            }
+        };
+    }, []);
+    
 
     // Filter records based on their status
     const inProgressRecords = records.filter(record => record.status === 'In Progress');
@@ -218,8 +291,6 @@ const EditingPage = ({ user, signOut }) => {
                     </li>
                 ))}
             </ul>
-
-            <ToastContainer />
         </div>
     );
 };

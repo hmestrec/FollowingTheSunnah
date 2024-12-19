@@ -1,198 +1,260 @@
-/* Base container for the editing page */
-.editing-page {
-    font-family: 'Arial', sans-serif;
-    background-color: #f9fafb; /* Light gray background */
-    color: #1f2937; /* Dark text */
-    padding: 20px;
-    margin: auto;
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    scroll-behavior: smooth;
+  }
+  
+  /* Editing Page Container */
+  .editing-page {
     max-width: 1200px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Heading styles */
-.editing-page h1 {
-    text-align: center;
-    color: #0f172a; /* Dark blue */
+    margin: 0 auto;
+    padding: 20px;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  
+  /* Page Titles */
+  .editing-page .h1 {
     font-size: 2.5rem;
-    margin-bottom: 10px;
-    letter-spacing: 1px;
-}
-
-.editing-page h2 {
-    text-align: center;
-    color: #475569;
-    margin-bottom: 30px;
-    font-size: 1.2rem;
-}
-
-/* Sign Out button */
-.sign-out-button {
-    background-color: #ef4444;
-    color: #fff;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
     font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.sign-out-button:hover {
-    background-color: #dc2626; /* Darker red */
-}
-
-/* Form container */
-.editor-form {
-    background: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: color 0.4s ease;
+  }
+  
+  .editing-page h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+  }
+  
+  /* Buttons */
+  button {
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .sign-out-button {
+    background: var(--signout-bg);
+    color: var(--signout-text);
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+  }
+  
+  .sign-out-button:hover {
+    background: var(--signout-hover-bg);
+  }
+  
+  .edit-button, .delete-button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    margin-right: 10px;
+  }
+  
+  .edit-button {
+    background: var(--edit-button-bg);
+    color: var(--edit-button-text);
+  }
+  
+  .edit-button:hover {
+    background: var(--edit-button-hover-bg);
+  }
+  
+  .delete-button {
+    background: var(--delete-button-bg);
+    color: var(--delete-button-text);
+  }
+  
+  .delete-button:hover {
+    background: var(--delete-button-hover-bg);
+  }
+  
+  .submit-button, .clear-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .submit-button {
+    background: var(--submit-button-bg);
+    color: var(--submit-button-text);
+  }
+  
+  .submit-button:hover {
+    background: var(--submit-button-hover-bg);
+  }
+  
+  .clear-button {
+    background: var(--clear-button-bg);
+    color: var(--clear-button-text);
+  }
+  
+  .clear-button:hover {
+    background: var(--clear-button-hover-bg);
+  }
+  
+  /* Forms */
+  .editor-form {
+    background: var(--form-bg);
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     margin-bottom: 30px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.editor-form label {
-    display: block;
-    margin: 10px 0 5px;
-    font-weight: 600;
-    color: #334155;
-}
-
-.input-field,
-select {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .input-field, select {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #cbd5e1;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--input-border);
     border-radius: 5px;
+    background: var(--input-bg);
+    color: var(--input-text);
     font-size: 1rem;
-    outline: none;
-    transition: border 0.3s ease;
-}
-
-.input-field:focus,
-select:focus {
-    border-color: #2563eb; /* Light blue */
-    box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
-}
-
-/* React Quill styling */
-.quill-editor {
-    height: 150px;
-    margin-bottom: 20px;
-}
-
-/* Buttons */
-.button-container {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-start;
-    margin-top: 10px;
-}
-
-.submit-button {
-    background-color: #2563eb;
-    color: #ffffff;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.submit-button:hover {
-    background-color: #1d4ed8;
-}
-
-.clear-button {
-    background-color: #94a3b8;
-    color: #ffffff;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.clear-button:hover {
-    background-color: #64748b;
-}
-
-/* Record lists */
-.record-list {
+  }
+  
+  .input-field:focus, select:focus {
+    border-color: var(--input-focus-border);
+  }
+  
+  .quill-editor {
+    margin: 15px 0;
+    background: var(--input-bg);
+    color: var(--input-text);
+  }
+  
+  /* Records Section */
+  .record-list {
     list-style: none;
     padding: 0;
-}
-
-.record-item {
-    margin: 15px 0;
-    padding: 10px;
-    border: 1px solid #e2e8f0;
-    border-radius: 5px;
-    background-color: #f1f5f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.dropdown-button {
+  }
+  
+  .record-item {
+    background: var(--record-bg);
+    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .record-item:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .dropdown-button {
     background: none;
     border: none;
-    color: #2563eb;
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     width: 100%;
+    text-align: left;
+    font-size: 1.2rem;
     font-weight: bold;
-    transition: color 0.3s ease;
-}
-
-.dropdown-button:hover {
-    color: #1e40af;
-}
-
-.last-updated {
-    color: #94a3b8;
-    font-size: 0.9rem;
-}
-
-.dropdown-content {
-    background-color: #e2e8f0;
+    cursor: pointer;
+    color: var(--dropdown-text);
+  }
+  
+  .dropdown-content {
     margin-top: 10px;
+    background: var(--dropdown-bg);
     padding: 10px;
     border-radius: 5px;
-    color: #1f2937;
-    font-size: 0.9rem;
-}
-
-/* Edit and Delete Buttons */
-.edit-button,
-.delete-button {
-    margin: 5px;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: bold;
-    border: none;
-    transition: all 0.3s ease;
-}
-
-.edit-button {
-    background-color: #22c55e; /* Green */
-    color: #fff;
-}
-
-.edit-button:hover {
-    background-color: #16a34a;
-}
-
-.delete-button {
-    background-color: #ef4444; /* Red */
-    color: #fff;
-}
-
-.delete-button:hover {
-    background-color: #dc2626;
-}
+    color: var(--dropdown-content-text);
+  }
+  
+  /* Toast Notifications */
+  .Toastify__toast {
+    background: var(--toast-bg);
+    color: var(--toast-text);
+  }
+  
+  /* Light Mode Variables */
+  .day-mode {
+    --primary-color: #1f2937;
+    --form-bg: #ffffff;
+    --input-bg: #f9f9f9;
+    --input-text: #1f2937;
+    --input-border: #d1d5db;
+    --input-focus-border: #2563eb;
+    --record-bg: #ffffff;
+    --dropdown-bg: #f1f5f9;
+    --dropdown-text: #1f2937;
+    --dropdown-content-text: #1f2937;
+    --submit-button-bg: #2563eb;
+    --submit-button-text: #ffffff;
+    --submit-button-hover-bg: #1d4ed8;
+    --clear-button-bg: #6b7280;
+    --clear-button-text: #ffffff;
+    --clear-button-hover-bg: #4b5563;
+    --edit-button-bg: #34d399;
+    --edit-button-text: #ffffff;
+    --edit-button-hover-bg: #059669;
+    --delete-button-bg: #ef4444;
+    --delete-button-text: #ffffff;
+    --delete-button-hover-bg: #b91c1c;
+    --signout-bg: #374151;
+    --signout-text: #ffffff;
+    --signout-hover-bg: #1f2937;
+    --toast-bg: #ffffff;
+    --toast-text: #1f2937;
+  }
+  
+  /* Dark Mode Variables */
+  .night-mode {
+    --primary-color: #eceff1;
+    --form-bg: #1e293b;
+    --input-bg: #334155;
+    --input-text: #f8fafc;
+    --input-border: #4b5563;
+    --input-focus-border: #3b82f6;
+    --record-bg: #1f2937;
+    --dropdown-bg: #1e293b;
+    --dropdown-text: #eceff1;
+    --dropdown-content-text: #f8fafc;
+    --submit-button-bg: #3b82f6;
+    --submit-button-text: #ffffff;
+    --submit-button-hover-bg: #2563eb;
+    --clear-button-bg: #6b7280;
+    --clear-button-text: #ffffff;
+    --clear-button-hover-bg: #4b5563;
+    --edit-button-bg: #22c55e;
+    --edit-button-text: #ffffff;
+    --edit-button-hover-bg: #15803d;
+    --delete-button-bg: #dc2626;
+    --delete-button-text: #ffffff;
+    --delete-button-hover-bg: #991b1b;
+    --signout-bg: #4b5563;
+    --signout-text: #ffffff;
+    --signout-hover-bg: #374151;
+    --toast-bg: #1e293b;
+    --toast-text: #f8fafc;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .record-item {
+      padding: 10px;
+    }
+  
+    .dropdown-button {
+      font-size: 1rem;
+    }
+  
+    .submit-button, .clear-button {
+      width: 100%;
+    }
+  }
+  

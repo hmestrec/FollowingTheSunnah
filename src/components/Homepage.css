@@ -1,8 +1,8 @@
 /* Root Variables for Light and Dark Mode */
 :root {
   /* Light Mode Colors */
-  --light-bg: #b3e5fc; /* Light gradient start */
-  --light-bg-gradient: #e0f7fa; /* Light gradient end */
+  --light-bg: #09181f; /* Light gradient start */
+  --light-bg-gradient: #032024; /* Light gradient end */
   --light-container-bg: rgba(255, 255, 255, 0.97);
   --light-text-color: #212121;
   --light-secondary-text: #424242;
@@ -42,12 +42,6 @@ body, html {
   height: 100%;
   scroll-behavior: smooth;
   transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-/* Light Mode */
-.day-mode {
-  background: linear-gradient(to bottom, var(--light-bg), var(--light-bg-gradient));
-  color: var(--light-text-color);
 }
 
 .day-mode .homepage-wrapper,

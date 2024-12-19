@@ -1,7 +1,7 @@
 /* Root Variables for Light and Dark Mode */
 :root {
   /* Light Mode Variables */
-  --light-bg: #f3f4f6; /* Light gray */
+  --light-bg: #1e54be; /* Light gray */
   --light-container-bg: #ffffff; /* White for clarity */
   --light-primary-text: #1f2937; /* Darker text */
   --light-secondary-text: #424242; /* Subtle gray */
@@ -11,6 +11,8 @@
   --light-button-hover-bg: linear-gradient(to right, #1d4ed8, #2563eb);
   --light-button-hover-text: #ffeb3b;
   --light-list-hover: rgba(0, 0, 0, 0.1);
+  --light-transparent-bg: transparent;
+
 
   /* Dark Mode Variables */
   --dark-bg: #1f2937; /* Dark gray */
@@ -43,11 +45,6 @@ body, html {
   scroll-behavior: smooth;
 }
 
-/* Light (Day) Mode */
-.day-mode {
-  background-color: var(--light-bg);
-  color: var(--light-primary-text);
-}
 
 .day-mode .podcast-title {
   color: var(--light-accent);
@@ -75,11 +72,7 @@ body, html {
   background-color: var(--light-list-hover);
 }
 
-/* Dark (Night) Mode */
-.night-mode {
-  background-color: var(--dark-bg);
-  color: var(--dark-primary-text);
-}
+/* Night Mode */
 
 .night-mode .podcast-title {
   color: var(--dark-accent);
