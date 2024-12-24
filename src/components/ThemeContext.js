@@ -23,29 +23,32 @@ const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     if (autoMode) {
+      console.log('Auto mode activated. Fetching sunrise/sunset times...');
       const fetchSunriseSunset = async (lat = 36.72016, lng = -4.42034) => {
         try {
           const response = await fetch(
             `https://api.sunrisesunset.io/json?lat=${lat}&lng=${lng}&timezone=auto`
           );
           const data = await response.json();
-
+  
           if (!data.results) throw new Error('No results in response');
-
+  
+          console.log('Sunrise/Sunset Data:', data.results);
+  
           const now = new Date();
           const sunriseTime = new Date(`${data.results.date} ${data.results.sunrise}`);
           const sunsetTime = new Date(`${data.results.date} ${data.results.sunset}`);
           const isDay = now >= sunriseTime && now <= sunsetTime;
-
+  
           setIsDaytime(isDay);
           setDarkMode(!isDay);
+          console.log('Current state: isDaytime:', isDay, 'darkMode:', !isDay);
         } catch (error) {
           console.error('Error fetching sunrise/sunset:', error);
-          // Fallback to manual mode if auto mode fails
-          setAutoMode(false);
+          setAutoMode(false); // Fallback
         }
       };
-
+  
       const fetchUserLocation = () => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
@@ -63,10 +66,11 @@ const ThemeProvider = ({ children }) => {
           fetchSunriseSunset();
         }
       };
-
+  
       fetchUserLocation();
     }
   }, [autoMode]);
+  
 
   useEffect(() => {
     if (darkMode) {
@@ -84,8 +88,15 @@ const ThemeProvider = ({ children }) => {
   };
 
   const toggleAutoMode = () => {
-    setAutoMode((prev) => !prev);
+    console.log('Toggling auto mode...');
+    setAutoMode((prev) => {
+      const newAutoMode = !prev;
+      console.log('Previous autoMode:', prev, 'New autoMode:', newAutoMode);
+      return newAutoMode;
+    });
   };
+  
+  
 
   return (
     <ThemeContext.Provider

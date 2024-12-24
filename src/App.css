@@ -66,10 +66,6 @@
     color: var(--day-text); /* Slightly darker text for contrast */
   }
   
-  .day-mode a {  
-    color: var(--day-link); /* Bright blue links */
-  }
-  
   .day-mode a:hover {
     color: var(--day-link-hover); /* Darker blue hover */
   }
@@ -83,19 +79,12 @@
     color: var(--night-text); /* Light text for readability */
   }
 
-  .night-mode{ /*this is for the content below header*/
-    background: red; /* Baby blue gradient */
-  }
   
   .night-mode .footer {
     background: var(--night-footer-bg); /* Footer blends with night theme */
     color: var(--night-text); /* Light text for readability */
   }
-  
-  .night-mode a {
-    color: var(--night-link); /* Soft green links */
-  }
-  
+
   .night-mode a:hover {
     color: var(--night-link-hover); /* Brighter green hover */
   }

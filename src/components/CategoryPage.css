@@ -1,0 +1,83 @@
+/* Root Variables */
+:root {
+    --category-primary-color: #2563eb; /* Blue for buttons */
+    --category-accent-color: #f59e0b; /* Amber for highlights */
+    --category-text-color: #ffffff; /* White text for readability */
+    --category-button-hover: linear-gradient(135deg, #1d4ed8, #2563eb);
+    --category-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* General Category Page Styles */
+  .category-page {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .category-page h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: var(--category-accent-color);
+  }
+  
+  /* Topics List */
+  .topics-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+    gap: 15px;
+    padding: 0;
+    width: 100%;
+    max-width: 800px;
+    justify-content: center;
+  }
+  
+  /* Topic Link Styling */
+  .topic-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--category-primary-color);
+    color: var(--category-text-color) !important; /* Overrides global link color */
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .topic-link:hover {
+    transform: scale(1.05);
+    box-shadow: var(--category-hover-shadow);
+    background: var(--category-button-hover);
+  }
+  
+  /* No Topics Message */
+  .category-page p {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--category-accent-color);
+    margin-top: 20px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .category-page h1 {
+      font-size: 2rem;
+    }
+  
+    .topic-link {
+      font-size: 0.9rem;
+      padding: 8px 12px;
+    }
+  }
+  

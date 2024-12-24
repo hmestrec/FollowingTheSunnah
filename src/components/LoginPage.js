@@ -66,7 +66,7 @@ const LoginPage = () => {
             <h2>Welcome, {user.attributes?.email || 'User'}!</h2>
             {isAdmin ? (
                 <div className="admin-section">
-                    <p className="admin-indicator">You are an Admin.</p>
+                    <p className="admin-indicator">You are a Chief.</p>
                     <button onClick={() => navigate('/editing')}>Go to Editing Page</button>
                     <button onClick={() => navigate('/business-management')}>Manage Businesses</button>
                     <button onClick={() => navigate('/create-profile')}>Create Profile</button>

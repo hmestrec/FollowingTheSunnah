@@ -25,7 +25,7 @@ const ContentPage = () => {
     try {
       const encodedId = encodeURIComponent(id); // Encode the ID for the URL
       const url = `${apiUrl}/editor/${encodedId}`;
-      console.log("Fetching content from:", url); // Log the API URL for debugging
+      //console.log("Fetching content from:", url); // Log the API URL for debugging
 
       const response = await fetch(url, {
         method: "GET",

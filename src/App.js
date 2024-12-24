@@ -6,6 +6,9 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import PodcastPage from './components/PodcastPage';
 import TopicsPage from './components/TopicsPage';
+import JourneyPage from "./components/JourneyPage";
+import FundamentalsPage from "./components/FundamentalsPage";
+import PathwaysPage from "./components/PathwaysPage";
 import FormPage from './components/FormPage';
 import LoginPage from './components/LoginPage';
 import ContentPage from './components/ContentPage';
@@ -31,6 +34,9 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/podcast" element={<PodcastPage />} />
                 <Route path="/topics" element={<TopicsPage />} />
+                <Route path="/journey" element={<JourneyPage />} />
+                <Route path="/fundamentals" element={<FundamentalsPage />} />
+                <Route path="/pathways" element={<PathwaysPage />} />
                 <Route path="/form" element={<FormPage />} />
                 <Route path="/content/:id" element={<ContentPage />} />
                 <Route path="/muslim-businesses" element={<MuslimBusinesses />} />

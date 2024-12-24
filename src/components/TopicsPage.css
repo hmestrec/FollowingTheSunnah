@@ -1,36 +1,3 @@
-/* Root Variables for Light and Dark Mode */
-:root {
-  /* Light Mode Variables */
-  --light-bg: #1e54be; /* Light gray */
-  --light-container-bg: #ffffff; /* White for clarity */
-  --light-primary-text: #1f2937; /* Darker text */
-  --light-secondary-text: #424242; /* Subtle gray */
-  --light-border: rgba(0, 0, 0, 0.05);
-  --light-accent: #f59e0b; /* Amber for titles */
-  --light-button-bg: linear-gradient(to right, #2563eb, #3b82f6);
-  --light-button-hover-bg: linear-gradient(to right, #1d4ed8, #2563eb);
-  --light-button-hover-text: #ffeb3b;
-  --light-list-hover: rgba(0, 0, 0, 0.1);
-  --light-transparent-bg: transparent;
-
-
-  /* Dark Mode Variables */
-  --dark-bg: #1f2937; /* Dark gray */
-  --dark-container-bg: rgba(0, 0, 0, 0.6); /* Semi-transparent dark */
-  --dark-primary-text: #f8fafc; /* Lighter text */
-  --dark-secondary-text: rgba(255, 255, 255, 0.8);
-  --dark-border: rgba(255, 255, 255, 0.1);
-  --dark-accent: #facc15; /* Golden yellow */
-  --dark-button-bg: linear-gradient(to right, #3b82f6, #2563eb);
-  --dark-button-hover-bg: linear-gradient(to right, #1d4ed8, #2563eb);
-  --dark-button-hover-text: #ffeb3b;
-  --dark-list-hover: rgba(255, 255, 255, 0.2);
-
-  /* Shared */
-  --hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  --hover-scale: scale(1.05);
-}
-
 /* General Reset */
 * {
   margin: 0;
@@ -40,160 +7,119 @@
 
 body, html {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s ease, color 0.4s ease;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
-
-.day-mode .podcast-title {
-  color: var(--light-accent);
-}
-
-.day-mode .bucket-button {
-  background: var(--light-button-bg);
-  color: #ffffff;
-}
-
-.day-mode .bucket-button:hover {
-  background: var(--light-button-hover-bg);
-  color: var(--light-button-hover-text);
-}
-
-.day-mode .bucket-content {
-  background-color: var(--light-container-bg);
-}
-
-.day-mode .bucket-content li {
-  background-color: var(--light-border);
-}
-
-.day-mode .bucket-content li:hover {
-  background-color: var(--light-list-hover);
-}
-
-/* Night Mode */
-
-.night-mode .podcast-title {
-  color: var(--dark-accent);
-}
-
-.night-mode .bucket-button {
-  background: var(--dark-button-bg);
-  color: #ffffff;
-}
-
-.night-mode .bucket-button:hover {
-  background: var(--dark-button-hover-bg);
-  color: var(--dark-button-hover-text);
-}
-
-.night-mode .bucket-content {
-  background-color: var(--dark-container-bg);
-}
-
-.night-mode .bucket-content li {
-  background-color: var(--dark-border);
-}
-
-.night-mode .bucket-content li:hover {
-  background-color: var(--dark-list-hover);
-}
-
-/* Shared Styles */
-
-/* Podcast Title */
-.podcast-title {
-  text-align: center;
-  font-size: 3rem;
-  text-transform: uppercase;
-  margin-bottom: 40px;
-  letter-spacing: 1.5px;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  font-weight: bold;
-}
-
-/* Buckets Container */
-.buckets-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-  justify-items: center;
-}
-
-/* Bucket Button */
-.bucket-button {
-  font-size: 1.4rem;
-  font-weight: bold;
-  padding: 15px;
-  width: 100%;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.bucket-button:hover {
-  transform: var(--hover-scale);
-  box-shadow: var(--hover-shadow);
-}
-
-/* Bucket Content */
-.bucket-content {
-  list-style: none;
-  padding: 20px;
+/* Main Styling for Topics Page */
+.topics-page {
+  padding: 30px 20px;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
+  background: transparent; /* Ensure no background override */
+  color: inherit; /* Ensure text inherits color from global styles */
 }
 
-.bucket-content li {
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  width: 100%;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Topics Title */
+.topics-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: left;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  color: inherit; /* Inherit color from current mode */
 }
 
-.bucket-content li:hover {
-  transform: var(--hover-scale);
-  box-shadow: var(--hover-shadow);
+/* Topics Button Container */
+.topics-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Space between buttons */
+  justify-content: flex-start; /* Align buttons to the left */
+  margin-top: 20px;
 }
 
-.button-link-topics {
+/* Topics Button */
+.topics-button {
+  display: inline-block;
+  background: linear-gradient(to right, #4CAF50, #81C784); /* Green gradient for day mode */
+  color: #ffffff; /* Always white text */
+  text-transform: uppercase;
   font-size: 1.2rem;
-  font-weight: 600;
-  color: #ffca28;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 50px;
   text-decoration: none;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease, transform 0.3s ease;
+  margin: 10px;
 }
 
-.button-link-topics:hover {
-  color: #fbbf24;
-  text-shadow: 0 0 10px rgba(251, 191, 36, 0.7);
+.topics-button:hover {
+  transform: scale(1.1);
+  background: linear-gradient(to right, #2E7D32, #66BB6A); /* Darker green hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
+.topics-button:active {
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Light (Day) Mode */
+.day-mode .topics-page {
+  color: #1F2937; /* Darker text for readability */
+  background: inherit; /* Inherit the background from App.css */
+}
+
+.day-mode .topics-title {
+  color: #1976D2; /* Deep blue for day mode title */
+}
+
+.day-mode .topics-button {
+  background: linear-gradient(to right, #1976D2, #42A5F5); /* Blue gradient for buttons */
+}
+
+.day-mode .topics-button:hover {
+  background: linear-gradient(to right, #1565C0, #2196F3); /* Darker blue hover */
+}
+
+/* Dark (Night) Mode */
+.night-mode .topics-page {
+  color: #ECEFF1; /* Light text for readability */
+  background: inherit; /* Inherit the background from App.css */
+}
+
+.night-mode .topics-title {
+  color: #FDD835; /* Bright yellow for title */
+  text-shadow: 0 4px 10px rgba(255, 255, 255, 0.2); /* Subtle glow effect */
+}
+
+.night-mode .topics-button {
+  background: linear-gradient(to right, #8E24AA, #D81B60); /* Purple-pink gradient */
+}
+
+.night-mode .topics-button:hover {
+  background: linear-gradient(to right, #6A1B9A, #C2185B); /* Deeper purple-pink hover */
+  box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3); /* Glow effect */
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  .podcast-title {
-    font-size: 2.5rem;
+  .topics-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
   }
 
-  .bucket-button {
-    font-size: 1.2rem;
-    padding: 12px;
-  }
-
-  .bucket-content li {
+  .topics-button {
     font-size: 1rem;
-    padding: 10px;
+    padding: 8px 15px;
   }
 }
