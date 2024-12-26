@@ -1,0 +1,127 @@
+/* Login Window Container */
+.loginWindow {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  /* Title */
+  .title {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  /* Form */
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Input Fields */
+  .input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: border-color 0.3s ease;
+  }
+  
+  .input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary-color);
+  }
+  
+  /* Password Toggle */
+  .passwordContainer {
+    position: relative;
+  }
+  
+  .togglePassword {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+  }
+  
+  /* Buttons */
+  .button {
+    padding: 12px 20px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:disabled {
+    background-color: var(--secondary-color);
+  }
+  
+  .button:hover {
+    background-color: var(--primary-color);
+  }
+  
+  /* Toggle Text */
+  .toggleText {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+  }
+  
+  .toggleAuth {
+    background: none;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .toggleAuth:hover {
+    color: var(--button-bg);
+  }
+  
+  /* Error Message */
+  .errorMessage {
+    color: var(--highlight-color, #e74c3c);
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .loginWindow {
+      margin: 20px auto;
+      padding: 20px;
+    }
+  
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    .input {
+      font-size: 0.9rem;
+    }
+  
+    .button {
+      font-size: 0.9rem;
+      padding: 10px;
+    }
+  }
+  

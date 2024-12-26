@@ -1,0 +1,123 @@
+/* Container */
+.businessContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: var(--background-color);
+    color: var(--text-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Title */
+.title {
+    font-size: 2.5rem;
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+/* Loading & Error Messages */
+.loading,
+.error,
+.noData {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    padding: 20px;
+}
+
+/* Business Gallery */
+.businessGallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Business Card */
+.businessCard {
+    background: var(--card-bg);
+    color: var(--text-color);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.businessCard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Business Name */
+.businessName {
+    font-size: 1.8rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Map Button */
+.mapButton {
+    display: inline-block;
+    padding: 10px 15px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--button-text);
+    border: none;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mapButton:hover {
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    transform: translateY(-2px);
+}
+
+/* Map Container */
+.mapContainer {
+    margin-top: 30px;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.mapContainer h3 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .businessContainer {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .businessGallery {
+        grid-template-columns: 1fr;
+    }
+
+    .mapButton {
+        width: 100%; /* Full width for smaller screens */
+    }
+
+    .mapContainer iframe {
+        height: 300px; /* Reduce map height on smaller screens */
+    }
+}

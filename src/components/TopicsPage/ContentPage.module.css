@@ -1,0 +1,48 @@
+/* Page Container */
+.contentPage {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Title Styling */
+  .contentTitle {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Error Message Styling */
+  .errorMessage {
+    font-size: 1.2rem;
+    color: var(--error-color);
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* Content Display */
+  .contentDisplay {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    padding: 15px;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+  
+  /* Toast Container Adjustments */
+  .Toastify__toast-container {
+    font-size: 0.9rem;
+  }
+  

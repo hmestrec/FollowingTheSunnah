@@ -1,0 +1,74 @@
+/* Podcast Page Styles */
+.podcastPage {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: auto;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Day Mode */
+  .dayMode {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  
+  /* Night Mode */
+  .nightMode {
+    background-color: #1e293b; /* Dark background */
+    color: #e2e8f0; /* Light text */
+  }
+  
+  /* Title */
+  .podcastTitle {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+  }
+  
+  /* Buttons Container */
+  .podcastButtonContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  /* Individual Podcast Buttons */
+  .podcastButton {
+    padding: 15px 30px;
+    text-decoration: none;
+    color: var(--button-text);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .podcastButton:hover {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .podcastButtonContainer {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .podcastButton {
+      width: 100%;
+      max-width: 300px;
+    }
+  
+    .podcastTitle {
+      font-size: 2rem;
+    }
+  }
+  

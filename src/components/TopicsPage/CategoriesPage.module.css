@@ -1,0 +1,81 @@
+/* Main Container for Category Pages */
+.categoryPage {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Page Title */
+  .pageTitle {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  
+  /* Topics List */
+  .topicsList {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  /* Individual Topic Item */
+  .topicItem {
+    width: calc(33.333% - 20px); /* 3 items per row with spacing */
+    min-width: 200px;
+    background-color: var(--background-color);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .topicItem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Topic Links */
+  .topicLink {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .topicLink:hover {
+    color: var(--accent-color);
+  }
+  
+  /* No Topics Message */
+  .noTopicsMessage {
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    margin-top: 20px;
+    font-style: italic;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .topicItem {
+      width: 100%;
+    }
+  
+    .pageTitle {
+      font-size: 2rem;
+    }
+  }
+  

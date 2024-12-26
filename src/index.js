@@ -6,7 +6,6 @@ import awsExports from './aws-exports';
 
 // Import global CSS files
 import './App.css';
-import './components/contentpage.css';
 
 // Configure Amplify
 Amplify.configure(awsExports);

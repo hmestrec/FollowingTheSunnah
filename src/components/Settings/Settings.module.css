@@ -1,0 +1,120 @@
+.settingsContainer {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.settingsTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.settingsItem {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.settingsSubtitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.toggleButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--button-text);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.toggleButton:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+}
+
+.toggleWrapper {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.toggleCheckbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggleSlider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--secondary-color);
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggleCheckbox:checked + .toggleSlider {
+    background-color: var(--primary-color);
+}
+
+.toggleSlider::before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--button-text);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.toggleCheckbox:checked + .toggleSlider::before {
+    transform: translateX(30px);
+}
+
+/* Responsive Styling for Smaller Screens */
+@media (max-width: 768px) {
+    .settingsContainer {
+      padding: 15px;
+    }
+  
+    .settingsItem {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center the toggle on smaller screens */
+    }
+  
+    .toggleButton {
+      width: 100%;
+      max-width: 300px; /* Limit button width */
+      margin: 10px auto;
+    }
+  
+    .toggleWrapper {
+      margin: 10px auto; /* Center the toggle */
+    }
+  }

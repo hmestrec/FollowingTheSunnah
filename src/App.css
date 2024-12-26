@@ -1,116 +1,249 @@
-/* General Reset */
+/* Reset Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
-  body, html {
-    height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: background-color 0.4s ease, color 0.4s ease;
-  }
-  
-  /* Define Theme Variables */
-  :root {
-    /* Day Mode Colors */
-    --day-background: linear-gradient(to bottom, #B3E5FC, #E0F7FA); /* Soft baby blue */
-    --day-text: #212121; /* Dark text for readability */
-    --day-footer-bg: linear-gradient(to right, #81D4FA, #29B6F6); /* Vibrant blue */
-    --day-link: #1976D2; /* Medium blue links */
-    --day-link-hover: #0D47A1; /* Darker blue hover */
-    --light-transparent-bg: transparent;
+}
 
-  
-    /* Night Mode Colors */
-    --night-background: linear-gradient(to bottom, #1B263B, #2C3E50); /* Deep navy and gray */
-    --night-text: #ECEFF1; /* Light text for contrast */
-    --night-footer-bg: linear-gradient(to right, #34495E, #2C3E50); /* Subtle dark blue */
-    --night-link: #81C784; /* Soft green links */
-    --night-link-hover: #4CAF50; /* Bright green hover */
-  }
-  
-  /* Wrapper ensures footer stays at bottom */
-  .wrapper {
+/* Base Theme Variables */
+:root {
+    /* Light Mode Colors */
+    --background-color: #d6eaff; /* Baby blue */
+    --text-color: #1f2937; /* Dark text */
+    --primary-color: #2563eb; /* Bright blue */
+    --secondary-color: #6b7280; /* Muted gray */
+    --accent-color: #38bdf8; /* Light cyan */
+    --success-color: #22c55e; /* Green */
+    --warning-color: #f59e0b; /* Orange */
+    --quran-color: #8b7000; /* Yellow */
+    --error-color: #ef4444; /* Red */
+    --info-color: #3b82f6; /* Blue */
+    --card-bg: #f9f9f9; /* Light card background */
+    --card-border: #d1d5db; /* Card border */
+    --button-bg: #2563eb; /* Button background */
+    --button-hover-bg: #1d4ed8; /* Button hover */
+    --button-text: #ffffff; /* Button text */
+    --add-button-bg: #22c55e; /* Add button background */
+    --add-button-hover-bg: #16a34a; /* Add button hover */
+    --delete-button-bg: #ef4444; /* Delete button background */
+    --delete-button-hover-bg: #b91c1c; /* Delete button hover */
+    --clear-button-bg: #f59e0b; /* Clear button background */
+    --clear-button-hover-bg: #d97706; /* Clear button hover */
+    --input-bg: #ffffff; /* Input background */
+    --input-border: #d1d5db; /* Input border */
+    --highlight-bg: #fffbeb; /* Highlight background */
+    --highlight-text: #ca8a04; /* Highlight text */
+}
+
+/* Dark Mode Variables */
+body.dark-mode {
+    --background-color: #081f4d; /* Dark blue */
+    --text-color: #e2e8f0; /* Light text */
+    --primary-color: #60a5fa; /* Light blue */
+    --secondary-color: #94a3b8; /* Muted gray */
+    --accent-color: #1d4ed8; /* Dark cyan */
+    --success-color: #16a34a; /* Green */
+    --warning-color: #d97706; /* Dark orange */
+    --quran-color: #8b7000; /* Yellow */
+    --error-color: #b91c1c; /* Dark red */
+    --info-color: #2563eb; /* Bright blue */
+    --card-bg: #374151; /* Dark card background */
+    --card-border: #475569; /* Card border */
+    --button-bg: #3579a7; /* Button background */
+    --button-hover-bg: #2563eb; /* Button hover */
+    --button-text: #1e293b; /* Button text */
+    --add-button-bg: #16a34a; /* Add button background */
+    --add-button-hover-bg: #15803d; /* Add button hover */
+    --delete-button-bg: #b91c1c; /* Delete button background */
+    --delete-button-hover-bg: #991b1b; /* Delete button hover */
+    --clear-button-bg: #d97706; /* Clear button background */
+    --clear-button-hover-bg: #b45309; /* Clear button hover */
+    --input-bg: #1e293b; /* Input background */
+    --input-border: #475569; /* Input border */
+    --highlight-bg: #1e293b; /* Highlight background */
+    --highlight-text: #facc15; /* Highlight text */
+}
+
+/* Apply Light Mode Styles */
+body.light-mode {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Apply Dark Mode Styles */
+body.dark-mode {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* General Layout */
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+#root {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensure wrapper takes at least full height */
-    background: var(--day-background); /* Default to day mode */
-    transition: background-color 0.4s ease, color 0.4s ease;
-  }
-  
-  /* Main Content takes remaining space */
-  .main-content {
-    flex: 1; /* This ensures the content area grows to take the remaining space */
-    padding: 20px; /* Optional padding */
-    overflow-y: auto; /* Allow scrolling if content is too large */
-    color: var(--day-text); /* Default to day text color */
-  }
-  
-  /* Day Mode Styles */
-  .day-mode .wrapper {
-    background: var(--day-background); /* Baby blue gradient */
-  }
+    min-height: 100%;
+}
 
-  .day-mode{ /*this is for the content below header*/
-    background: var(--light-transparent-bg); /* Baby blue gradient */
-  }
-  
+/* Responsive Container */
+.container {
+    max-width: 1200px;
+    width: 100%; /* Ensure it adapts to smaller screens */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-  .day-mode .main-content {
-    color: var(--day-text); /* Dark text for readability */
-  }
-  
-  .day-mode .footer {
-    background: var(--day-footer-bg); /* Footer blends with day theme */
-    color: var(--day-text); /* Slightly darker text for contrast */
-  }
-  
-  .day-mode a:hover {
-    color: var(--day-link-hover); /* Darker blue hover */
-  }
-  
-  /* Dark Mode Styles */
-  .night-mode .wrapper {
-    background: var(--night-background); /* Deep navy and gray gradient */
-  }
-  
-  .night-mode .main-content {
-    color: var(--night-text); /* Light text for readability */
-  }
-
-  
-  .night-mode .footer {
-    background: var(--night-footer-bg); /* Footer blends with night theme */
-    color: var(--night-text); /* Light text for readability */
-  }
-
-  .night-mode a:hover {
-    color: var(--night-link-hover); /* Brighter green hover */
-  }
-  
-  /* Footer Styles */
-  .footer {
+/* Header and Footer */
+header, footer {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: var(--button-text);
     text-align: center;
-    padding: 15px 0;
-    flex-shrink: 0; /* Prevent footer from shrinking */
-    transition: background-color 0.4s ease, color 0.4s ease;
-  }
-  
-  /* Shared Links */
-  a {
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .main-content {
-      padding: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* Buttons */
+button {
+    padding: 10px 20px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.05);
+}
+
+/* Add Button */
+button.add-button {
+    background-color: var(--add-button-bg);
+}
+
+button.add-button:hover {
+    background-color: var(--add-button-hover-bg);
+}
+
+/* Delete Button */
+button.delete-button {
+    background-color: var(--delete-button-bg);
+}
+
+button.delete-button:hover {
+    background-color: var(--delete-button-hover-bg);
+}
+
+/* Clear Button */
+button.clear-button {
+    background-color: var(--clear-button-bg);
+}
+
+button.clear-button:hover {
+    background-color: var(--clear-button-hover-bg);
+}
+
+/* Inputs */
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    color: var(--text-color);
+    transition: border 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* Alerts */
+.alert-success {
+    background-color: var(--success-color);
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.alert-warning {
+    background-color: var(--warning-color);
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.alert-error {
+    background-color: var(--error-color);
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+/* Highlight Section */
+.highlight {
+    background-color: var(--highlight-bg);
+    color: var(--highlight-text);
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Responsive Main Content */
+main {
+    flex: 1;
+    padding: 20px;
+    max-width: 100%;
+}
+
+/* Centering Content on Smaller Screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
     }
-  
-    .footer {
-      font-size: 0.9rem; /* Slightly smaller text on small screens */
+
+    header, footer {
+        padding: 15px;
     }
-  }
-  
+
+    button {
+        width: 100%; /* Full-width buttons for smaller screens */
+        max-width: 300px;
+        margin: 10px auto; /* Center the buttons */
+    }
+
+    input, textarea {
+        width: 100%; /* Full-width inputs and textareas */
+    }
+
+    .highlight {
+        text-align: center; /* Center the highlight text */
+    }
+}

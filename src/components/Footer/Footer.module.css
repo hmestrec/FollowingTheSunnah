@@ -1,0 +1,101 @@
+/* Global Styles for Layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the main container grow to push the footer down */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Footer Styles */
+.footer {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  color: var(--button-text);
+  padding: 10px 0; /* Reduced padding for a thinner footer */
+  text-align: center;
+  font-size: 0.9rem; /* Adjusted font size for a sleeker look */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for visual separation */
+  z-index: 1000;
+  transition: all 0.3s ease;
+  margin-top: auto; /* Pushes the footer to the bottom */
+}
+
+/* Footer Content */
+footer p {
+  margin: 0;
+  line-height: 1.5; /* Keeps the text readable even with reduced padding */
+}
+
+.copyright {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: var(--background-color);
+}
+
+.footerNav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 10px 0;
+}
+
+.footerLink {
+  font-size: 1rem;
+  color: var(--button-text);
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footerLink:hover {
+  color: var(--highlight-color);
+  transform: scale(1.1);
+}
+
+.socialIcons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.socialLink {
+  font-size: 1.5rem;
+  color: var(--button-text);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.socialLink:hover {
+  color: var(--highlight-color);
+  transform: scale(1.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footerContent {
+      padding: 8px;
+  }
+
+  .footer {
+    padding: 5px 0; /* Slightly reduced padding on smaller screens */
+    font-size: 0.6rem; /* Adjust font size for smaller devices */
+  }
+
+  .footerNav {
+      flex-direction: column;
+      gap: 8px;
+  }
+
+  .socialIcons {
+      gap: 10px;
+  }
+}

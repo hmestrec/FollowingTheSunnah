@@ -1,0 +1,90 @@
+/* Login Container */
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dashboard Container */
+.dashboardContainer {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Welcome Message */
+.welcomeMessage {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+/* Section Styles */
+.adminSection,
+.userSection {
+    margin-top: 20px;
+}
+
+.adminIndicator,
+.userIndicator {
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+/* Buttons */
+.actionButton {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--button-text);
+    background-color: var(--button-bg);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.actionButton:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.05);
+}
+
+/* Sign Out Button */
+.signOutButton {
+    margin-top: 20px;
+    background-color: var(--error-color);
+}
+
+.signOutButton:hover {
+    background-color: var(--error-hover-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboardContainer {
+        padding: 15px;
+    }
+
+    .welcomeMessage {
+        font-size: 1.5rem;
+    }
+
+    .actionButton {
+        width: 100%;
+        margin: 10px 0;
+    }
+}

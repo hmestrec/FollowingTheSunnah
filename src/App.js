@@ -2,32 +2,34 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/AuthContext';
 import ThemeProvider from './components/ThemeContext'; // Correct default import
-import Header from './components/Header';
-import Footer from './components/Footer';
-import PodcastPage from './components/PodcastPage';
-import TopicsPage from './components/TopicsPage';
-import JourneyPage from "./components/JourneyPage";
-import FundamentalsPage from "./components/FundamentalsPage";
-import PathwaysPage from "./components/PathwaysPage";
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import PodcastPage from './components/PodcastPage/PodcastPage';
+import TopicsPage from './components/TopicsPage/TopicsPage';
+import JourneyPage from "./components/TopicsPage/JourneyPage";
+import FundamentalsPage from "./components/TopicsPage/FundamentalsPage";
+import PathwaysPage from "./components/TopicsPage/PathwaysPage";
 import FormPage from './components/FormPage';
-import LoginPage from './components/LoginPage';
-import ContentPage from './components/ContentPage';
-import HomePage from './components/HomePage';
-import EditingPage from './components/EditingPage';
-import Comments from './components/Comments';
-import MuslimBusinesses from './components/MuslimBusinesses';
-import BusinessManagement from './components/BusinessManagement';
-import ChatBot from './components/chatbot';
-import CreateProfile from './components/CreateProfile';
-import AllProfilesPage from './components/AllProfilesPage';
-import Settings from './components/Settings';
+import LoginPage from './components/LandingPage/LandingPage';
+import ContentPage from './components/TopicsPage/ContentPage';
+import HomePage from './components/HomePage/HomePage';
+import EditingPage from './components/EditingPage/EditingPage';
+import Comments from './components/Comments/Comments';
+import MuslimBusinesses from './components/MuslimBusinesses/MuslimBusinesses';
+import BusinessManagement from './components/BusinessManagement/BusinessManagement';
+import ChatBot from './components/ChatBot/ChatBot';
+import CreateProfile from './components/CreateProfile/CreateProfile';
+import AllProfilesPage from './components/AllProfilesPage/AllProfilesPage';
+import Settings from './components/Settings/Settings';
+import './App.css';
+
 
 function App() {
   return (
     <AuthProvider>
       <ThemeProvider> {/* Wrap the app with ThemeProvider */}
         <Router>
-          <div className="wrapper">
+          <div id="root">
             <Header />
             <main className="main-content">
               <Routes>

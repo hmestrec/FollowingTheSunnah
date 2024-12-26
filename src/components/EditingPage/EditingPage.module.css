@@ -1,0 +1,235 @@
+/* General Page Styles */
+.editingPage {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* Form Styles */
+.editorForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.inputField,
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.inputField:focus,
+select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+    outline: none;
+}
+
+/* Rich Text Editor */
+.quillEditor {
+    min-height: 150px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.quillEditor .ql-container {
+    font-size: 1rem;
+    border: none;
+    color: inherit;
+}
+
+/* Button Styles */
+.buttonContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.submitButton,
+.clearButton,
+.editButton,
+.deleteButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Button Variants */
+.submitButton {
+    background-color: var(--success-color);
+    color: var(--button-text);
+}
+
+.submitButton:hover {
+    background-color: var(--success-hover-color);
+    transform: translateY(-2px);
+}
+
+.clearButton {
+    background-color: var(--clear-button-bg);
+    color: var(--button-text);
+}
+
+.clearButton:hover {
+    background-color: var(--clear-button-hover-bg);
+    transform: translateY(-2px);
+}
+
+.editButton {
+    background-color: var(--info-color);
+    color: var(--button-text);
+}
+
+.editButton:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.deleteButton {
+    background-color: var(--delete-button-bg);
+    color: var(--button-text);
+}
+
+.deleteButton:hover {
+    background-color: var(--delete-button-hover-bg);
+    transform: translateY(-2px);
+}
+
+/* Record List */
+.recordList {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.recordItem {
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    color: var(--text-color);
+}
+
+.recordItem:hover {
+    transform: translateY(-3px);
+    background-color: var(--highlight-bg);
+}
+
+/* Dropdown Button */
+.dropdownButton {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.3s ease;
+}
+
+.dropdownButton:hover {
+    color: var(--primary-color);
+}
+
+/* Dropdown Content */
+.dropdownContent {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional Styling */
+.lastUpdated {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-left: 10px;
+}
+
+.editingStatus {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--warning-color);
+    margin-left: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .editingPage {
+        padding: 15px;
+    }
+
+    .h1 {
+        font-size: 1.8rem;
+    }
+
+    .h2 {
+        font-size: 1.2rem;
+    }
+
+    .inputField,
+    select {
+        font-size: 0.9rem;
+    }
+
+    .submitButton,
+    .clearButton,
+    .editButton,
+    .deleteButton {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+
+    .recordItem {
+        padding: 10px;
+    }
+
+    .dropdownButton {
+        font-size: 1rem;
+    }
+}

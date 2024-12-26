@@ -1,0 +1,208 @@
+/* Chatbot Toggle Button */
+.chatbotToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    color: var(--button-text);
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1050; /* Ensure above footer */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: chatbotBounce 2s infinite; /* Creative bounce effect */
+}
+
+.chatbotToggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.chatbotToggle span {
+    font-size: 2rem;
+}
+
+/* Chatbot Bounce Animation */
+@keyframes chatbotBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Chatbot Body */
+.chatbotBody {
+    position: fixed;
+    bottom: 100px; /* Above the toggle button */
+    right: 20px;
+    width: 320px;
+    max-height: 500px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in effect */
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Chat Window */
+.chatWindow {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    scrollbar-width: thin; /* For modern browsers */
+    scrollbar-color: var(--primary-color) var(--card-bg);
+}
+
+.chatWindow::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chatWindow::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.chatMessage {
+    margin: 5px 0;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.chatMessage.user {
+    background-color: var(--accent-color);
+    color: var(--button-text);
+    align-self: flex-end;
+}
+
+.chatMessage.assistant {
+    background-color: var(--secondary-color);
+    color: var(--button-text);
+    align-self: flex-start;
+}
+
+.chatMessage.typing {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Chat Input */
+.chatInput {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid var(--card-border);
+    background-color: var(--card-bg);
+    width: 100%; /* Ensure it spans full width */
+}
+
+.inputField {
+    flex: 1; /* Makes the input field take up available space */
+    height: 50px; /* Increased height for visibility */
+    padding: 15px; /* Increased padding for better usability */
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1rem; /* Font size for readability */
+    margin-right: 10px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.inputField:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+.sendButton {
+    padding: 12px 20px; /* Increased padding for better balance */
+    height: 50px; /* Same height as input field */
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--button-text);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1rem; /* Consistent font size */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.sendButton:hover {
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .chatbotToggle {
+        width: 60px;
+        height: 60px;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .chatbotToggle span {
+        font-size: 1.5rem;
+    }
+
+    .chatbotBody {
+        width: 280px;
+        bottom: 80px;
+        right: 15px;
+        max-height: 400px;
+    }
+
+    .chatWindow {
+        padding: 8px;
+    }
+
+    .chatMessage {
+        font-size: 1.1rem;
+        padding: 8px 10px;
+    }
+
+    .chatInput {
+        flex-direction: column; /* Stack input and button vertically on smaller screens */
+        gap: 10px;
+    }
+
+    .inputField {
+        font-size: 0.9rem; /* Slightly smaller font size */
+        padding: 12px; /* Adjust padding for mobile */
+        width: 100%; /* Ensure input spans full width */
+    }
+
+    .sendButton {
+        font-size: 1.0rem;
+        padding: 15px 25px;
+        width: auto; /* Ensure button spans full width */
+    }
+}

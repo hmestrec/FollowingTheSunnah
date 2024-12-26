@@ -1,0 +1,197 @@
+/* General Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--background-color), var(--card-bg));
+  color: var(--text-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Section Title */
+.sectionTitle {
+  font-size: 2.5rem;
+  text-align: center;
+  color: var(--primary-color);
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+/* Quran Verse Card */
+.quranVerse {
+  background: linear-gradient(135deg, var(--accent-color), var(--card-bg));
+  color: var(--text-color);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.quranVerseArabic {
+  font-size: 2rem;
+  color: var(--quran-color);
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.quranVerseEnglish {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  font-style: italic;
+}
+
+/* Clock Display */
+.clockDisplay {
+  margin: 20px 0;
+  text-align: center;
+  background: var(--card-bg);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.clockTime {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-bottom: 10px;
+}
+
+.dateInfo {
+  font-size: 1.2rem;
+  color: var(--highlight-text);
+  font-style: italic;
+}
+
+/* Prayer Times */
+.prayerTimesContainer {
+  margin: 30px auto;
+}
+
+.prayerTimes {
+  background: linear-gradient(135deg, var(--card-bg), var(--secondary-color));
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--card-border);
+}
+
+.prayerTimesTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.prayerTimesTableTh {
+  background: var(--primary-color);
+  color: var(--button-text);
+  padding: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.prayerTimesTableTd {
+  padding: 12px;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.prayerTimesTableRowHighlight {
+  background: var(--success-color);
+  color: var(--button-text);
+  font-weight: bold;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.prayerTimesTableRow:hover {
+  transform: scale(1.02);
+  background: var(--primary-color);
+  color: var(--button-text);
+}
+
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 12px 20px;
+  margin: 10px;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: var(--button-text);
+  border: none;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.button:hover {
+  background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+  transform: translateY(-2px);
+}
+
+/* Buttons Container */
+.buttonsContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .quranVerseArabic {
+    font-size: 1.6rem;
+  }
+
+  .clockTime {
+    font-size: 2.2rem;
+  }
+
+  .prayerTimesTableTh,
+  .prayerTimesTableTd {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .buttonsContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button {
+    width: 90%;
+    max-width: 300px;
+  }
+}
