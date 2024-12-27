@@ -66,7 +66,7 @@
         },
         "MarriageProfilesHandler": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/MarriageProfilesHandler-65376a37544e4c763237-build.zip"
+          "s3Key": "amplify-builds/MarriageProfilesHandler-6a3368526d3465346935-build.zip"
         }
       },
       "api": {

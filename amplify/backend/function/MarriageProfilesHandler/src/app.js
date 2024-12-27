@@ -6,17 +6,15 @@ const {
   QueryCommand,
   DeleteCommand,
   UpdateCommand,
-  ScanCommand, // Added ScanCommand
+  ScanCommand,
 } = require('@aws-sdk/lib-dynamodb');
 const express = require('express');
 const bodyParser = require('body-parser');
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
 
-// Initialize DynamoDB Client and Document Client
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
-// Define table name with environment suffix
 const tableName = process.env.ENV ? `MarriageProfiles-${process.env.ENV}` : 'MarriageProfiles-prd';
 
 const app = express();
@@ -79,7 +77,19 @@ app.get('/profiles/:user_id', async (req, res) => {
  * HTTP POST: Create a new profile
  ************************************/
 app.post('/profiles', async (req, res) => {
-  const { user_id, profile_id, name, age, gender, description, preferences, location } = req.body;
+  const {
+    user_id,
+    profile_id,
+    name,
+    age,
+    gender,
+    description,
+    preferences,
+    location,
+    bio,
+    goals,
+    deen,
+  } = req.body;
 
   if (!user_id || !profile_id || !name) {
     return res.status(400).json({ error: 'Missing user_id, profile_id, or name' });
@@ -96,6 +106,9 @@ app.post('/profiles', async (req, res) => {
       location,
       description,
       preferences,
+      bio,
+      goals,
+      deen,
       created_at: new Date().toISOString(),
     },
     ConditionExpression: 'attribute_not_exists(user_id)',
@@ -115,7 +128,7 @@ app.post('/profiles', async (req, res) => {
  ************************************/
 app.put('/profiles/:user_id', async (req, res) => {
   const { user_id } = req.params;
-  const { name, age, gender, location, description, preferences, profile_id } = req.body;
+  const { name, age, gender, location, description, preferences, bio, goals, deen, profile_id } = req.body;
 
   if (!profile_id) {
     return res.status(400).json({ error: 'Missing profile_id in request body' });
@@ -131,6 +144,9 @@ app.put('/profiles/:user_id', async (req, res) => {
           #location = :location, 
           description = :description, 
           preferences = :preferences, 
+          bio = :bio, 
+          goals = :goals, 
+          deen = :deen, 
           updated_at = :updated_at
     `,
     ExpressionAttributeNames: {
@@ -144,6 +160,9 @@ app.put('/profiles/:user_id', async (req, res) => {
       ':location': location,
       ':description': description,
       ':preferences': preferences,
+      ':bio': bio,
+      ':goals': goals,
+      ':deen': deen,
       ':updated_at': new Date().toISOString(),
     },
     ReturnValues: 'ALL_NEW',

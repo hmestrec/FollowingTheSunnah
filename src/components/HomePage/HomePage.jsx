@@ -168,6 +168,11 @@ const HomePage = () => {
         }
       }
   
+      // Special case for Isha: Extend until 00:00
+      if (prayer === "Isha") {
+        nextPrayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0); // Midnight
+      }
+  
       // If no next prayer found, set nextPrayerTime to the end of the day
       nextPrayerTime = nextPrayerTime || new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
   
@@ -181,7 +186,7 @@ const HomePage = () => {
     setCurrentPrayer(activePrayer);
   };
   
-
+  
   const handleVisibilityChange = () => {
     if (!document.hidden) {
       updateCurrentPrayer();

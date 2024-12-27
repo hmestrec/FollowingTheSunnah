@@ -1,133 +1,277 @@
 .allProfilesContainer {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    color: var(--text-color);
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 25px;
+  background: linear-gradient(135deg, var(--background-color), var(--card-bg));
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
   }
-  
-  .title {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--primary-color);
+  to {
+    transform: scale(1.02);
   }
-  
-  .profilesGallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+}
+
+.profilesGallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.profileCard {
+  background: linear-gradient(145deg, var(--card-bg), var(--highlight-bg));
+  border: 1px solid var(--card-border);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.profileCard:hover {
+  transform: translateY(-10px);
+  background: linear-gradient(145deg, var(--highlight-bg), var(--accent-color));
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.profileImage {
+  width: 100%;
+  height: 120px;
+  background-color: var(--secondary-color);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  color: var(--button-text);
+  margin-bottom: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profileImage:hover {
+  transform: scale(1.1);
+  box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.profileDetails {
+  text-align: left;
+  font-size: 1rem;
+}
+
+.profileName {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.moreDetailsButton,
+.deleteButton {
+  margin-top: 15px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.moreDetailsButton {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+
+.moreDetailsButton:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.deleteButton {
+  background-color: var(--delete-button-bg);
+  color: var(--button-text);
+}
+
+.deleteButton:hover {
+  background-color: var(--delete-button-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.noProfilesMessage {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85); /* Slightly darker overlay */
+  backdrop-filter: blur(5px); /* Frosted glass effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  .profileCard {
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, background-color 0.3s ease;
+  to {
+    opacity: 1;
   }
-  
-  .profileCard:hover {
-    transform: scale(1.05);
-    background-color: var(--highlight-bg);
-  }
-  
-  .profileImage {
-    width: 100%;
-    height: 120px;
-    background-color: var(--secondary-color);
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.5rem;
-    color: var(--button-text);
-    margin-bottom: 10px;
-  }
-  
-  .profileDetails {
-    text-align: left;
-  }
-  
-  .profileName {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-  }
-  
-  .moreDetailsButton, .deleteButton {
-    margin-top: 10px;
-    padding: 10px 15px;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .moreDetailsButton:hover {
-    background-color: var(--accent-color);
-  }
-  
-  .deleteButton {
-    background-color: var(--delete-button-bg);
-  }
-  
-  .deleteButton:hover {
-    background-color: var(--delete-button-hover-bg);
-  }
-  
-  .noProfilesMessage {
-    text-align: center;
-    font-size: 1.2rem;
-    color: var(--secondary-color);
-  }
-  
-  /* Modal */
-  .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
+}
+
+.modalContent {
+  background: var(--card-bg); /* Keep your existing background color */
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh; /* Restricts height to 80% of the viewport */
+  overflow-y: auto; /* Enables vertical scrolling */
+  position: relative;
+  animation: slideIn 0.4s ease;
+}
+
+.modalContent h3 {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: #60a5fa; /* Bright and soothing */
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.sectionHeading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #60a5fa; /* Bright blue for section headers */
+  margin: 20px 0 10px;
+  border-bottom: 2px solid #60a5fa;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+.modalContent ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modalContent ul li {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  background: #283655; /* Slightly lighter background for list items */
+  padding: 12px 15px;
+  border-radius: 12px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+  color: #ffffff; /* Pure white text for clarity */
+}
+
+.modalContent ul li strong {
+  font-weight: bold;
+  color: #90caf9; /* Accent color for labels */
+}
+
+.modalContent ul li:hover {
+  background: linear-gradient(145deg, #3b4a74, #1f2937); /* Subtle hover effect */
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 45px;
+  height: 45px;
+  background: radial-gradient(circle, #ef4444, #d32f2f);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.closeButton:hover {
+  background: radial-gradient(circle, #ff6b6b, #c62828);
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(255, 107, 107, 0.8);
+}
+
+/* Scrollbar Customization */
+.modalContent::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+  background: linear-gradient(145deg, #60a5fa, #42a5f5); /* Bright gradient scrollbar */
+  border-radius: 10px;
+}
+
+.modalContent::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(145deg, #42a5f5, #2196f3);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
   .modalContent {
-    background-color: var(--card-bg);
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
-    width: 90%;
-    position: relative;
+    max-width: 95%;
+    border-radius: 15px;
   }
-  
+
+  .modalContent h3 {
+    font-size: 2rem;
+  }
+
+  .modalContent ul li {
+    font-size: 1rem;
+  }
+
   .closeButton {
-    position: absolute;
     top: 10px;
     right: 10px;
-    background-color: var(--error-color);
-    color: var(--button-text);
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
   }
-  
-  .closeButton:hover {
-    background-color: var(--delete-button-hover-bg);
-  }
-  
+}
+
