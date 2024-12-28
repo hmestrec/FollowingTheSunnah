@@ -21,6 +21,10 @@ import ChatBot from './components/ChatBot/ChatBot';
 import CreateProfile from './components/CreateProfile/CreateProfile';
 import AllProfilesPage from './components/AllProfilesPage/AllProfilesPage';
 import Settings from './components/Settings/Settings';
+import PrivacyPolicy from './components/LegalPages/PrivacyPolicy';
+import TermsOfService from './components/LegalPages/TermsOfService';
+import ContactUs from './components/ContactUs/ContactUs';
+import ReCAPTCHA from "react-google-recaptcha";
 import './App.css';
 
 
@@ -49,6 +53,9 @@ function App() {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/comments" element={<Comments />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/contact" element={<ContactUs />} />
               </Routes>
             </main>
             <ChatBot />

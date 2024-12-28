@@ -67,6 +67,10 @@
         "MarriageProfilesHandler": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
           "s3Key": "amplify-builds/MarriageProfilesHandler-6a3368526d3465346935-build.zip"
+        },
+        "EmailServiceFunction": {
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/EmailServiceFunction-5032466e7934612b4838-build.zip"
         }
       },
       "api": {
@@ -74,7 +78,8 @@
         "CommentsAPI": {},
         "businessAPI": {},
         "chatbot": {},
-        "MarriageProfilesAPI": {}
+        "MarriageProfilesAPI": {},
+        "EmailServiceAPI": {}
       },
       "storage": {
         "editorcontent": {},

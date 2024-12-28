@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/send-email": {
+      "name": "/send-email",
+      "lambdaFunction": "EmailServiceFunction",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/subscribe-newsletter": {
+      "name": "/subscribe-newsletter",
+      "lambdaFunction": "EmailServiceFunction",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

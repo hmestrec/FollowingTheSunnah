@@ -14,6 +14,20 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
+    "EmailServiceAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EmailServiceFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "MarriageProfilesAPI": {
       "dependsOn": [
         {
@@ -100,6 +114,11 @@
     }
   },
   "function": {
+    "EmailServiceFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "MarriageProfilesHandler": {
       "build": true,
       "dependsOn": [
@@ -180,6 +199,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_EmailServiceFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EmailServiceFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_EmailServiceFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "EmailServiceFunction"
+        }
+      ]
+    },
     "AMPLIFY_function_MarriageProfilesHandler_deploymentBucketName": {
       "usedBy": [
         {

@@ -1,0 +1,176 @@
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    color: var(--text-color);
+    transition: padding 0.3s ease;
+    position: relative; /* Add this */
+}
+
+  
+  .heading {
+    font-size: 2.5rem;
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+  }
+  
+  .description {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--secondary-color);
+  }
+  
+  /* Tabs */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  }
+  
+  .tab {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .tab:hover {
+    background: var(--accent-color);
+  }
+  
+  .activeTab {
+    background: var(--success-color);
+    transform: scale(1.05);
+  }
+  
+  /* Form */
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+  
+  .input,
+  .textarea {
+    padding: 10px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-color);
+    background: var(--input-bg);
+    transition: border-color 0.3s ease;
+  }
+  
+  .input:focus,
+  .textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+  
+  .textarea {
+    resize: vertical;
+  }
+
+
+  .button {
+    background: var(--button-bg);
+    color: var(--button-text);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .button:hover {
+    background: var(--accent-color);
+    transform: scale(1.05);
+  }
+  
+  .disabledButton {
+    background: var(--secondary-color);
+    cursor: not-allowed;
+  }
+
+  .recaptchaFooter {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+  }
+  
+  .recaptchaFooter a {
+    color: var(--primary-color);
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  
+  .recaptchaFooter a:hover {
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+      margin: 10px;
+    }
+  
+    .heading {
+      font-size: 2rem;
+    }
+  
+    .description {
+      font-size: 1rem;
+    }
+  
+    .tabs {
+      margin-bottom: 15px;
+    }
+  
+    .tab {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+  
+    .form {
+      gap: 15px;
+    }
+  
+    .label {
+      font-size: 1rem;
+    }
+  
+    .input,
+    .textarea {
+      font-size: 0.9rem;
+    }
+  
+    .button {
+      font-size: 1rem;
+    }
+  
+  }
+
+
+  

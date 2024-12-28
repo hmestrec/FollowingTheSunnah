@@ -9,13 +9,13 @@ const Footer = () => {
           © Following The Sunnah, {new Date().getFullYear()}
         </p>
         <nav className={styles.footerNav}>
-          <a href="#privacy" className={styles.footerLink}>
+          <a href="/privacy-policy" className={styles.footerLink}>
             Privacy Policy
           </a>
-          <a href="#terms" className={styles.footerLink}>
+          <a href="/terms-of-service" className={styles.footerLink}>
             Terms of Service
           </a>
-          <a href="#contact" className={styles.footerLink}>
+          <a href="/contact" className={styles.footerLink}>
             Contact Us
           </a>
         </nav>

@@ -5,6 +5,11 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
+    "EmailServiceAPI": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
     "MarriageProfilesAPI": {
       "ApiId": "string",
       "ApiName": "string",
@@ -38,6 +43,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "EmailServiceFunction": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "MarriageProfilesHandler": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
