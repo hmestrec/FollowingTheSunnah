@@ -1,48 +1,104 @@
 /* Page Container */
 .contentPage {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  /* Title Styling */
-  .contentTitle {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  /* Error Message Styling */
-  .errorMessage {
-    font-size: 1.2rem;
-    color: var(--error-color);
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  /* Content Display */
-  .contentDisplay {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--background-color);
-    padding: 15px;
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    word-wrap: break-word;
-  }
-  
-  /* Toast Container Adjustments */
-  .Toastify__toast-container {
-    font-size: 0.9rem;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Title Styling */
+.contentTitle {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Error Message Styling */
+.errorMessage {
+  font-size: 1.2rem;
+  color: var(--error-color);
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Content Display */
+.contentDisplay {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  padding: 15px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+/* Highlighting the current word being read */
+.highlight {
+  background-color: var(--highlight-color);
+  padding: 0 2px;
+  font-weight: bold;
+}
+
+/* Dark mode highlight customization */
+.darkMode .highlight {
+  background-color: #ffcc00; /* Use a more visible color for dark mode */
+}
+
+/* Toast Container Adjustments */
+.Toastify__toast-container {
+  font-size: 0.9rem;
+}
+
+/* Speech Control Buttons */
+.speechControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.speechButton {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 14px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.speechButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.readAloud {
+  background-color: #28a745;
+}
+
+.pause {
+  background-color: #ffc107;
+}
+
+.stop {
+  background-color: #dc3545;
+}
+
+.errorMessage {
+  color: red;
+}
