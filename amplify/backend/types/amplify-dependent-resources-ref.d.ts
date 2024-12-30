@@ -15,6 +15,11 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
+    "PollyAPI": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
     "businessAPI": {
       "ApiId": "string",
       "ApiName": "string",
@@ -51,6 +56,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "MarriageProfilesHandler": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "PollyLambda": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

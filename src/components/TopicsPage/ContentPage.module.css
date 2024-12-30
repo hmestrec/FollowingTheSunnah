@@ -51,10 +51,6 @@
   font-weight: bold;
 }
 
-/* Dark mode highlight customization */
-.darkMode .highlight {
-  background-color: #ffcc00; /* Use a more visible color for dark mode */
-}
 
 /* Toast Container Adjustments */
 .Toastify__toast-container {
@@ -102,3 +98,78 @@
 .errorMessage {
   color: red;
 }
+
+/* Vivid Loading Spinner */
+.loadingSpinner {
+  border: 4px solid rgba(255, 255, 255, 0.2); /* Lighter background */
+  border-top: 4px solid #ff5733; /* Bright orange top */
+  border-radius: 50%; /* Ensures the circle shape */
+  width: 30px;  /* Fixed size for width */
+  height: 30px; /* Fixed size for height */
+  box-sizing: border-box; /* Ensures padding and border are part of the width and height */
+  animation: spin 1s linear infinite;
+  display: block; /* Ensures it’s a block-level element */
+  margin: 0 auto; /* Centers the spinner */
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+/* Vivid Button Styles */
+.speechButton {
+  width: 70px; /* Increased size */
+  height: 70px; /* Increased size */
+  border-radius: 50%;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff; /* Bright blue */
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect for button */
+.speechButton:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.1); /* Slight grow effect on hover */
+}
+
+/* Disabled state */
+.speechButton:disabled {
+  background-color: #ccc; /* Gray for disabled */
+  cursor: not-allowed;
+}
+
+/* Play/Pause Button Specific Styles */
+.pollyPlay {
+  background-color: #28a745; /* Green for Play */
+}
+
+.pollyPlay:hover {
+  background-color: #218838; /* Dark green for hover */
+}
+
+.stop {
+  background-color: #dc3545; /* Red for Stop */
+}
+
+.stop:hover {
+  background-color: #c82333; /* Dark red for hover */
+}
+
+/* Highlighting the current word being read */
+.highlight {
+  background-color: #eb8807; /* Vivid yellow highlight */
+  padding: 0 4px;
+  font-weight: bold;
+}
+

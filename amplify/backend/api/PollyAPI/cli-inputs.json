@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/polly-synthesize": {
+      "name": "/polly-synthesize",
+      "lambdaFunction": "PollyLambda",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

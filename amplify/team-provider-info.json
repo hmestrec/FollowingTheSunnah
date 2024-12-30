@@ -71,6 +71,10 @@
         "EmailServiceFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
           "s3Key": "amplify-builds/EmailServiceFunction-50386248545855477973-build.zip"
+        },
+        "PollyLambda": {
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/PollyLambda-6d66636449486652576b-build.zip"
         }
       },
       "api": {
@@ -79,7 +83,8 @@
         "businessAPI": {},
         "chatbot": {},
         "MarriageProfilesAPI": {},
-        "EmailServiceAPI": {}
+        "EmailServiceAPI": {},
+        "PollyAPI": {}
       },
       "storage": {
         "editorcontent": {},

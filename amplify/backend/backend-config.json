@@ -42,6 +42,20 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
+    "PollyAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "PollyLambda"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "businessAPI": {
       "dependsOn": [
         {
@@ -138,6 +152,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "PollyLambda": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "businessHandler": {
       "build": true,
       "dependsOn": [
@@ -228,6 +247,22 @@
         {
           "category": "function",
           "resourceName": "MarriageProfilesHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_PollyLambda_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PollyLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_PollyLambda_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PollyLambda"
         }
       ]
     },

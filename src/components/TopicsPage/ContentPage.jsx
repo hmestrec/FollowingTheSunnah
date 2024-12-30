@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import awsmobile from "../../aws-exports";
 import styles from "./ContentPage.module.css";
 
+// Configure AWS SDK for Polly API
+const pollyApiUrl = awsmobile.aws_cloud_logic_custom.find(
+  (api) => api.name === "PollyAPI"
+)?.endpoint; // Polly API URL from AWS API Gateway
+
 const ContentPage = () => {
   const { id } = useParams();
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [highlightedText, setHighlightedText] = useState("");
-  const [utterance, setUtterance] = useState(null); // Track current utterance
+  const [isLoading, setIsLoading] = useState(false); // Track loading state
+  const [isPaused, setIsPaused] = useState(false); // Track if paused
+  const audioRef = useRef(null); // Create reference for audio control
 
   const apiUrl = awsmobile.aws_cloud_logic_custom.find(
     (api) => api.name === "editorAPI"
-  )?.endpoint;
+  )?.endpoint; // Existing API to fetch content
 
   const fetchContent = async () => {
     if (!apiUrl) {
@@ -55,7 +61,7 @@ const ContentPage = () => {
     }
   }, [id]);
 
-  const handlePlayPauseResume = () => {
+  const handlePollySpeech = async () => {
     if (!content) {
       toast.warn("No content available to read.");
       return;
@@ -68,66 +74,116 @@ const ContentPage = () => {
       return;
     }
 
-    if (isSpeaking) {
-      // If currently speaking, pause the speech
-      speechSynthesis.pause();
+    setIsLoading(true); // Set loading state to true
+
+    try {
+      const response = await fetch(`${pollyApiUrl}/polly-synthesize`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: plainText, voiceId: "Stephen" }), // Default voice to Stephen
+      });
+
+      if (!response.ok) {
+        throw new Error("Error fetching speech from Polly.");
+      }
+
+      const data = await response.json();
+      const audioUrl = data.audioUrl;  // Base64 audio URL
+      const audio = new Audio(audioUrl);
+
+      // Set the reference to the audio object for control
+      audioRef.current = audio;
+
+      // Add event listeners for play, ended, and error
+      audio.onplay = () => {
+        setIsSpeaking(true);
+        setIsPaused(false);  // Reset paused state when playing starts
+        setIsLoading(false); // Reset loading state once speech starts
+        startHighlighting();  // Start highlighting when speech starts
+      };
+
+      audio.onended = () => {
+        setIsSpeaking(false);
+        setHighlightedText(""); // Clear the highlighted text when speech ends
+        setIsPaused(false); // Reset the pause state when audio ends
+      };
+
+      audio.onerror = () => {
+        toast.error("An error occurred during audio playback.");
+        setIsSpeaking(false);
+        setIsPaused(false);
+        setIsLoading(false); // Reset loading state on error
+      };
+
+      // Start playing the audio
+      audio.play();
+    } catch (error) {
+      console.error("Error with Polly:", error);
+      toast.error("An error occurred during speech synthesis.");
       setIsSpeaking(false);
-      setIsPaused(true);
-      toast.info("Speech paused.");
-    } else if (isPaused) {
-      // If it's paused, resume the speech
-      speechSynthesis.resume();
-      setIsSpeaking(true);
       setIsPaused(false);
-      toast.info("Speech resumed.");
-    } else {
-      // Start speaking if not speaking or paused
-      setIsSpeaking(true);
-      setIsPaused(false);
-
-      const newUtterance = new SpeechSynthesisUtterance(plainText);
-      newUtterance.voice = speechSynthesis.getVoices().find((voice) => voice.lang === "en-US");
-      newUtterance.lang = "en-US"; // Default language for English content
-      newUtterance.rate = 1; // Normal speed
-      newUtterance.pitch = 1; // Neutral pitch
-
-      // Add event listener for when the speech reaches a boundary (i.e., word or sentence)
-      newUtterance.onboundary = (event) => {
-        const text = event.charIndex;
-        setHighlightedText(plainText.slice(0, text));
-      };
-
-      newUtterance.onend = () => {
-        setIsSpeaking(false);
-        setHighlightedText(""); // Clear highlighted text when speech ends
-      };
-      newUtterance.onerror = (e) => {
-        if (e.error === "interrupted") {
-          console.log("Speech interrupted (expected).");
-          return;
-        }
-        console.error("Speech error:", e);
-        toast.error("An unexpected error occurred during speech synthesis.");
-        setIsSpeaking(false);
-        setHighlightedText(""); // Clear highlighted text on error
-      };
-
-      // Save the current utterance to resume later if needed
-      setUtterance(newUtterance);
-
-      speechSynthesis.speak(newUtterance);
+      setIsLoading(false); // Reset loading state on error
     }
   };
 
+  // Function to highlight text based on the audio playback
+  const startHighlighting = () => {
+    const plainText = new DOMParser().parseFromString(content, "text/html").body.innerText.trim();
+    const words = plainText.split(" ");  // Split text into words
+    const audio = audioRef.current;
+
+    let currentWordIndex = 0;
+
+    const highlightInterval = setInterval(() => {
+      if (!audioRef.current) return;
+
+      const currentTime = audio.currentTime;
+      const totalDuration = audio.duration;
+
+      // Calculate which word should be highlighted based on currentTime and audio duration
+      const wordIndex = Math.floor((currentTime / totalDuration) * words.length);
+
+      if (wordIndex < words.length && wordIndex !== currentWordIndex) {
+        currentWordIndex = wordIndex;
+        setHighlightedText(words.slice(0, wordIndex + 1).join(" "));
+      }
+
+      if (currentTime >= totalDuration) {
+        clearInterval(highlightInterval);  // Clear the interval when audio ends
+      }
+    }, 100); // Update the highlight every 100ms
+
+    audio.onended = () => clearInterval(highlightInterval);  // Clear the interval when audio ends
+  };
+
   const handleStop = () => {
-    if (speechSynthesis.speaking || speechSynthesis.paused) {
-      speechSynthesis.cancel();
-      setIsSpeaking(false);
-      setIsPaused(false);
-      setHighlightedText(""); // Clear the highlighted text on stop
+    if (audioRef.current && isSpeaking) {
+      audioRef.current.pause(); // Stop the audio
+      audioRef.current.currentTime = 0; // Reset audio to start
+      setIsSpeaking(false); // Set speaking to false
+      setIsPaused(false); // Reset pause state
       toast.info("Speech stopped.");
     } else {
       toast.warn("No speech to stop.");
+    }
+  };
+
+  const handlePlayPause = () => {
+    if (isSpeaking && !isPaused) {
+      // Pause the audio
+      audioRef.current.pause();
+      setIsPaused(true);
+      toast.info("Speech paused.");
+    } else if (isPaused) {
+      // Resume the audio
+      audioRef.current.play();
+      setIsPaused(false);
+      toast.info("Speech resumed.");
+    } else {
+      // Start speech if not speaking
+      handlePollySpeech();
     }
   };
 
@@ -136,20 +192,24 @@ const ContentPage = () => {
       <h1 className={styles.contentTitle}>
         {decodeURIComponent(id)}
         <div className={styles.speechControls}>
-          {/* Play/Pause/Resume Button */}
           <button
-            className={`${styles.speechButton} ${styles.playPauseResume}`}
-            onClick={handlePlayPauseResume}
-            disabled={!content}
+            className={`${styles.speechButton} ${styles.pollyPlay}`}
+            onClick={handlePlayPause}
+            disabled={!content || isLoading}
           >
-            {isSpeaking ? (isPaused ? "Resume" : "Pause") : "Play"}
+            {isLoading ? (
+              <div className={styles.loadingSpinner}></div> // Show spinner while loading
+            ) : isSpeaking ? (
+              isPaused ? "Resume" : "Pause"
+            ) : (
+              "Play"
+            )}
           </button>
 
-          {/* Stop Button */}
           <button
             className={`${styles.speechButton} ${styles.stop}`}
             onClick={handleStop}
-            disabled={!isSpeaking && !isPaused}
+            disabled={!isSpeaking}
           >
             Stop
           </button>
