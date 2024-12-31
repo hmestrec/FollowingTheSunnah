@@ -58,7 +58,7 @@
         },
         "businessHandler": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/businessHandler-7942317a45382f4f3630-build.zip"
+          "s3Key": "amplify-builds/businessHandler-563159707a72695a2b69-build.zip"
         },
         "chatbotFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
@@ -74,7 +74,7 @@
         },
         "PollyLambda": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/PollyLambda-6d66636449486652576b-build.zip"
+          "s3Key": "amplify-builds/PollyLambda-4b31343235724f587762-build.zip"
         }
       },
       "api": {

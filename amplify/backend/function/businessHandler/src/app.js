@@ -26,8 +26,6 @@ app.use(awsServerlessExpressMiddleware.eventContext());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*"); // Allow all origins
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow all HTTP methods
-
     if (req.method === "OPTIONS") {
         res.sendStatus(200); // Respond to preflight requests with 200 OK
     } else {

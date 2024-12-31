@@ -12,7 +12,6 @@ app.use(bodyParser.json()); // For parsing application/json
 // Enable CORS for all incoming requests
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*'); // Allow all origins (can be restricted to specific origins)
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allow the methods
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allow the necessary headers
   next(); // Proceed to the next middleware
 });
