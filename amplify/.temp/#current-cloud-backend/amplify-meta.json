@@ -1,0 +1,584 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-followingthesunnah-prd-647c3-authRole",
+      "UnauthRoleArn": "arn:aws:iam::730335296670:role/amplify-followingthesunnah-prd-647c3-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::730335296670:role/amplify-followingthesunnah-prd-647c3-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+      "UnauthRoleName": "amplify-followingthesunnah-prd-647c3-unauthRole",
+      "StackName": "amplify-followingthesunnah-prd-647c3",
+      "StackId": "arn:aws:cloudformation:us-east-1:730335296670:stack/amplify-followingthesunnah-prd-647c3/a28752f0-96fb-11ef-a135-0e3d474ca71b",
+      "AmplifyAppId": "d3showifiypepy"
+    }
+  },
+  "api": {
+    "CommentsAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "createCommentsTableFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "CommentsAPI",
+        "RootUrl": "https://uss6ririzj.execute-api.us-east-1.amazonaws.com/prd",
+        "ApiId": "uss6ririzj"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/api/CommentsAPI-cloudformation-template.json",
+        "logicalId": "apiCommentsAPI"
+      },
+      "lastPushDirHash": "At2cXjzrfxX+EdA8EtXicUQJ0AM="
+    },
+    "EmailServiceAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "EmailServiceFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "EmailServiceAPI",
+        "RootUrl": "https://80hhaeip6h.execute-api.us-east-1.amazonaws.com/prd",
+        "ApiId": "80hhaeip6h"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/api/EmailServiceAPI-cloudformation-template.json",
+        "logicalId": "apiEmailServiceAPI"
+      },
+      "lastPushDirHash": "1c9chLg4c1dP5PyPHb+qJm2S77E="
+    },
+    "MarriageProfilesAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "MarriageProfilesHandler"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "MarriageProfilesAPI",
+        "RootUrl": "https://07am41vb5f.execute-api.us-east-1.amazonaws.com/prd",
+        "ApiId": "07am41vb5f"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/api/MarriageProfilesAPI-cloudformation-template.json",
+        "logicalId": "apiMarriageProfilesAPI"
+      },
+      "lastPushDirHash": "aPboRrRvmNzL8gYB+YVcnXiG0Hg="
+    },
+    "PollyAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "PollyLambda"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "PollyAPI",
+        "RootUrl": "https://su6k150tx0.execute-api.us-east-1.amazonaws.com/prd",
+        "ApiId": "su6k150tx0"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/api/PollyAPI-cloudformation-template.json",
+        "logicalId": "apiPollyAPI"
+      },
+      "lastPushDirHash": "Hls4YQWjtlqJzYlXkjy7DLQoJg8="
+    },
+    "businessAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "businessHandler"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "businessAPI",
+        "RootUrl": "https://6j44j8y1ra.execute-api.us-east-1.amazonaws.com/prd",
+        "ApiId": "6j44j8y1ra"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/api/businessAPI-cloudformation-template.json",
+        "logicalId": "apibusinessAPI"
+      },
+      "lastPushDirHash": "ZOAPmPzIsFQS38eUtcwNiuV2crE="
+    },
+    "chatbot": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "chatbotFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "chatbot",
+        "RootUrl": "https://gys32ivdv4.execute-api.us-east-1.amazonaws.com/prd",
+        "ApiId": "gys32ivdv4"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/api/chatbot-cloudformation-template.json",
+        "logicalId": "apichatbot"
+      },
+      "lastPushDirHash": "DT4s8fdzyRmLXs3eYwH3dB1sKZ4="
+    },
+    "editorAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "editorFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "editorAPI",
+        "RootUrl": "https://pc6mxqn41a.execute-api.us-east-1.amazonaws.com/prd",
+        "ApiId": "pc6mxqn41a"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/api/editorAPI-cloudformation-template.json",
+        "logicalId": "apieditorAPI"
+      },
+      "lastPushDirHash": "yi6i1kBXK0JrtaJwEtR0dgrGtVY="
+    }
+  },
+  "auth": {},
+  "function": {
+    "EmailServiceFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnahLambdaRole54aa35ed-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:EmailServiceFunction-prd",
+        "Name": "EmailServiceFunction-prd",
+        "LambdaExecutionRole": "followingthesunnahLambdaRole54aa35ed-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/EmailServiceFunction-cloudformation-template.json",
+        "logicalId": "functionEmailServiceFunction"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/EmailServiceFunction-50386248545855477973-build.zip"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:52:48.031Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:52:51.065Z",
+      "distZipFilename": "EmailServiceFunction-50386248545855477973-build.zip",
+      "lastPushDirHash": "49SaXPv+kHkVkDzq/Ty/2lz3LkI="
+    },
+    "MarriageProfilesHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "MarriageProfiles"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnahLambdaRole4a6c999b-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:MarriageProfilesHandler-prd",
+        "Name": "MarriageProfilesHandler-prd",
+        "LambdaExecutionRole": "followingthesunnahLambdaRole4a6c999b-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/MarriageProfilesHandler-cloudformation-template.json",
+        "logicalId": "functionMarriageProfilesHandler"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/MarriageProfilesHandler-6a3368526d3465346935-build.zip"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:52:52.715Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:52:53.136Z",
+      "distZipFilename": "MarriageProfilesHandler-6a3368526d3465346935-build.zip",
+      "lastPushDirHash": "EuRhZyxYpe3DssiWm1gb6q10yP0="
+    },
+    "PollyLambda": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnahLambdaRole81423c4d-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:PollyLambda-prd",
+        "Name": "PollyLambda-prd",
+        "LambdaExecutionRole": "followingthesunnahLambdaRole81423c4d-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/PollyLambda-cloudformation-template.json",
+        "logicalId": "functionPollyLambda"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/PollyLambda-4b31343235724f587762-build.zip"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:52:55.065Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:52:57.760Z",
+      "distZipFilename": "PollyLambda-4b31343235724f587762-build.zip",
+      "lastPushDirHash": "mNT0lh9ZjRiwq7A7Z9k+OydENFU="
+    },
+    "businessHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "BusinessTable"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnahLambdaRole68631fe4-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:businessHandler-prd",
+        "Name": "businessHandler-prd",
+        "LambdaExecutionRole": "followingthesunnahLambdaRole68631fe4-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/businessHandler-cloudformation-template.json",
+        "logicalId": "functionbusinessHandler"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:52:59.339Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:52:59.663Z",
+      "distZipFilename": "businessHandler-30524741794d32434667-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/businessHandler-30524741794d32434667-build.zip"
+      },
+      "lastPushDirHash": "gFaiX5lOpUYqV2W6IyDw5H+T+Go="
+    },
+    "chatbotFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnahLambdaRole8ff11a4d-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:chatbotFunction-prd",
+        "Name": "chatbotFunction-prd",
+        "LambdaExecutionRole": "followingthesunnahLambdaRole8ff11a4d-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/chatbotFunction-cloudformation-template.json",
+        "logicalId": "functionchatbotFunction"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:53:00.250Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:53:00.261Z",
+      "distZipFilename": "chatbotFunction-63796f624e6232343350-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/chatbotFunction-63796f624e6232343350-build.zip"
+      },
+      "lastPushDirHash": "jQZZP0RkbUcwgyh8a8oj2wOPkq4="
+    },
+    "createCommentsTableFunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "Comments"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnahLambdaRolebc784bf8-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:createCommentsTableFunction-prd",
+        "Name": "createCommentsTableFunction-prd",
+        "LambdaExecutionRole": "followingthesunnahLambdaRolebc784bf8-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/createCommentsTableFunction-cloudformation-template.json",
+        "logicalId": "functioncreateCommentsTableFunction"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:53:02.415Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:53:04.929Z",
+      "distZipFilename": "createCommentsTableFunction-4c48307a33544c304543-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/createCommentsTableFunction-4c48307a33544c304543-build.zip"
+      },
+      "lastPushDirHash": "iG1w5p61NiN2KzlFA8qo8/BW/kg="
+    },
+    "editorFunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "editorcontent"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnahLambdaRole638263f5-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:editorFunction-prd",
+        "Name": "editorFunction-prd",
+        "LambdaExecutionRole": "followingthesunnahLambdaRole638263f5-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/editorFunction-cloudformation-template.json",
+        "logicalId": "functioneditorFunction"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:53:06.262Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:53:06.577Z",
+      "distZipFilename": "editorFunction-5078684154465034536e-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/editorFunction-5078684154465034536e-build.zip"
+      },
+      "lastPushDirHash": "7VTCtNpFwD77a2PFObxZru5H0xg="
+    },
+    "followingthesunnaha2b3202bCreateAuthChallenge": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnaha2b3202bCreateAuthChallenge-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:followingthesunnaha2b3202bCreateAuthChallenge-prd",
+        "Name": "followingthesunnaha2b3202bCreateAuthChallenge-prd",
+        "LambdaExecutionRole": "followingthesunnaha2b3202bCreateAuthChallenge-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/followingthesunnaha2b3202bCreateAuthChallenge-cloudformation-template.json",
+        "logicalId": "functionfollowingthesunnaha2b3202bCreateAuthChallenge"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/followingthesunnaha2b3202bCreateAuthChallenge-61796665744b6646306d-build.zip"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:53:07.162Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:53:07.172Z",
+      "distZipFilename": "followingthesunnaha2b3202bCreateAuthChallenge-61796665744b6646306d-build.zip",
+      "lastPushDirHash": "GJ2yq3yUP0ofmDy2/M035118B3M="
+    },
+    "followingthesunnaha2b3202bDefineAuthChallenge": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnaha2b3202bDefineAuthChallenge-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:followingthesunnaha2b3202bDefineAuthChallenge-prd",
+        "Name": "followingthesunnaha2b3202bDefineAuthChallenge-prd",
+        "LambdaExecutionRole": "followingthesunnaha2b3202bDefineAuthChallenge-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/followingthesunnaha2b3202bDefineAuthChallenge-cloudformation-template.json",
+        "logicalId": "functionfollowingthesunnaha2b3202bDefineAuthChallenge"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/followingthesunnaha2b3202bDefineAuthChallenge-4b6a397a747647617245-build.zip"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:53:07.698Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:53:07.709Z",
+      "distZipFilename": "followingthesunnaha2b3202bDefineAuthChallenge-4b6a397a747647617245-build.zip",
+      "lastPushDirHash": "FID/p9nPtzTVibdfIYJx+I4KV9s="
+    },
+    "followingthesunnaha2b3202bVerifyAuthChallengeResponse": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::730335296670:role/followingthesunnaha2b3202bVerifyAuthChallengeResponse-prd",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:730335296670:function:followingthesunnaha2b3202bVerifyAuthChallengeResponse-prd",
+        "Name": "followingthesunnaha2b3202bVerifyAuthChallengeResponse-prd",
+        "LambdaExecutionRole": "followingthesunnaha2b3202bVerifyAuthChallengeResponse-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/function/followingthesunnaha2b3202bVerifyAuthChallengeResponse-cloudformation-template.json",
+        "logicalId": "functionfollowingthesunnaha2b3202bVerifyAuthChallengeResponse"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+        "s3Key": "amplify-builds/followingthesunnaha2b3202bVerifyAuthChallengeResponse-2f6f7070394b72724354-build.zip"
+      },
+      "lastBuildTimeStamp": "2024-12-31T06:53:08.412Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-12-31T06:53:08.535Z",
+      "distZipFilename": "followingthesunnaha2b3202bVerifyAuthChallengeResponse-2f6f7070394b72724354-build.zip",
+      "lastPushDirHash": "1Qp5B0zUHXiPjc8dWTqYpQdHSGA="
+    }
+  },
+  "storage": {
+    "BusinessTable": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "output": {
+        "PartitionKeyName": "id",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:dynamodb:us-east-1:730335296670:table/BusinessTable-prd",
+        "StreamArn": "arn:aws:dynamodb:us-east-1:730335296670:table/BusinessTable-prd/stream/2024-11-16T02:40:36.883",
+        "PartitionKeyType": "S",
+        "Name": "BusinessTable-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/storage/BusinessTable-cloudformation-template.json",
+        "logicalId": "storageBusinessTable"
+      },
+      "lastPushDirHash": "g6PfdbTgrGwZe4m+IfSqZZGlQv8="
+    },
+    "Comments": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "output": {
+        "PartitionKeyName": "commentId",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:dynamodb:us-east-1:730335296670:table/Comments-prd",
+        "StreamArn": "arn:aws:dynamodb:us-east-1:730335296670:table/Comments-prd/stream/2024-11-06T05:30:07.306",
+        "PartitionKeyType": "S",
+        "Name": "Comments-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/storage/Comments-cloudformation-template.json",
+        "logicalId": "storageComments"
+      },
+      "lastPushDirHash": "AkHYwS/4SYb+bta3ogVhzZhfObs="
+    },
+    "MarriageProfiles": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "output": {
+        "PartitionKeyName": "user_id",
+        "SortKeyName": "profile_id",
+        "SortKeyType": "S",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:dynamodb:us-east-1:730335296670:table/MarriageProfiles-prd",
+        "StreamArn": "arn:aws:dynamodb:us-east-1:730335296670:table/MarriageProfiles-prd/stream/2024-12-16T21:23:08.326",
+        "PartitionKeyType": "S",
+        "Name": "MarriageProfiles-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/storage/MarriageProfiles-cloudformation-template.json",
+        "logicalId": "storageMarriageProfiles"
+      },
+      "lastPushDirHash": "Ay4qxgEH0ka+0p/Jl9rw+NeO/kA="
+    },
+    "editorcontent": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "output": {
+        "PartitionKeyName": "id",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:dynamodb:us-east-1:730335296670:table/editorcontent-prd",
+        "StreamArn": "arn:aws:dynamodb:us-east-1:730335296670:table/editorcontent-prd/stream/2024-10-30T20:16:36.544",
+        "PartitionKeyType": "S",
+        "Name": "editorcontent-prd"
+      },
+      "lastPushTimeStamp": "2024-12-31T06:54:40.600Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/storage/editorcontent-cloudformation-template.json",
+        "logicalId": "storageeditorcontent"
+      },
+      "lastPushDirHash": "wAlYH72hFHUpnZeElQDeORIFxxE="
+    }
+  }
+}
