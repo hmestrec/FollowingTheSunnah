@@ -75,6 +75,11 @@
         "PollyLambda": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
           "s3Key": "amplify-builds/PollyLambda-4b31343235724f587762-build.zip"
+        },
+        "followingthesunnaha2b3202bDefineAuthChallenge": {},
+        "followingthesunnaha2b3202bCreateAuthChallenge": {},
+        "followingthesunnaha2b3202bVerifyAuthChallengeResponse": {
+          "RECAPTCHASECRET": ""
         }
       },
       "api": {

@@ -102,9 +102,37 @@
   "auth": {
     "followingthesunnaha2b3202b": {
       "customAuth": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "followingthesunnaha2b3202bDefineAuthChallenge",
+          "triggerProvider": "Cognito"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "followingthesunnaha2b3202bCreateAuthChallenge",
+          "triggerProvider": "Cognito"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "followingthesunnaha2b3202bVerifyAuthChallengeResponse",
+          "triggerProvider": "Cognito"
+        }
+      ],
       "frontendAuthConfig": {
-        "mfaConfiguration": "OFF",
+        "mfaConfiguration": "OPTIONAL",
         "mfaTypes": [
           "SMS"
         ],
@@ -125,6 +153,21 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID"
+          ],
+          "category": "auth",
+          "resourceName": "followingthesunnaha2b3202b"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups"
     }
   },
   "function": {
@@ -215,120 +258,21 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_EmailServiceFunction_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "EmailServiceFunction"
-        }
-      ]
     },
-    "AMPLIFY_function_EmailServiceFunction_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "EmailServiceFunction"
-        }
-      ]
+    "followingthesunnaha2b3202bCreateAuthChallenge": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     },
-    "AMPLIFY_function_MarriageProfilesHandler_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "MarriageProfilesHandler"
-        }
-      ]
+    "followingthesunnaha2b3202bDefineAuthChallenge": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     },
-    "AMPLIFY_function_MarriageProfilesHandler_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "MarriageProfilesHandler"
-        }
-      ]
-    },
-    "AMPLIFY_function_PollyLambda_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "PollyLambda"
-        }
-      ]
-    },
-    "AMPLIFY_function_PollyLambda_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "PollyLambda"
-        }
-      ]
-    },
-    "AMPLIFY_function_businessHandler_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "businessHandler"
-        }
-      ]
-    },
-    "AMPLIFY_function_businessHandler_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "businessHandler"
-        }
-      ]
-    },
-    "AMPLIFY_function_chatbotFunction_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "chatbotFunction"
-        }
-      ]
-    },
-    "AMPLIFY_function_chatbotFunction_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "chatbotFunction"
-        }
-      ]
-    },
-    "AMPLIFY_function_createCommentsTableFunction_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "createCommentsTableFunction"
-        }
-      ]
-    },
-    "AMPLIFY_function_createCommentsTableFunction_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "createCommentsTableFunction"
-        }
-      ]
-    },
-    "AMPLIFY_function_editorFunction_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "editorFunction"
-        }
-      ]
-    },
-    "AMPLIFY_function_editorFunction_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "editorFunction"
-        }
-      ]
+    "followingthesunnaha2b3202bVerifyAuthChallengeResponse": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "storage": {
