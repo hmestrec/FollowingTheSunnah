@@ -103,6 +103,22 @@
     font-size: 0.9rem;
     margin-top: 10px;
   }
+
+  .googleButton {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .googleButton:hover {
+    background-color: #357ae8;
+  }
+  
   
   /* Responsive */
   @media (max-width: 768px) {
