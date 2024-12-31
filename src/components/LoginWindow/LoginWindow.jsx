@@ -63,17 +63,6 @@ const LoginWindow = ({ onLoginSuccess }) => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    setError(null);
-    try {
-      const user = await Auth.federatedSignIn({ provider: 'Google' });
-      if (onLoginSuccess) onLoginSuccess(user);
-    } catch (err) {
-      console.error('Google Sign-In error:', err);
-      setError('Failed to sign in with Google.');
-    }
-  };
-
   return (
     <div className={styles.loginWindow}>
       <h2 className={styles.title}>{isConfirming ? 'Confirm Sign-Up' : isSignUp ? 'Sign Up' : 'Login'}</h2>
@@ -161,9 +150,6 @@ const LoginWindow = ({ onLoginSuccess }) => {
           </button>
         </form>
       )}
-      <button onClick={handleGoogleSignIn} className={styles.googleButton}>
-        Sign In with Google
-      </button>
       {error && <p className={styles.errorMessage}>{error}</p>}
       <p className={styles.toggleText}>
         {isConfirming ? null : isSignUp ? (

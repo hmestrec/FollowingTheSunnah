@@ -6,6 +6,33 @@ import awsExports from '../../aws-exports';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './CreateProfile.module.css';
 
+// Utility function to include JWT token in API requests
+const fetchWithAuth = async (url, options = {}) => {
+  try {
+    const session = await Auth.currentSession();
+    const token = session.getIdToken().getJwtToken();
+
+    if (!token) throw new Error('JWT Token is missing');
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('API Response Error:', errorData);
+      throw new Error(errorData.error || 'Failed to fetch data');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error in fetchWithAuth:', error.message || error);
+    throw error;
+  }
+};
+
 const MarriageProfiles = () => {
   const [userId, setUserId] = useState('');
   const [profileId, setProfileId] = useState('');
@@ -62,29 +89,20 @@ const MarriageProfiles = () => {
     if (!apiUrl || !userId) return;
 
     try {
-      const response = await fetch(`${apiUrl}/profiles/${userId}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setProfileId(data.profile_id);
-        setName(data.name);
-        setAge(data.age);
-        setGender(data.gender);
-        setLocation(data.location);
-        setDescription(data.description);
-        setBio(data.bio || {});
-        setPreferences(data.preferences || {});
-        setGoals(data.goals || {});
-        setDeen(data.deen || {});
-        setIsEditing(true);
-      } else {
-        toast.info('No profile found.');
-      }
+      const data = await fetchWithAuth(`${apiUrl}/profiles/${userId}`);
+      setProfileId(data.profile_id);
+      setName(data.name);
+      setAge(data.age);
+      setGender(data.gender);
+      setLocation(data.location);
+      setDescription(data.description);
+      setBio(data.bio || {});
+      setPreferences(data.preferences || {});
+      setGoals(data.goals || {});
+      setDeen(data.deen || {});
+      setIsEditing(true);
     } catch (error) {
-      console.error('Error fetching profiles:', error);
+      toast.info('No profile found or failed to fetch data.');
     }
   };
 
@@ -134,21 +152,13 @@ const MarriageProfiles = () => {
     };
 
     try {
-      const response = await fetch(url, {
+      const data = await fetchWithAuth(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-
-      if (response.ok) {
-        toast.success(isEditing ? 'Profile updated successfully' : 'Profile created successfully');
-        fetchProfiles();
-      } else {
-        const errorData = await response.json();
-        toast.error(`Error: ${errorData.error || 'Failed to save profile'}`);
-      }
+      toast.success(isEditing ? 'Profile updated successfully' : 'Profile created successfully');
+      fetchProfiles();
     } catch (error) {
-      console.error('Error saving profile:', error);
       toast.error('An error occurred while saving the profile.');
     }
   };
@@ -225,259 +235,35 @@ const MarriageProfiles = () => {
         <fieldset className={styles.fieldset}>
           <legend className={styles.legend}>Bio</legend>
           <label className={styles.label}>
-            Country of Origin:
+            From:
             <input
               type="text"
               className={styles.input}
               value={bio.from}
               onChange={(e) => setBio({ ...bio, from: e.target.value })}
-              placeholder="e.g., Cuba, USA"
+              placeholder="Where are you from?"
             />
           </label>
-          <label className={styles.label}>
-            Current City:
-            <input
-              type="text"
-              className={styles.input}
-              value={bio.currentCity}
-              onChange={(e) => setBio({ ...bio, currentCity: e.target.value })}
-              placeholder="e.g., Houston, TX"
-            />
-          </label>
-          <label className={styles.label}>
-            Revert:
-            <input
-              type="checkbox"
-              checked={bio.revert}
-              onChange={(e) => setBio({ ...bio, revert: e.target.checked })}
-            />
-          </label>
-          <label className={styles.label}>
-            Occupation:
-            <input
-              type="text"
-              className={styles.input}
-              value={bio.occupation}
-              onChange={(e) => setBio({ ...bio, occupation: e.target.value })}
-              placeholder="e.g., CNC Programmer/Web Developer"
-            />
-          </label>
-          <label className={styles.label}>
-            Hobbies:
-            <input
-              type="text"
-              className={styles.input}
-              value={bio.hobbies}
-              onChange={(e) => setBio({ ...bio, hobbies: e.target.value })}
-              placeholder="e.g., Running/Camping"
-            />
-          </label>
+
         </fieldset>
 
-{/* Preferences Section */}
-<fieldset className={styles.fieldset}>
-  <legend className={styles.legend}>Preferences</legend>
-  <label className={styles.label}>
-    Hijab Preference:
-    <select
-      className={styles.select}
-      value={preferences.hijab}
-      onChange={(e) => setPreferences({ ...preferences, hijab: e.target.value })}
-    >
-      <option value="">Select</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-      <option value="Open">Open</option>
-    </select>
-  </label>
-  <label className={styles.label}>
-    Makeup Preference:
-    <select
-      className={styles.select}
-      value={preferences.makeup}
-      onChange={(e) => setPreferences({ ...preferences, makeup: e.target.value })}
-    >
-      <option value="">Select</option>
-      <option value="Minimal">Minimal</option>
-      <option value="No Preference">No Preference</option>
-      <option value="None">None</option>
-    </select>
-  </label>
-  <label className={styles.label}>
-    Ambition to Seek Knowledge:
-    <input
-      type="text"
-      className={styles.input}
-      value={preferences.ambitionToSeekKnowledge}
-      onChange={(e) =>
-        setPreferences({ ...preferences, ambitionToSeekKnowledge: e.target.value })
-      }
-      placeholder="Describe their ambition for knowledge"
-    />
-  </label>
-  <label className={styles.label}>
-    Personality Traits:
-    <input
-      type="text"
-      className={styles.input}
-      value={preferences.personalityTraits}
-      onChange={(e) =>
-        setPreferences({ ...preferences, personalityTraits: e.target.value })
-      }
-      placeholder="e.g., Kind, Supportive"
-    />
-  </label>
-  <label className={styles.label}>
-    Willing to Work:
-    <select
-      className={styles.select}
-      value={preferences.willingToWork}
-      onChange={(e) =>
-        setPreferences({ ...preferences, willingToWork: e.target.value })
-      }
-    >
-      <option value="">Select</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-      <option value="Open to Discuss">Open to Discuss</option>
-    </select>
-  </label>
-  <label className={styles.label}>
-    Wants Kids:
-    <select
-      className={styles.select}
-      value={preferences.wantsKids}
-      onChange={(e) => setPreferences({ ...preferences, wantsKids: e.target.value })}
-    >
-      <option value="">Select</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-      <option value="Maybe">Maybe</option>
-    </select>
-  </label>
-  <label className={styles.label}>
-    Cooks:
-    <select
-      className={styles.select}
-      value={preferences.cooks}
-      onChange={(e) => setPreferences({ ...preferences, cooks: e.target.value })}
-    >
-      <option value="">Select</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-      <option value="Learning">Learning</option>
-    </select>
-  </label>
-  <label className={styles.label}>
-    Cultural Background Preference:
-    <input
-      type="text"
-      className={styles.input}
-      value={preferences.culturalBackground}
-      onChange={(e) =>
-        setPreferences({ ...preferences, culturalBackground: e.target.value })
-      }
-      placeholder="e.g., Arab, Hispanic"
-    />
-  </label>
-</fieldset>
+        {/* Preferences */}
+        <fieldset className={styles.fieldset}>
+          <legend className={styles.legend}>Preferences</legend>
+          {/* Add fields for Preferences */}
+        </fieldset>
 
-{/* Goals Section */}
-<fieldset className={styles.fieldset}>
-  <legend className={styles.legend}>Goals</legend>
-  <label className={styles.label}>
-    Kids Preference:
-    <select
-      className={styles.select}
-      value={goals.kidsPreference}
-      onChange={(e) => setGoals({ ...goals, kidsPreference: e.target.value })}
-    >
-      <option value="">Select</option>
-      <option value="None">None</option>
-      <option value="Few">Few</option>
-      <option value="Many">Many</option>
-    </select>
-  </label>
-  <label className={styles.label}>
-    Family Vision:
-    <textarea
-      className={styles.textarea}
-      value={goals.familyVision}
-      onChange={(e) => setGoals({ ...goals, familyVision: e.target.value })}
-      placeholder="Describe your vision for a family"
-    />
-  </label>
-  <label className={styles.label}>
-    Career Goals:
-    <input
-      type="text"
-      className={styles.input}
-      value={goals.career}
-      onChange={(e) => setGoals({ ...goals, career: e.target.value })}
-      placeholder="e.g., Cybersecurity"
-    />
-  </label>
-  <label className={styles.label}>
-    Future Plans:
-    <textarea
-      className={styles.textarea}
-      value={goals.futurePlans}
-      onChange={(e) => setGoals({ ...goals, futurePlans: e.target.value })}
-      placeholder="Describe your plans for the future"
-    />
-  </label>
-</fieldset>
+        {/* Goals */}
+        <fieldset className={styles.fieldset}>
+          <legend className={styles.legend}>Goals</legend>
+          {/* Add fields for Goals */}
+        </fieldset>
 
-{/* Deen Section */}
-<fieldset className={styles.fieldset}>
-  <legend className={styles.legend}>Deen</legend>
-  <label className={styles.label}>
-    Knowledge Seeking:
-    <textarea
-      className={styles.textarea}
-      value={deen.knowledgeSeeking}
-      onChange={(e) => setDeen({ ...deen, knowledgeSeeking: e.target.value })}
-      placeholder="Describe your approach to seeking knowledge"
-    />
-  </label>
-  <label className={styles.label}>
-    Relationship with Allah:
-    <textarea
-      className={styles.textarea}
-      value={deen.relationshipWithAllah}
-      onChange={(e) => setDeen({ ...deen, relationshipWithAllah: e.target.value })}
-      placeholder="Describe your relationship with Allah"
-    />
-  </label>
-  <label className={styles.label}>
-    Prayer Habits:
-    <textarea
-      className={styles.textarea}
-      value={deen.prayerHabits}
-      onChange={(e) => setDeen({ ...deen, prayerHabits: e.target.value })}
-      placeholder="Describe your prayer habits"
-    />
-  </label>
-  <label className={styles.label}>
-    Role as a Father:
-    <textarea
-      className={styles.textarea}
-      value={deen.roleAsFather}
-      onChange={(e) => setDeen({ ...deen, roleAsFather: e.target.value })}
-      placeholder="Describe the type of father you want to be"
-    />
-  </label>
-  <label className={styles.label}>
-    Views on Islamic Education:
-    <textarea
-      className={styles.textarea}
-      value={deen.viewsOnIslamicEducation}
-      onChange={(e) => setDeen({ ...deen, viewsOnIslamicEducation: e.target.value })}
-      placeholder="Describe your views on Islamic education"
-    />
-  </label>
-</fieldset>
-
+        {/* Deen */}
+        <fieldset className={styles.fieldset}>
+          <legend className={styles.legend}>Deen</legend>
+          {/* Add fields for Deen */}
+        </fieldset>
 
         <button type="submit" className={styles.saveButton}>
           {isEditing ? 'Update Profile' : 'Create Profile'}

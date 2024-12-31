@@ -11,11 +11,19 @@ const {
 const express = require('express');
 const bodyParser = require('body-parser');
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+const jwksClient = require('jwks-rsa');
+const jwt = require('jsonwebtoken');
 
+// Initialize DynamoDB
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
+// DynamoDB Table Name
 const tableName = process.env.ENV ? `MarriageProfiles-${process.env.ENV}` : 'MarriageProfiles-prd';
+
+// Cognito JWKS URL
+const jwksUri = `https://cognito-idp.${process.env.TABLE_REGION}.amazonaws.com/${process.env.USER_POOL_ID}/.well-known/jwks.json`;
+const client = jwksClient({ jwksUri });
 
 const app = express();
 app.use(bodyParser.json());
@@ -24,12 +32,39 @@ app.use(awsServerlessExpressMiddleware.eventContext());
 // Enable CORS
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
 
+// Authentication Middleware
+const getKey = (header, callback) => {
+  client.getSigningKey(header.kid, (err, key) => {
+    if (err) {
+      return callback(err);
+    }
+    const signingKey = key.getPublicKey();
+    callback(null, signingKey);
+  });
+};
+
+const authenticate = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1]; // Bearer <token>
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized. Token is missing.' });
+  }
+
+  jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
+    if (err) {
+      console.error('JWT verification failed:', err.message);
+      return res.status(401).json({ error: 'Unauthorized. Invalid token.' });
+    }
+    req.user = decoded; // Attach user details to the request
+    next();
+  });
+};
+
 /************************************
- * HTTP GET: Fetch ALL profiles
+ * HTTP GET: Fetch ALL profiles (No auth required)
  ************************************/
 app.get('/profiles', async (req, res) => {
   const params = {
@@ -47,7 +82,7 @@ app.get('/profiles', async (req, res) => {
 });
 
 /************************************
- * HTTP GET: Fetch profile by user_id
+ * HTTP GET: Fetch profile by user_id (No auth required)
  ************************************/
 app.get('/profiles/:user_id', async (req, res) => {
   const { user_id } = req.params;
@@ -74,9 +109,9 @@ app.get('/profiles/:user_id', async (req, res) => {
 });
 
 /************************************
- * HTTP POST: Create a new profile
+ * HTTP POST: Create a new profile (Auth required)
  ************************************/
-app.post('/profiles', async (req, res) => {
+app.post('/profiles', authenticate, async (req, res) => {
   const {
     user_id,
     profile_id,
@@ -124,9 +159,9 @@ app.post('/profiles', async (req, res) => {
 });
 
 /************************************
- * HTTP PUT: Update a profile
+ * HTTP PUT: Update a profile (Auth required)
  ************************************/
-app.put('/profiles/:user_id', async (req, res) => {
+app.put('/profiles/:user_id', authenticate, async (req, res) => {
   const { user_id } = req.params;
   const { name, age, gender, location, description, preferences, bio, goals, deen, profile_id } = req.body;
 
@@ -178,9 +213,9 @@ app.put('/profiles/:user_id', async (req, res) => {
 });
 
 /************************************
- * HTTP DELETE: Delete a profile by user_id and profile_id
+ * HTTP DELETE: Delete a profile (Auth required)
  ************************************/
-app.delete('/profiles', async (req, res) => {
+app.delete('/profiles', authenticate, async (req, res) => {
   const { user_id, profile_id } = req.body;
 
   if (!user_id || !profile_id) {
