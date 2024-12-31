@@ -36,16 +36,6 @@ export type AmplifyDependentResourcesAttributes = {
       "RootUrl": "string"
     }
   },
-  "auth": {
-    "followingthesunnaha2b3202b": {
-      "AppClientID": "string",
-      "AppClientIDWeb": "string",
-      "CreatedSNSRole": "string",
-      "UserPoolArn": "string",
-      "UserPoolId": "string",
-      "UserPoolName": "string"
-    }
-  },
   "function": {
     "EmailServiceFunction": {
       "Arn": "string",

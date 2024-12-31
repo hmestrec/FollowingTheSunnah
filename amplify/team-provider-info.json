@@ -40,12 +40,10 @@
       "UnauthRoleName": "amplify-followingthesunnah-prd-647c3-unauthRole",
       "StackName": "amplify-followingthesunnah-prd-647c3",
       "StackId": "arn:aws:cloudformation:us-east-1:730335296670:stack/amplify-followingthesunnah-prd-647c3/a28752f0-96fb-11ef-a135-0e3d474ca71b",
-      "AmplifyAppId": "d3showifiypepy"
+      "AmplifyAppId": "d3showifiypepy",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-followingthesunnah-prd-647c3-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
-      "auth": {
-        "followingthesunnaha2b3202b": {}
-      },
       "function": {
         "editorFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
@@ -76,10 +74,18 @@
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
           "s3Key": "amplify-builds/PollyLambda-4b31343235724f587762-build.zip"
         },
-        "followingthesunnaha2b3202bDefineAuthChallenge": {},
-        "followingthesunnaha2b3202bCreateAuthChallenge": {},
+        "followingthesunnaha2b3202bDefineAuthChallenge": {
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/followingthesunnaha2b3202bDefineAuthChallenge-4b6a397a747647617245-build.zip"
+        },
+        "followingthesunnaha2b3202bCreateAuthChallenge": {
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/followingthesunnaha2b3202bCreateAuthChallenge-61796665744b6646306d-build.zip"
+        },
         "followingthesunnaha2b3202bVerifyAuthChallengeResponse": {
-          "RECAPTCHASECRET": ""
+          "RECAPTCHASECRET": "",
+          "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
+          "s3Key": "amplify-builds/followingthesunnaha2b3202bVerifyAuthChallengeResponse-2f6f7070394b72724354-build.zip"
         }
       },
       "api": {
