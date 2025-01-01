@@ -96,6 +96,33 @@
     transform: translateX(30px);
 }
 
+.input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-top: 15px;
+    box-sizing: border-box;
+  }
+  
+  .errorMessage {
+    color: var(--error-color);
+    font-weight: bold;
+    margin-top: 15px;
+  }
+  
+  /* MFA Setup Styles */
+  .mfaSetup {
+    text-align: center;
+  }
+  
+  .mfaSetup img {
+    margin: 10px 0;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+  }
+
 /* Responsive Styling for Smaller Screens */
 @media (max-width: 768px) {
     .settingsContainer {

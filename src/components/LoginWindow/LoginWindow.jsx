@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Auth } from '@aws-amplify/auth';
-import styles from './LoginWindow.module.css';
+import React, { useState } from "react";
+import { Auth } from "@aws-amplify/auth";
+import styles from "./LoginWindow.module.css";
 
 const LoginWindow = ({ onLoginSuccess }) => {
   const [error, setError] = useState(null);
@@ -8,9 +8,12 @@ const LoginWindow = ({ onLoginSuccess }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isResettingPassword, setIsResettingPassword] = useState(false);
-  const [email, setEmail] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false); // Fix: Added state for password visibility
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // Fix: Added state for confirm password visibility
+  const [isMFARequired, setIsMFARequired] = useState(false);
+  const [authenticatedUser, setAuthenticatedUser] = useState(null);
+  const [mfaCode, setMfaCode] = useState("");
+  const [email, setEmail] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [resetStep, setResetStep] = useState(1);
 
   const handleSignIn = async (email, password) => {
@@ -18,11 +21,39 @@ const LoginWindow = ({ onLoginSuccess }) => {
     setIsSubmitting(true);
     try {
       const user = await Auth.signIn(email, password);
-      if (onLoginSuccess) onLoginSuccess(user);
+
+      if (user.challengeName === "SOFTWARE_TOKEN_MFA") {
+        setAuthenticatedUser(user); // Save user for MFA verification
+        setIsMFARequired(true);
+        setError("MFA required. Please enter your code.");
+      } else {
+        if (onLoginSuccess) onLoginSuccess(user);
+        setError(null);
+      }
+    } catch (err) {
+      console.error("Sign-in error:", err);
+      setError(err.message || "Invalid login credentials.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleVerifyMFA = async (mfaCode) => {
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      const verifiedUser = await Auth.confirmSignIn(
+        authenticatedUser,
+        mfaCode,
+        "SOFTWARE_TOKEN_MFA"
+      );
+      if (onLoginSuccess) onLoginSuccess(verifiedUser);
+      setIsMFARequired(false);
+      setAuthenticatedUser(null);
       setError(null);
     } catch (err) {
-      console.error('Sign-in error:', err);
-      setError('Invalid login credentials.');
+      console.error("MFA verification error:", err);
+      setError(err.message || "Invalid MFA code. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -31,7 +62,7 @@ const LoginWindow = ({ onLoginSuccess }) => {
   const handleSignUp = async (email, password, confirmPassword) => {
     setError(null);
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError("Passwords do not match.");
       return;
     }
 
@@ -41,10 +72,10 @@ const LoginWindow = ({ onLoginSuccess }) => {
       setEmail(email);
       setIsSignUp(false);
       setIsConfirming(true);
-      setError('Account created! Please check your email for the confirmation code.');
+      setError("Account created! Please check your email for the confirmation code.");
     } catch (err) {
-      console.error('Sign-up error:', err);
-      setError(err.message || 'Failed to create an account.');
+      console.error("Sign-up error:", err);
+      setError(err.message || "Failed to create an account.");
     } finally {
       setIsSubmitting(false);
     }
@@ -56,10 +87,10 @@ const LoginWindow = ({ onLoginSuccess }) => {
     try {
       await Auth.confirmSignUp(email, code);
       setIsConfirming(false);
-      setError('Account confirmed! You can now log in.');
+      setError("Account confirmed! You can now log in.");
     } catch (err) {
-      console.error('Confirmation error:', err);
-      setError(err.message || 'Failed to confirm account.');
+      console.error("Confirmation error:", err);
+      setError(err.message || "Failed to confirm account.");
     } finally {
       setIsSubmitting(false);
     }
@@ -68,17 +99,17 @@ const LoginWindow = ({ onLoginSuccess }) => {
   const handleForgotPassword = async (email) => {
     setError(null);
     if (!email) {
-      setError('Email cannot be empty.');
+      setError("Email cannot be empty.");
       return;
     }
     setIsSubmitting(true);
     try {
       await Auth.forgotPassword(email);
       setResetStep(2);
-      setError('Password reset code sent! Check your email.');
+      setError("Password reset code sent! Check your email.");
     } catch (err) {
-      console.error('Forgot password error:', err);
-      setError(err.message || 'Failed to initiate password reset.');
+      console.error("Forgot password error:", err);
+      setError(err.message || "Failed to initiate password reset.");
     } finally {
       setIsSubmitting(false);
     }
@@ -91,10 +122,10 @@ const LoginWindow = ({ onLoginSuccess }) => {
       await Auth.forgotPasswordSubmit(email, code, newPassword);
       setIsResettingPassword(false);
       setResetStep(1);
-      setError('Password reset successful! You can now log in.');
+      setError("Password reset successful! You can now log in.");
     } catch (err) {
-      console.error('Reset password error:', err);
-      setError(err.message || 'Failed to reset password.');
+      console.error("Reset password error:", err);
+      setError(err.message || "Failed to reset password.");
     } finally {
       setIsSubmitting(false);
     }
@@ -103,18 +134,41 @@ const LoginWindow = ({ onLoginSuccess }) => {
   return (
     <div className={styles.loginWindow}>
       <h2 className={styles.title}>
-        {isResettingPassword
+        {isMFARequired
+          ? "Verify MFA"
+          : isResettingPassword
           ? resetStep === 1
-            ? 'Forgot Password'
-            : 'Reset Password'
+            ? "Forgot Password"
+            : "Reset Password"
           : isConfirming
-          ? 'Confirm Sign-Up'
+          ? "Confirm Sign-Up"
           : isSignUp
-          ? 'Sign Up'
-          : 'Login'}
+          ? "Sign Up"
+          : "Login"}
       </h2>
 
-      {isResettingPassword ? (
+      {isMFARequired ? (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleVerifyMFA(mfaCode);
+          }}
+          className={styles.form}
+        >
+          <input
+            type="text"
+            placeholder="Enter MFA Code"
+            value={mfaCode}
+            onChange={(e) => setMfaCode(e.target.value)}
+            required
+            disabled={isSubmitting}
+            className={styles.input}
+          />
+          <button type="submit" disabled={isSubmitting} className={styles.button}>
+            {isSubmitting ? "Verifying..." : "Verify Code"}
+          </button>
+        </form>
+      ) : isResettingPassword ? (
         resetStep === 1 ? (
           <form
             onSubmit={(e) => {
@@ -134,7 +188,7 @@ const LoginWindow = ({ onLoginSuccess }) => {
               className={styles.input}
             />
             <button type="submit" disabled={isSubmitting} className={styles.button}>
-              {isSubmitting ? 'Submitting...' : 'Send Reset Code'}
+              {isSubmitting ? "Submitting..." : "Send Reset Code"}
             </button>
           </form>
         ) : (
@@ -164,7 +218,7 @@ const LoginWindow = ({ onLoginSuccess }) => {
               className={styles.input}
             />
             <button type="submit" disabled={isSubmitting} className={styles.button}>
-              {isSubmitting ? 'Resetting...' : 'Reset Password'}
+              {isSubmitting ? "Resetting..." : "Reset Password"}
             </button>
           </form>
         )
@@ -186,7 +240,7 @@ const LoginWindow = ({ onLoginSuccess }) => {
             className={styles.input}
           />
           <button type="submit" disabled={isSubmitting} className={styles.button}>
-            {isSubmitting ? 'Confirming...' : 'Confirm'}
+            {isSubmitting ? "Confirming..." : "Confirm"}
           </button>
         </form>
       ) : (
@@ -215,7 +269,7 @@ const LoginWindow = ({ onLoginSuccess }) => {
           />
           <div className={styles.passwordContainer}>
             <input
-              type={passwordVisible ? 'text' : 'password'}
+              type={passwordVisible ? "text" : "password"}
               name="password"
               placeholder="Password"
               required
@@ -226,13 +280,13 @@ const LoginWindow = ({ onLoginSuccess }) => {
               className={styles.togglePassword}
               onClick={() => setPasswordVisible(!passwordVisible)}
             >
-              {passwordVisible ? '🙈' : '👁️'}
+              {passwordVisible ? "🙈" : "👁️"}
             </span>
           </div>
           {isSignUp && (
             <div className={styles.passwordContainer}>
               <input
-                type={confirmPasswordVisible ? 'text' : 'password'}
+                type={confirmPasswordVisible ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm Password"
                 required
@@ -243,12 +297,12 @@ const LoginWindow = ({ onLoginSuccess }) => {
                 className={styles.togglePassword}
                 onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
               >
-                {confirmPasswordVisible ? '🙈' : '👁️'}
+                {confirmPasswordVisible ? "🙈" : "👁️"}
               </span>
             </div>
           )}
           <button type="submit" disabled={isSubmitting} className={styles.button}>
-            {isSubmitting ? 'Submitting...' : isSignUp ? 'Sign Up' : 'Login'}
+            {isSubmitting ? "Submitting..." : isSignUp ? "Sign Up" : "Login"}
           </button>
         </form>
       )}
@@ -258,7 +312,7 @@ const LoginWindow = ({ onLoginSuccess }) => {
         <p className={styles.toggleText}>
           {isSignUp ? (
             <>
-              Already have an account?{' '}
+              Already have an account?{" "}
               <button
                 className={styles.toggleAuth}
                 onClick={() => setIsSignUp(false)}
@@ -269,7 +323,7 @@ const LoginWindow = ({ onLoginSuccess }) => {
             </>
           ) : (
             <>
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <button
                 className={styles.toggleAuth}
                 onClick={() => setIsSignUp(true)}
