@@ -68,29 +68,37 @@ const AllProfilesPage = () => {
   const handleDeleteProfile = async (user_id, profile_id) => {
     const apiUrl = getApiUrl();
     if (!apiUrl || !isAdmin) {
-      toast.error('Unauthorized action.');
+      toast.error("Unauthorized action.");
       return;
     }
-
+  
     try {
+      // Get the current session and access token
+      const session = await Auth.currentSession();
+      const token = session.getIdToken().getJwtToken(); // Fetch the ID token
+  
       const response = await fetch(`${apiUrl}/profiles`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Add the Authorization header
+        },
         body: JSON.stringify({ user_id, profile_id }),
       });
-
+  
       if (response.ok) {
-        toast.success('Profile deleted successfully.');
-        fetchAllProfiles();
+        toast.success("Profile deleted successfully.");
+        fetchAllProfiles(); // Refresh profiles
       } else {
         const errorData = await response.json();
-        toast.error(`Error: ${errorData.error || 'Failed to delete profile.'}`);
+        toast.error(`Error: ${errorData.error || "Failed to delete profile."}`);
       }
     } catch (error) {
-      console.error('Error deleting profile:', error);
-      toast.error('Error deleting profile.');
+      console.error("Error deleting profile:", error);
+      toast.error("Error deleting profile.");
     }
   };
+  
 
   useEffect(() => {
     fetchUserDetails();
