@@ -7,9 +7,11 @@ const LoginWindow = ({ onLoginSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [email, setEmail] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false); // Fix: Added state for password visibility
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // Fix: Added state for confirm password visibility
+  const [resetStep, setResetStep] = useState(1);
 
   const handleSignIn = async (email, password) => {
     setError(null);
@@ -63,10 +65,131 @@ const LoginWindow = ({ onLoginSuccess }) => {
     }
   };
 
+  const handleForgotPassword = async (email) => {
+    setError(null);
+    if (!email) {
+      setError('Email cannot be empty.');
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      await Auth.forgotPassword(email);
+      setResetStep(2);
+      setError('Password reset code sent! Check your email.');
+    } catch (err) {
+      console.error('Forgot password error:', err);
+      setError(err.message || 'Failed to initiate password reset.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleResetPassword = async (code, newPassword) => {
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      await Auth.forgotPasswordSubmit(email, code, newPassword);
+      setIsResettingPassword(false);
+      setResetStep(1);
+      setError('Password reset successful! You can now log in.');
+    } catch (err) {
+      console.error('Reset password error:', err);
+      setError(err.message || 'Failed to reset password.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className={styles.loginWindow}>
-      <h2 className={styles.title}>{isConfirming ? 'Confirm Sign-Up' : isSignUp ? 'Sign Up' : 'Login'}</h2>
-      {!isConfirming ? (
+      <h2 className={styles.title}>
+        {isResettingPassword
+          ? resetStep === 1
+            ? 'Forgot Password'
+            : 'Reset Password'
+          : isConfirming
+          ? 'Confirm Sign-Up'
+          : isSignUp
+          ? 'Sign Up'
+          : 'Login'}
+      </h2>
+
+      {isResettingPassword ? (
+        resetStep === 1 ? (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const email = e.target.email.value;
+              setEmail(email);
+              handleForgotPassword(email);
+            }}
+            className={styles.form}
+          >
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+              disabled={isSubmitting}
+              className={styles.input}
+            />
+            <button type="submit" disabled={isSubmitting} className={styles.button}>
+              {isSubmitting ? 'Submitting...' : 'Send Reset Code'}
+            </button>
+          </form>
+        ) : (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const code = e.target.code.value;
+              const newPassword = e.target.newPassword.value;
+              handleResetPassword(code, newPassword);
+            }}
+            className={styles.form}
+          >
+            <input
+              type="text"
+              name="code"
+              placeholder="Enter confirmation code"
+              required
+              disabled={isSubmitting}
+              className={styles.input}
+            />
+            <input
+              type="password"
+              name="newPassword"
+              placeholder="Enter new password"
+              required
+              disabled={isSubmitting}
+              className={styles.input}
+            />
+            <button type="submit" disabled={isSubmitting} className={styles.button}>
+              {isSubmitting ? 'Resetting...' : 'Reset Password'}
+            </button>
+          </form>
+        )
+      ) : isConfirming ? (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const code = e.target.code.value;
+            handleConfirmSignUp(email, code);
+          }}
+          className={styles.form}
+        >
+          <input
+            type="text"
+            name="code"
+            placeholder="Enter confirmation code"
+            required
+            disabled={isSubmitting}
+            className={styles.input}
+          />
+          <button type="submit" disabled={isSubmitting} className={styles.button}>
+            {isSubmitting ? 'Confirming...' : 'Confirm'}
+          </button>
+        </form>
+      ) : (
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -125,60 +248,48 @@ const LoginWindow = ({ onLoginSuccess }) => {
             </div>
           )}
           <button type="submit" disabled={isSubmitting} className={styles.button}>
-            {isSubmitting ? (isSignUp ? 'Signing up...' : 'Logging in...') : isSignUp ? 'Sign Up' : 'Sign In'}
-          </button>
-        </form>
-      ) : (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const code = e.target.code.value;
-            handleConfirmSignUp(email, code);
-          }}
-          className={styles.form}
-        >
-          <input
-            type="text"
-            name="code"
-            placeholder="Enter confirmation code"
-            required
-            disabled={isSubmitting}
-            className={styles.input}
-          />
-          <button type="submit" disabled={isSubmitting} className={styles.button}>
-            {isSubmitting ? 'Confirming...' : 'Confirm'}
+            {isSubmitting ? 'Submitting...' : isSignUp ? 'Sign Up' : 'Login'}
           </button>
         </form>
       )}
       {error && <p className={styles.errorMessage}>{error}</p>}
-      <p className={styles.toggleText}>
-        {isConfirming ? null : isSignUp ? (
-          <>
-            Already have an account?{' '}
-            <button
-              className={styles.toggleAuth}
-              onClick={() => {
-                setIsSignUp(false);
-                setIsConfirming(false);
-              }}
-              disabled={isSubmitting}
-            >
-              Log In
-            </button>
-          </>
-        ) : (
-          <>
-            Don't have an account?{' '}
-            <button
-              className={styles.toggleAuth}
-              onClick={() => setIsSignUp(true)}
-              disabled={isSubmitting}
-            >
-              Sign Up
-            </button>
-          </>
-        )}
-      </p>
+
+      {!isResettingPassword && (
+        <p className={styles.toggleText}>
+          {isSignUp ? (
+            <>
+              Already have an account?{' '}
+              <button
+                className={styles.toggleAuth}
+                onClick={() => setIsSignUp(false)}
+                disabled={isSubmitting}
+              >
+                Log In
+              </button>
+            </>
+          ) : (
+            <>
+              Don't have an account?{' '}
+              <button
+                className={styles.toggleAuth}
+                onClick={() => setIsSignUp(true)}
+                disabled={isSubmitting}
+              >
+                Sign Up
+              </button>
+            </>
+          )}
+        </p>
+      )}
+      {!isResettingPassword && !isSignUp && !isConfirming && (
+        <button
+          className={styles.toggleAuth}
+          onClick={() => setIsResettingPassword(true)}
+          disabled={isSubmitting}
+        >
+          Forgot Password?
+        </button>
+      )}
     </div>
   );
 };

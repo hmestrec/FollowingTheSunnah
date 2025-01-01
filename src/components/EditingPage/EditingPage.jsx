@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import { ToastContainer, toast } from 'react-toastify';
 import { Auth } from '@aws-amplify/auth';
-import awsconfig from '../../aws-exports'; // Ensure this is correctly imported at the top
+import awsconfig from '../../aws-exports';
 import 'react-quill/dist/quill.snow.css';
 import 'react-toastify/dist/ReactToastify.css';
-import styles from './EditingPage.module.css'; // Import the CSS module
-
+import styles from './EditingPage.module.css';
 
 const EditingPage = ({ signOut }) => {
     const [content, setContent] = useState('');
@@ -21,7 +20,43 @@ const EditingPage = ({ signOut }) => {
 
     const POLL_INTERVAL = 5000; // 5 seconds
 
-    // Fetch user email from Cognito
+    const fetchWithAuth = async (url, options = {}) => {
+        try {
+            const session = await Auth.currentSession();
+            const token = session.getIdToken().getJwtToken();
+    
+            if (!token) throw new Error('JWT Token is missing');
+    
+            options.headers = {
+                ...options.headers,
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            };
+    
+            const response = await fetch(url, options);
+    
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Request failed: ${response.status} - ${errorText}`);
+            }
+    
+            return await response.json();
+        } catch (error) {
+            console.error('Error in fetchWithAuth:', error.message || error);
+            throw error;
+        }
+    };
+    
+
+    const handleUnauthorizedError = (error) => {
+        if (error.message === 'Unauthorized') {
+            toast.error('Session expired. Please log in again.');
+            signOut();
+        } else {
+            toast.error(error.message || 'An error occurred.');
+        }
+    };
+
     useEffect(() => {
         const fetchUserEmail = async () => {
             try {
@@ -36,7 +71,7 @@ const EditingPage = ({ signOut }) => {
         fetchUserEmail();
     }, []);
 
-    const editorAPI = awsconfig.aws_cloud_logic_custom.find(api => api.name === 'editorAPI')?.endpoint;
+    const editorAPI = awsconfig.aws_cloud_logic_custom.find((api) => api.name === 'editorAPI')?.endpoint;
 
     if (!editorAPI) {
         console.error('editorAPI endpoint not found in aws-exports.js');
@@ -62,16 +97,16 @@ const EditingPage = ({ signOut }) => {
 
     const unlockRecord = async (recordId) => {
         try {
-            await fetch(`${editorAPI}/editor/unlock/${recordId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: userEmail }),
-            });
+          await fetchWithAuth(`${editorAPI}/editor/unlock/${encodeURIComponent(recordId)}`, {
+            method: 'PUT',
+            body: JSON.stringify({ userId: userEmail }),
+          });
         } catch (error) {
-            console.error('Error unlocking the record:', error);
-            toast.error('Error unlocking the record.');
+          console.error('Error unlocking the record:', error);
+          toast.error('Error unlocking the record.');
         }
-    };
+      };
+      
 
     useEffect(() => {
         const handleVisibilityChange = async () => {
@@ -85,7 +120,7 @@ const EditingPage = ({ signOut }) => {
                 }
             }
         };
-    
+
         const handleBeforeUnload = async (event) => {
             if (isEditing && id) {
                 event.preventDefault();
@@ -93,16 +128,16 @@ const EditingPage = ({ signOut }) => {
                 toast.info(`Record "${id}" has been unlocked as you are leaving.`);
             }
         };
-    
+
         document.addEventListener('visibilitychange', handleVisibilityChange);
         window.addEventListener('beforeunload', handleBeforeUnload);
-    
+
         return () => {
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, [isEditing, id]);
-    
+
     useEffect(() => {
         return () => {
             if (isEditing && id) {
@@ -110,86 +145,71 @@ const EditingPage = ({ signOut }) => {
             }
         };
     }, [isEditing, id]);
-    
 
     const handleSaveContent = async (e) => {
         e.preventDefault();
+    
         const method = isEditing ? 'PUT' : 'POST';
         const url = isEditing
-            ? `${editorAPI}/editor/${id}`
-            : `${editorAPI}/editor`;
-
+            ? `${editorAPI}/editor/${encodeURIComponent(id)}` // Corrected for updating content
+            : `${editorAPI}/editor`; // For creating new content
+    
         try {
-            const response = await fetch(url, {
+            const response = await fetchWithAuth(url, {
                 method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, content, status, category, userId: userEmail }),
+                body: JSON.stringify({
+                    id,
+                    content,
+                    status,
+                    category,
+                    userId: userEmail,
+                }),
             });
-
-            if (response.ok) {
-                await unlockRecord(id);
-                toast.success(isEditing ? 'Content updated successfully!' : 'Content saved successfully!');
-                setIsEditing(false);
-                clearForm();
-                fetchRecords();
-            } else {
-                toast.error('Failed to save content.');
-            }
+    
+            toast.success(isEditing ? 'Content updated successfully!' : 'Content saved successfully!');
+            setIsEditing(false);
+            clearForm();
+            fetchRecords();
         } catch (error) {
             console.error('Error saving content:', error);
-            toast.error('Error saving content.');
+            toast.error('Failed to save content.');
         }
     };
+    
+    
+
+    const handleEdit = async (record) => {
+        try {
+            await fetchWithAuth(`${editorAPI}/editor/edit/${encodeURIComponent(record.id)}`, {
+                method: 'PUT',
+                body: JSON.stringify({ userId: userEmail }), // Include userId in the body
+            });
+    
+            setId(record.id);
+            setContent(record.content);
+            setStatus(record.status);
+            setCategory(record.category);
+            setIsEditing(true);
+            toast.success('Record locked for editing.');
+        } catch (error) {
+            console.error('Error locking the record:', error);
+            toast.error('Failed to lock the record.');
+        }
+    };
+    
 
     const handleDelete = async (recordId) => {
         try {
-            const response = await fetch(`${editorAPI}/editor/${recordId}`, {
+            await fetchWithAuth(`${editorAPI}/editor/${recordId}`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
             });
-            if (response.ok) {
-                toast.success('Record deleted successfully!');
-                fetchRecords();
-            } else {
-                toast.error('Failed to delete record');
-            }
+            toast.success('Record deleted successfully!');
+            fetchRecords();
         } catch (error) {
             console.error('Error deleting record:', error);
-            toast.error('Error deleting record');
+            handleUnauthorizedError(error);
         }
     };
-
-    const handleEdit = async (record) => {
-        if (record.isBeingEdited && record.currentUserId !== userEmail) {
-            toast.error(`This record is currently being edited by ${record.currentUserId}.`);
-            return;
-        }
-    
-        try {
-            const response = await fetch(`${editorAPI}/editor/edit/${record.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: userEmail }),
-            });
-    
-            if (response.ok) {
-                setId(record.id);
-                setContent(record.content);
-                setStatus(record.status);
-                setCategory(record.category);
-                setIsEditing(true);
-                setEditingRecordId(record.id);
-                toast.success('Record locked for editing.');
-            } else {
-                const errorData = await response.json();
-                toast.error(errorData.error || 'Failed to lock the record.');
-            }
-        } catch (error) {
-            console.error('Error locking the record:', error);
-            toast.error('Error locking the record.');
-        }
-    };
-    
 
     const handleCancelEdit = async () => {
         try {
@@ -216,43 +236,25 @@ const EditingPage = ({ signOut }) => {
         setEditingRecordId(null);
     };
 
-    const handleSignOut = async () => {
-        try {
-            if (isEditing && id) {
-                await unlockRecord(id);
-            }
-            signOut();
-        } catch (error) {
-            console.error('Error unlocking the record on logout:', error);
-        }
-    };
-
     const toggleRecord = (recordId) => {
-        setOpenRecord(openRecord === recordId ? null : recordId);
+        setOpenRecord((prevOpenRecord) => (prevOpenRecord === recordId ? null : recordId));
     };
-
-    const formatDate = (dateString) => {
-        if (!dateString) return 'Not Available';
-        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    };
-
+    
     useEffect(() => {
         fetchRecords();
 
-        // Set up polling to fetch records every POLL_INTERVAL
         const intervalId = setInterval(fetchRecords, POLL_INTERVAL);
 
-        return () => clearInterval(intervalId); // Clear interval on component unmount
+        return () => clearInterval(intervalId);
     }, []);
 
-    const inProgressRecords = records.filter(record => record.status === 'In Progress');
-    const readyRecords = records.filter(record => record.status === 'Ready');
+    const inProgressRecords = records.filter((record) => record.status === 'In Progress');
+    const readyRecords = records.filter((record) => record.status === 'Ready');
 
     return (
         <div className={styles.editingPage}>
             <h1 className={styles.h1}>Editing Page</h1>
-            <h2 className= {styles.h2}>Welcome, {userEmail}!</h2>
+            <h2 className={styles.h2}>Welcome, {userEmail}!</h2>
             <form onSubmit={handleSaveContent} className={styles.editorForm}>
                 <label htmlFor="id">Enter ID:</label>
                 <input
@@ -287,10 +289,19 @@ const EditingPage = ({ signOut }) => {
                 </select>
 
                 <div className={styles.buttonContainer}>
-                    <button type="submit" className={`${styles.submitButton} ${isEditing ? styles.editButton : styles.saveButton}`}>
+                    <button
+                        type="submit"
+                        className={`${styles.submitButton} ${
+                            isEditing ? styles.editButton : styles.saveButton
+                        }`}
+                    >
                         {isEditing ? 'Update Content' : 'Save Content'}
                     </button>
-                    <button type="button" className={styles.clearButton} onClick={handleCancelEdit}>
+                    <button
+                        type="button"
+                        className={styles.clearButton}
+                        onClick={handleCancelEdit}
+                    >
                         Clear
                     </button>
                 </div>
@@ -302,9 +313,15 @@ const EditingPage = ({ signOut }) => {
                     <li key={record.id} className={styles.recordItem}>
                         <button className={styles.dropdownButton} onClick={() => toggleRecord(record.id)}>
                             <strong>ID:</strong> {record.id}
-                            <span className={styles.lastUpdated}> | Last Updated: {formatDate(record.lastUpdated)}</span>
+                            <span className={styles.lastUpdated}>
+                                {' '}
+                                | Last Updated: {new Date(record.lastUpdated).toLocaleString()}
+                            </span>
                             {record.isBeingEdited && record.currentUserId && (
-                                <span className={styles.editingStatus}> | Editing by: {record.currentUserId}</span>
+                                <span className={styles.editingStatus}>
+                                    {' '}
+                                    | Editing by: {record.currentUserId}
+                                </span>
                             )}
                         </button>
                         {openRecord === record.id && (
@@ -312,10 +329,16 @@ const EditingPage = ({ signOut }) => {
                                 <strong>Content:</strong> {record.content}
                                 {!record.isBeingEdited && (
                                     <>
-                                        <button className={styles.editButton} onClick={() => handleEdit(record)}>
+                                        <button
+                                            className={styles.editButton}
+                                            onClick={() => handleEdit(record)}
+                                        >
                                             Edit
                                         </button>
-                                        <button className={styles.deleteButton} onClick={() => handleDelete(record.id)}>
+                                        <button
+                                            className={styles.deleteButton}
+                                            onClick={() => handleDelete(record.id)}
+                                        >
                                             Delete
                                         </button>
                                     </>
@@ -332,9 +355,15 @@ const EditingPage = ({ signOut }) => {
                     <li key={record.id} className={styles.recordItem}>
                         <button className={styles.dropdownButton} onClick={() => toggleRecord(record.id)}>
                             <strong>ID:</strong> {record.id}
-                            <span className={styles.lastUpdated}> | Last Updated: {formatDate(record.lastUpdated)}</span>
+                            <span className={styles.lastUpdated}>
+                                {' '}
+                                | Last Updated: {new Date(record.lastUpdated).toLocaleString()}
+                            </span>
                             {record.isBeingEdited && record.currentUserId && (
-                                <span className={styles.editingStatus}> | Editing by: {record.currentUserId}</span>
+                                <span className={styles.editingStatus}>
+                                    {' '}
+                                    | Editing by: {record.currentUserId}
+                                </span>
                             )}
                         </button>
                         {openRecord === record.id && (
@@ -342,10 +371,16 @@ const EditingPage = ({ signOut }) => {
                                 <strong>Content:</strong> {record.content}
                                 {!record.isBeingEdited && (
                                     <>
-                                        <button className={styles.editButton} onClick={() => handleEdit(record)}>
+                                        <button
+                                            className={styles.editButton}
+                                            onClick={() => handleEdit(record)}
+                                        >
                                             Edit
                                         </button>
-                                        <button className={styles.deleteButton} onClick={() => handleDelete(record.id)}>
+                                        <button
+                                            className={styles.deleteButton}
+                                            onClick={() => handleDelete(record.id)}
+                                        >
                                             Delete
                                         </button>
                                     </>

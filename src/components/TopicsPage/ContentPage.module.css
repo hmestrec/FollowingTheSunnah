@@ -47,10 +47,63 @@
 /* Highlighting the current word being read */
 .highlight {
   background-color: var(--highlight-color);
-  padding: 0 2px;
+  padding: 0 4px;
   font-weight: bold;
 }
 
+/* Lists Styling */
+.contentDisplay ol, .contentDisplay ul {
+  margin-left: 20px;
+  padding-left: 20px;
+}
+
+.contentDisplay ol {
+  list-style-type: decimal;
+}
+
+.contentDisplay ol ol {
+  list-style-type: lower-alpha; /* Letters for second-level nested ordered lists */
+}
+
+.contentDisplay ol ol ol {
+  list-style-type: lower-roman; /* Roman numerals for third-level nested ordered lists */
+}
+
+.contentDisplay ul {
+  list-style-type: disc;
+}
+
+.contentDisplay ul ul {
+  list-style-type: circle;
+}
+
+.contentDisplay ul ul ul {
+  list-style-type: square;
+}
+
+.contentDisplay li {
+  margin-bottom: 5px;
+}
+
+.contentDisplay p {
+  margin-bottom: 10px;
+}
+
+/* Handle Quill Editor Indentation */
+.contentDisplay .ql-indent-1 {
+  margin-left: 20px;
+  list-style-type: lower-alpha; /* Letters for second-level lists */
+}
+
+.contentDisplay .ql-indent-2 {
+  margin-left: 40px;
+  list-style-type: lower-roman; /* Roman numerals for third-level lists */
+}
+
+.contentDisplay .ql-indent-3 {
+  margin-left: 60px;
+  list-style-type: decimal; /* Reset to numbers for deeper nesting */
+}
 
 /* Toast Container Adjustments */
 .Toastify__toast-container {
@@ -65,69 +118,12 @@
 }
 
 .speechButton {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  font-size: 14px;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.speechButton:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.readAloud {
-  background-color: #28a745;
-}
-
-.pause {
-  background-color: #ffc107;
-}
-
-.stop {
-  background-color: #dc3545;
-}
-
-.errorMessage {
-  color: red;
-}
-
-/* Vivid Loading Spinner */
-.loadingSpinner {
-  border: 4px solid rgba(255, 255, 255, 0.2); /* Lighter background */
-  border-top: 4px solid #ff5733; /* Bright orange top */
-  border-radius: 50%; /* Ensures the circle shape */
-  width: 30px;  /* Fixed size for width */
-  height: 30px; /* Fixed size for height */
-  box-sizing: border-box; /* Ensures padding and border are part of the width and height */
-  animation: spin 1s linear infinite;
-  display: block; /* Ensures it’s a block-level element */
-  margin: 0 auto; /* Centers the spinner */
-}
-
-/* Spinner Animation */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-
-
-/* Vivid Button Styles */
-.speechButton {
-  width: 70px; /* Increased size */
-  height: 70px; /* Increased size */
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   font-size: 16px;
   color: white;
-  background-color: #007bff; /* Bright blue */
+  background-color: #007bff;
   border: none;
   display: flex;
   justify-content: center;
@@ -139,37 +135,52 @@
 
 /* Hover effect for button */
 .speechButton:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  transform: scale(1.1); /* Slight grow effect on hover */
+  background-color: #0056b3;
+  transform: scale(1.1);
 }
 
 /* Disabled state */
 .speechButton:disabled {
-  background-color: #ccc; /* Gray for disabled */
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
 /* Play/Pause Button Specific Styles */
 .pollyPlay {
-  background-color: #28a745; /* Green for Play */
+  background-color: #28a745;
 }
 
 .pollyPlay:hover {
-  background-color: #218838; /* Dark green for hover */
+  background-color: #218838;
 }
 
 .stop {
-  background-color: #dc3545; /* Red for Stop */
+  background-color: #dc3545;
 }
 
 .stop:hover {
-  background-color: #c82333; /* Dark red for hover */
+  background-color: #c82333;
 }
 
-/* Highlighting the current word being read */
-.highlight {
-  background-color: #eb8807; /* Vivid yellow highlight */
-  padding: 0 4px;
-  font-weight: bold;
+/* Vivid Loading Spinner */
+.loadingSpinner {
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top: 4px solid #ff5733;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  box-sizing: border-box;
+  animation: spin 1s linear infinite;
+  display: block;
+  margin: 0 auto;
 }
 
+/* Spinner Animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

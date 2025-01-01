@@ -10,6 +10,8 @@ const {
 const express = require('express');
 const bodyParser = require('body-parser');
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+const jwksClient = require('jwks-rsa');
+const jwt = require('jsonwebtoken');
 
 // Initialize DynamoDB Client and Document Client
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
@@ -18,24 +20,54 @@ const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 // Define table name
 const tableName = process.env.ENV ? `BusinessTable-${process.env.ENV}` : 'BusinessTable-prd';
 
+// JWKS URI for Cognito User Pool
+const jwksUri = `https://cognito-idp.${process.env.TABLE_REGION}.amazonaws.com/${process.env.USER_POOL_ID}/.well-known/jwks.json`;
+const client = jwksClient({ jwksUri });
+
 const app = express();
 app.use(bodyParser.json());
 app.use(awsServerlessExpressMiddleware.eventContext());
 
 // Enable CORS for all routes
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*"); // Allow all origins
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     if (req.method === "OPTIONS") {
-        res.sendStatus(200); // Respond to preflight requests with 200 OK
+        res.sendStatus(200);
     } else {
-        next(); // Continue to the next middleware or route
+        next();
     }
 });
 
+// Authentication Middleware
+const getKey = (header, callback) => {
+    client.getSigningKey(header.kid, (err, key) => {
+        if (err) {
+            return callback(err);
+        }
+        const signingKey = key.getPublicKey();
+        callback(null, signingKey);
+    });
+};
+
+const authenticate = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ error: 'Unauthorized. Token is missing.' });
+    }
+
+    jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
+        if (err) {
+            console.error('JWT verification failed:', err.message);
+            return res.status(401).json({ error: 'Unauthorized. Invalid token.' });
+        }
+        req.user = decoded; // Attach user details to the request
+        next();
+    });
+};
 
 /************************************
- * HTTP GET method to retrieve all businesses
+ * HTTP GET method to retrieve all businesses (Unauthenticated)
  ************************************/
 app.get('/businesses', async (req, res) => {
     const params = { TableName: tableName };
@@ -51,8 +83,8 @@ app.get('/businesses', async (req, res) => {
 /************************************
  * HTTP POST method to add a new business
  ************************************/
-app.post('/businesses', async (req, res) => {
-    const { id, name, location, contact } = req.body;
+app.post('/businesses', authenticate, async (req, res) => {
+    const { id, name, location, contact, category } = req.body;
 
     if (!id || !name || !location || !contact) {
         return res.status(400).json({ error: 'Missing required fields: id, name, location, or contact' });
@@ -65,7 +97,8 @@ app.post('/businesses', async (req, res) => {
             name,
             location,
             contact,
-            createdAt: new Date().toISOString()
+            category: category || 'Uncategorized', // Default category if not provided
+            createdAt: new Date().toISOString(),
         },
     };
 
@@ -78,8 +111,9 @@ app.post('/businesses', async (req, res) => {
     }
 });
 
+
 /************************************
- * HTTP GET method to retrieve a business by ID
+ * HTTP GET method to retrieve a business by ID (Unauthenticated)
  ************************************/
 app.get('/businesses/:id', async (req, res) => {
     const { id } = req.params;
@@ -102,9 +136,9 @@ app.get('/businesses/:id', async (req, res) => {
 });
 
 /************************************
- * HTTP DELETE method to delete a business by ID
+ * HTTP DELETE method to delete a business by ID (Authenticated)
  ************************************/
-app.delete('/businesses/:id', async (req, res) => {
+app.delete('/businesses/:id', authenticate, async (req, res) => {
     const { id } = req.params;
 
     const params = {
@@ -124,34 +158,39 @@ app.delete('/businesses/:id', async (req, res) => {
 /************************************
  * HTTP PUT method to update a business by ID
  ************************************/
-app.put('/businesses/:id', async (req, res) => {
+app.put('/businesses/:id', authenticate, async (req, res) => {
     const { id } = req.params;
-    const { name, location, contact } = req.body;
+    const { name, location, contact, category } = req.body;
 
     const updateExpressions = [];
     const expressionAttributeValues = {};
-    const expressionAttributeNames = {}; // Add this to map attribute names
+    const expressionAttributeNames = {};
 
     if (name) {
         updateExpressions.push('#name = :name');
-        expressionAttributeNames['#name'] = 'name'; // Alias for the reserved keyword
+        expressionAttributeNames['#name'] = 'name';
         expressionAttributeValues[':name'] = name;
     }
     if (location) {
         updateExpressions.push('#location = :location');
-        expressionAttributeNames['#location'] = 'location'; // Alias for the reserved keyword
+        expressionAttributeNames['#location'] = 'location';
         expressionAttributeValues[':location'] = location;
     }
     if (contact) {
-        updateExpressions.push('contact = :contact'); // `contact` is not reserved
+        updateExpressions.push('contact = :contact');
         expressionAttributeValues[':contact'] = contact;
+    }
+    if (category) {
+        updateExpressions.push('#category = :category');
+        expressionAttributeNames['#category'] = 'category';
+        expressionAttributeValues[':category'] = category;
     }
 
     const params = {
         TableName: tableName,
         Key: { id },
         UpdateExpression: `SET ${updateExpressions.join(', ')}`,
-        ExpressionAttributeNames: expressionAttributeNames, // Include aliases
+        ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW',
     };
@@ -164,7 +203,6 @@ app.put('/businesses/:id', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 });
-
 
 
 module.exports = app;

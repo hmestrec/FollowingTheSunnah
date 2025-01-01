@@ -47,7 +47,7 @@
       "function": {
         "editorFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/editorFunction-5078684154465034536e-build.zip"
+          "s3Key": "amplify-builds/editorFunction-433232656672666f386f-build.zip"
         },
         "editorcontent": {},
         "createCommentsTableFunction": {
@@ -56,11 +56,11 @@
         },
         "businessHandler": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/businessHandler-30524741794d32434667-build.zip"
+          "s3Key": "amplify-builds/businessHandler-4d73494845423149676b-build.zip"
         },
         "chatbotFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/chatbotFunction-63796f624e6232343350-build.zip"
+          "s3Key": "amplify-builds/chatbotFunction-474e32687a7852653846-build.zip"
         },
         "MarriageProfilesHandler": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",

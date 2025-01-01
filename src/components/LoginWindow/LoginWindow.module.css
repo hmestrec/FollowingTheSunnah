@@ -1,143 +1,156 @@
-/* Login Window Container */
+/* Root container for the login window */
 .loginWindow {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    text-align: center;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  /* Title */
-  .title {
-    font-size: 1.8rem;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    font-weight: bold;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Form */
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  /* Input Fields */
-  .input {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    transition: border-color 0.3s ease;
-  }
-  
-  .input:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 5px var(--primary-color);
-  }
-  
-  /* Password Toggle */
-  .passwordContainer {
-    position: relative;
-  }
-  
-  .togglePassword {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: var(--secondary-color);
-  }
-  
-  /* Buttons */
-  .button {
-    padding: 12px 20px;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .button:disabled {
-    background-color: var(--secondary-color);
-  }
-  
-  .button:hover {
-    background-color: var(--primary-color);
-  }
-  
-  /* Toggle Text */
-  .toggleText {
-    font-size: 0.9rem;
-    color: var(--secondary-color);
-  }
-  
-  .toggleAuth {
-    background: none;
-    color: var(--primary-color);
-    font-size: 0.9rem;
-    border: none;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  
-  .toggleAuth:hover {
-    color: var(--button-bg);
-  }
-  
-  /* Error Message */
-  .errorMessage {
-    color: var(--highlight-color, #e74c3c);
-    font-size: 0.9rem;
-    margin-top: 10px;
+}
+
+/* Title styling */
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-transform: capitalize;
+}
+
+/* Form container */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Input fields */
+.input {
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color);
+  outline: none;
+}
+
+/* Password container for visibility toggle */
+.passwordContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 15px;
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.togglePassword:hover {
+  color: var(--primary-color);
+}
+
+/* Buttons */
+.button {
+  padding: 12px 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background: var(--button-hover-bg);
+  transform: translateY(-2px);
+}
+
+.button:disabled {
+  background: var(--secondary-color);
+  cursor: not-allowed;
+}
+
+/* Toggle authentication text */
+.toggleText {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  margin-top: 15px;
+}
+
+.toggleAuth {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+  align-items: center;
+}
+
+.toggleAuth:hover {
+  color: var(--input-bg);
+}
+
+/* Error message */
+.errorMessage {
+  color: var(--error-color);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: -10px;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .loginWindow {
+    margin: 20px;
+    padding: 15px;
   }
 
-  .googleButton {
-    background-color: #4285f4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
+  .title {
+    font-size: 1.6rem;
   }
-  
-  .googleButton:hover {
-    background-color: #357ae8;
+
+  .button {
+    font-size: 0.9rem;
+    padding: 10px;
   }
-  
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .loginWindow {
-      margin: 20px auto;
-      padding: 20px;
-    }
-  
-    .title {
-      font-size: 1.5rem;
-    }
-  
-    .input {
-      font-size: 0.9rem;
-    }
-  
-    .button {
-      font-size: 0.9rem;
-      padding: 10px;
-    }
+
+  .input {
+    font-size: 0.9rem;
+    padding: 10px 12px;
   }
-  
+}

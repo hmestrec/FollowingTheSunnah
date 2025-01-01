@@ -14,9 +14,9 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    z-index: 1050; /* Ensure above footer */
+    z-index: 1050;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    animation: chatbotBounce 2s infinite; /* Creative bounce effect */
+    animation: chatbotBounce 2s infinite;
 }
 
 .chatbotToggle:hover {
@@ -41,7 +41,7 @@
 /* Chatbot Body */
 .chatbotBody {
     position: fixed;
-    bottom: 100px; /* Above the toggle button */
+    bottom: 100px;
     right: 20px;
     width: 320px;
     max-height: 500px;
@@ -54,7 +54,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in effect */
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 /* Fade-in Animation */
@@ -74,7 +74,7 @@
     flex-grow: 1;
     padding: 10px;
     overflow-y: auto;
-    scrollbar-width: thin; /* For modern browsers */
+    scrollbar-width: thin;
     scrollbar-color: var(--primary-color) var(--card-bg);
 }
 
@@ -119,18 +119,18 @@
     padding: 10px;
     border-top: 1px solid var(--card-border);
     background-color: var(--card-bg);
-    width: 100%; /* Ensure it spans full width */
+    width: 100%;
 }
 
 .inputField {
-    flex: 1; /* Makes the input field take up available space */
-    height: 50px; /* Increased height for visibility */
-    padding: 15px; /* Increased padding for better usability */
+    flex: 1;
+    height: 50px;
+    padding: 15px;
     border: 1px solid var(--input-border);
     border-radius: 12px;
     background-color: var(--input-bg);
     color: var(--text-color);
-    font-size: 1rem; /* Font size for readability */
+    font-size: 1rem;
     margin-right: 10px;
     transition: border 0.3s ease, box-shadow 0.3s ease;
 }
@@ -142,8 +142,8 @@
 }
 
 .sendButton {
-    padding: 12px 20px; /* Increased padding for better balance */
-    height: 50px; /* Same height as input field */
+    padding: 12px 20px;
+    height: 50px;
     background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
     color: var(--button-text);
     border: none;
@@ -151,7 +151,7 @@
     cursor: pointer;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 1rem; /* Consistent font size */
+    font-size: 1rem;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -159,6 +159,42 @@
     background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
     transform: scale(1.1);
 }
+
+/* Popup Message */
+.popup {
+    position: absolute;
+    bottom: 90px; /* Moves the popup higher above the chatbot icon */
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    color: var(--button-text);
+    padding: 12px 20px; /* Increased padding for better visibility */
+    border-radius: 12px; /* Rounded corners for a modern look */
+    font-size: 1rem; /* Slightly larger text for readability */
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Softer shadow for depth */
+    animation: fadeInOut 3s ease;
+    z-index: 1100; /* Ensure it's above other elements */
+    white-space: nowrap;
+    text-align: left; /* Center text for cleaner appearance */
+    max-width: 250px; /* Restrict width for smaller screens */
+}
+
+/* Adjust fadeInOut animation */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -185,24 +221,24 @@
     }
 
     .chatMessage {
-        font-size: 1.1rem;
+        font-size: 0.8rem;
         padding: 8px 10px;
     }
 
     .chatInput {
-        flex-direction: column; /* Stack input and button vertically on smaller screens */
+        flex-direction: column;
         gap: 10px;
     }
 
     .inputField {
-        font-size: 0.9rem; /* Slightly smaller font size */
-        padding: 12px; /* Adjust padding for mobile */
-        width: 100%; /* Ensure input spans full width */
+        font-size: 0.9rem;
+        padding: 12px;
+        width: 100%;
     }
 
     .sendButton {
-        font-size: 1.0rem;
-        padding: 15px 25px;
-        width: auto; /* Ensure button spans full width */
+        font-size: 1rem;
+        padding: 10px;
+        width: 100%;
     }
 }

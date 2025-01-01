@@ -3,6 +3,8 @@ const { DynamoDBDocumentClient, GetCommand, PutCommand, ScanCommand, DeleteComma
 const express = require('express');
 const bodyParser = require('body-parser');
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+const jwksClient = require('jwks-rsa');
+const jwt = require('jsonwebtoken');
 
 // Initialize DynamoDB Client
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
@@ -14,94 +16,123 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = `${tableName}-${process.env.ENV}`;
 }
 
+// JWKS URI for Cognito User Pool
+const jwksUri = `https://cognito-idp.${process.env.TABLE_REGION}.amazonaws.com/${process.env.USER_POOL_ID}/.well-known/jwks.json`;
+const client = jwksClient({ jwksUri });
+
 const app = express();
 app.use(bodyParser.json());
 app.use(awsServerlessExpressMiddleware.eventContext());
 
 // Enable CORS for all methods
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
 
+// Authentication Middleware
+const getKey = (header, callback) => {
+  client.getSigningKey(header.kid, (err, key) => {
+    if (err) {
+      return callback(err);
+    }
+    const signingKey = key.getPublicKey();
+    callback(null, signingKey);
+  });
+};
+
+const authenticate = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1]; // Bearer <token>
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized. Token is missing.' });
+  }
+
+  jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
+    if (err) {
+      console.error('JWT verification failed:', err.message);
+      return res.status(401).json({ error: 'Unauthorized. Invalid token.' });
+    }
+    req.user = decoded; // Attach user details to the request
+    next();
+  });
+};
+
 /************************************
- * HTTP Get method to retrieve all items
+ * HTTP Get method to retrieve all items (No Authentication)
  ************************************/
 app.get('/editor', async function (req, res) {
   const params = {
-    TableName: tableName,
-    Select: 'ALL_ATTRIBUTES',
+      TableName: tableName,
+      Select: 'ALL_ATTRIBUTES',
   };
 
   try {
-    const data = await ddbDocClient.send(new ScanCommand(params));
-    res.json(data.Items);
+      const data = await ddbDocClient.send(new ScanCommand(params));
+      res.json(data.Items);
   } catch (err) {
-    res.status(500).json({ error: 'Could not load items: ' + err.message });
+      res.status(500).json({ error: 'Could not load items: ' + err.message });
   }
 });
-
-// New GET method to retrieve a specific item by its ID
-app.get('/editor/:id', async function (req, res) {
-  const id = decodeURIComponent(req.params.id);
-  console.log("Fetching content with ID:", id); // Log the ID being fetched
-
-  const params = {
-    TableName: tableName,
-    Key: { id },
-  };
-
-  try {
-    const data = await ddbDocClient.send(new GetCommand(params));
-    if (data.Item) {
-      res.json(data.Item);
-    } else {
-      console.error("Item not found:", id);
-      res.status(404).json({ error: 'Item not found' });
-    }
-  } catch (err) {
-    console.error("Error loading item:", err.message);
-    res.status(500).json({ error: 'Could not load item: ' + err.message });
-  }
-});
-
 
 /************************************
- * HTTP Post method to insert a new item
- ************************************/
-app.post('/editor', async function (req, res) {
+* HTTP Get method to retrieve an item by ID (No Authentication)
+************************************/
+app.get('/editor/:id', async function (req, res) {
+  const id = decodeURIComponent(req.params.id);
+
+  const params = {
+      TableName: tableName,
+      Key: { id },
+  };
+
+  try {
+      const data = await ddbDocClient.send(new GetCommand(params));
+      if (data.Item) {
+          res.json(data.Item);
+      } else {
+          res.status(404).json({ error: 'Item not found' });
+      }
+  } catch (err) {
+      res.status(500).json({ error: 'Could not load item: ' + err.message });
+  }
+});
+
+/************************************
+* HTTP Post method to insert a new item (Authentication Required)
+************************************/
+app.post('/editor', authenticate, async function (req, res) {
   const { id, content, category } = req.body;
 
   if (!id || !content) {
-    return res.status(400).json({ error: 'Missing id or content in request body' });
+      return res.status(400).json({ error: 'Missing id or content in request body' });
   }
 
   const params = {
-    TableName: tableName,
-    Item: {
-      id: id,
-      content: content,
-      lastUpdated: new Date().toISOString(),
-      isBeingEdited: false,
-      currentUserId: null,
-      status: 'In Progress', // Default status
-      category: category || 'Other', // Default category
-    },
+      TableName: tableName,
+      Item: {
+          id: id,
+          content: content,
+          lastUpdated: new Date().toISOString(),
+          isBeingEdited: false,
+          currentUserId: null,
+          status: 'In Progress', // Default status
+          category: category || 'Other', // Default category
+      },
   };
 
   try {
-    await ddbDocClient.send(new PutCommand(params));
-    res.json({ success: 'Item saved successfully!', id });
+      await ddbDocClient.send(new PutCommand(params));
+      res.json({ success: 'Item saved successfully!', id });
   } catch (err) {
-    res.status(500).json({ error: 'Could not save item: ' + err.message });
+      res.status(500).json({ error: 'Could not save item: ' + err.message });
   }
 });
 
 /************************************
  * HTTP Put method to mark an item as being edited by a user
  ************************************/
-app.put('/editor/edit/:id', async function (req, res) {
+app.put('/editor/edit/:id', authenticate, async function (req, res) {
   const id = decodeURIComponent(req.params.id);
   const { userId } = req.body;
 
@@ -144,7 +175,7 @@ app.put('/editor/edit/:id', async function (req, res) {
 /************************************
  * HTTP Put method to unlock an item
  ************************************/
-app.put('/editor/unlock/:id', async function (req, res) {
+app.put('/editor/unlock/:id', authenticate, async function (req, res) {
   const id = decodeURIComponent(req.params.id);
   const { userId } = req.body;
 
@@ -171,28 +202,9 @@ app.put('/editor/unlock/:id', async function (req, res) {
 });
 
 /************************************
- * HTTP Delete method to delete an item
- ************************************/
-app.delete('/editor/:id', async function (req, res) {
-  const id = decodeURIComponent(req.params.id);
-
-  const params = {
-    TableName: tableName,
-    Key: { id },
-  };
-
-  try {
-    await ddbDocClient.send(new DeleteCommand(params));
-    res.json({ success: 'Item deleted successfully!', id });
-  } catch (err) {
-    res.status(500).json({ error: 'Could not delete item: ' + err.message });
-  }
-});
-
-/************************************
  * HTTP Put method to update an existing item
  ************************************/
-app.put('/editor/:id', async function (req, res) {
+app.put('/editor/:id', authenticate, async function (req, res) {
   const id = decodeURIComponent(req.params.id);
   const { content, userId, status, category } = req.body;
 
@@ -221,8 +233,8 @@ app.put('/editor/:id', async function (req, res) {
           ':lastUpdated': new Date().toISOString(),
           ':isBeingEdited': false,
           ':currentUserId': null,
-          ':status': status || 'In Progress', // Update status if provided, default to 'In Progress'
-          ':category': category || 'Other', // Update category if provided, default to 'Other'
+          ':status': status || 'In Progress',
+          ':category': category || 'Other',
         },
         ExpressionAttributeNames: {
           '#status': 'status',
@@ -239,9 +251,27 @@ app.put('/editor/:id', async function (req, res) {
   }
 });
 
-app.listen(3000, function () {
-  console.log("App started");
+
+
+/************************************
+* HTTP Delete method to delete an item (Authentication Required)
+************************************/
+app.delete('/editor/:id', authenticate, async function (req, res) {
+  const id = decodeURIComponent(req.params.id);
+
+  const params = {
+      TableName: tableName,
+      Key: { id },
+  };
+
+  try {
+      await ddbDocClient.send(new DeleteCommand(params));
+      res.json({ success: 'Item deleted successfully!', id });
+  } catch (err) {
+      res.status(500).json({ error: 'Could not delete item: ' + err.message });
+  }
 });
+
 
 // Export the app object for Lambda
 module.exports = app;
