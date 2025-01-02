@@ -26,6 +26,7 @@ import TermsOfService from './components/LegalPages/TermsOfService';
 import ContactUs from './components/ContactUs/ContactUs';
 import ReCAPTCHA from "react-google-recaptcha";
 import './App.css';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
             <ChatBot />
             <Footer />
           </div>
+          {<ToastContainer />}
         </Router>
       </ThemeProvider>
     </AuthProvider>

@@ -107,6 +107,47 @@ const AllProfilesPage = () => {
 
   return (
     <div className={styles.allProfilesContainer}>
+      <section className={styles.introSection}>
+        <h2>Welcome to the Halal Marriage Platform</h2>
+        <p>
+          This platform is designed exclusively for brothers seeking a halal means to connect 
+          with potential partners in a way that strictly adheres to Islamic principles. 
+          There will be no pictures, no chatting, and no direct interactions. 
+          This is not a platform to "get to know" someone but to provide an introduction 
+          that aligns with the Sunnah.
+        </p>
+      </section>
+
+      <section className={styles.howToUseSection}>
+        <h2>How This Platform Works</h2>
+        <p>
+          Follow these guidelines to use the platform in a manner consistent with Islamic values:
+        </p>
+        <ol>
+          <li>
+            <strong>Create Your Profile:</strong> Share your basic details and preferences 
+            to introduce yourself.
+          </li>
+          <li>
+            <strong>View Profiles:</strong> Browse through other profiles to find someone 
+            who aligns with your values.
+          </li>
+          <li>
+            <strong>Contact Through Wali:</strong> If a Wali (guardian) is interested in a brother 
+            for their female relative, they can contact the Admin brother to arrange a meeting.
+          </li>
+          <li>
+            <strong>Meet at a Masjid:</strong> All meetings must take place in a Masjid, with proper 
+            Islamic etiquette observed. 
+          </li>
+          <li>
+            <strong>Continue Halal:</strong> After the initial meeting, families can decide 
+            how to proceed in a halal manner.
+          </li>
+        </ol>
+      </section>
+
+
       {/* Learn About Marriage Section */}
       <section className={styles.learnSection}>
         <h2>Learn About Marriage</h2>
@@ -117,127 +158,187 @@ Source: Sunan Ibn Mājah 1846
 
 Grade: Sahih (authentic) according to Al-Albani
         </p>
-        <button className={styles.createProfileButton} onClick={handleCreateProfileClick}>
-          Create Your Profile
-        </button>
       </section>
 
-      {/* Profiles Section */}
-      <h2 className={styles.title}>All Marriage Profiles</h2>
-      <div className={styles.profilesGallery}>
-        {profiles.length > 0 ? (
-          profiles.map((profile) => (
-            <div key={profile.profile_id} className={styles.profileCard}>
-              <div className={styles.profileImage}>🌟</div>
-              <div className={styles.profileDetails}>
-                <h3 className={styles.profileName}>{profile.name}</h3>
-                <p>
-                  <strong>Age:</strong> {profile.age}
-                </p>
-                <p>
-                  <strong>Gender:</strong> {profile.gender}
-                </p>
-                <button
-                  className={styles.moreDetailsButton}
-                  onClick={() => setSelectedProfile(profile)}
-                >
-                  More Details
-                </button>
-                {isAdmin && (
-                  <button
-                    className={styles.deleteButton}
-                    onClick={() => handleDeleteProfile(profile.user_id, profile.profile_id)}
-                  >
-                    Delete
-                  </button>
-                )}
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className={styles.noProfilesMessage}>No profiles found.</p>
-        )}
+      <div className={styles.goalSection}>
+      <h2>Mission</h2>
+      <p>
+        In a society where casual dating has become the norm, it is vital to uphold
+        the principles of Islam by providing halal alternatives for seeking a life
+        partner. This page aims to facilitate marriage in a way that aligns with the
+        Quran and Sunnah, safeguarding individuals from the harmful consequences of
+        zina.
+      </p>
+      <blockquote>
+        <p>
+          <strong>Allah says:</strong> "And do not approach unlawful sexual
+          intercourse. Indeed, it is an abomination and an evil way."
+        </p>
+        <cite>— Surah Al-Isra (17:32)</cite>
+      </blockquote>
+      <p>
+        The Prophet Muhammad (peace and blessings be upon him) emphasized the
+        importance of marriage, saying:
+      </p>
+      <blockquote>
+        <p>
+          "When a man marries, he has fulfilled half of his religion, so let him fear
+          Allah regarding the remaining half."
+        </p>
+        <cite>— Jami` at-Tirmidhi 3096</cite>
+      </blockquote>
+      <p>
+        Zina not only harms the soul but also disrupts the social fabric, leading to
+        numerous emotional and societal problems. By promoting halal connections, we
+        strive to protect our communities and help Muslims fulfill their deen in the
+        most beautiful way.
+      </p>
+
+              <button className={styles.createProfileButton} onClick={handleCreateProfileClick}>
+          Create Your Profile
+        </button>
+    </div>
+
+
+    <div className={styles.profilesGallery}>
+  {profiles.length > 0 ? (
+    profiles.map((profile) => (
+      <div key={profile.profile_id} className={styles.profileCard}>
+        <div className={styles.profileDetails}>
+          <h3 className={styles.profileName}>{profile.name}</h3>
+          <p>
+            <strong>Age:</strong> {profile.age}
+          </p>
+          <p>
+            <strong>Location:</strong> {profile.location}
+          </p>
+          <button
+            className={styles.moreDetailsButton}
+            onClick={() => setSelectedProfile(profile)}
+          >
+            More Details
+          </button>
+          <button
+            className={styles.setUpMeetingButton}
+            onClick={() => navigate("/contact")}
+          >
+            Set Up Meeting
+          </button>
+          {isAdmin && ( // Check if the user is an admin
+            <button
+              className={styles.deleteButton}
+              onClick={() => handleDeleteProfile(profile.user_id, profile.profile_id)}
+            >
+              Delete
+            </button>
+          )}
+        </div>
+      </div>
+    ))
+  ) : (
+    <p className={styles.noProfilesMessage}>No profiles found.</p>
+  )}
+</div>
+
+
+{/* Modal for More Details */}
+{selectedProfile && (
+  <div className={styles.modalOverlay} onClick={() => setSelectedProfile(null)}>
+    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      <button className={styles.closeButton} onClick={() => setSelectedProfile(null)}>
+        &times;
+      </button>
+
+      <div className={styles.modalHeader}>
+        <h3 className={styles.modalTitle}>{selectedProfile.name}</h3>
+        <p className={styles.modalSubtitle}>
+          <strong>Age:</strong> {selectedProfile.age}
+        </p>
+        <p className={styles.modalSubtitle}>
+          <strong>Location:</strong> {selectedProfile.location}
+        </p>
       </div>
 
-      {/* Modal for More Details */}
-      {selectedProfile && (
-        <div className={styles.modalOverlay} onClick={() => setSelectedProfile(null)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <h3>{selectedProfile.name}</h3>
-            <p>
-              <strong>Age:</strong> {selectedProfile.age}
-            </p>
-            <p>
-              <strong>Gender:</strong> {selectedProfile.gender}
-            </p>
-            <p>
-              <strong>Location:</strong> {selectedProfile.location}
-            </p>
-            <p>
-              <strong>Description:</strong> {selectedProfile.description}
-            </p>
-
-            {/* Bio */}
-            <div>
-              <div className={styles.sectionHeading}>Bio</div>
-              <ul>
-                {Object.entries(selectedProfile.bio || {}).map(([key, value]) => (
-                  <li key={key}>
-                    <strong>{key.replace(/([A-Z])/g, ' $1')}: </strong>
-                    {String(value)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Preferences */}
-            <div>
-              <div className={styles.sectionHeading}>Preferences</div>
-              <ul>
-                {Object.entries(selectedProfile.preferences || {}).map(([key, value]) => (
-                  <li key={key}>
-                    <strong>{key.replace(/([A-Z])/g, ' $1')}: </strong>
-                    {String(value)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Goals */}
-            <div>
-              <div className={styles.sectionHeading}>Goals</div>
-              <ul>
-                {Object.entries(selectedProfile.goals || {}).map(([key, value]) => (
-                  <li key={key}>
-                    <strong>{key.replace(/([A-Z])/g, ' $1')}: </strong>
-                    {String(value)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Deen */}
-            <div>
-              <div className={styles.sectionHeading}>Deen</div>
-              <ul>
-                {Object.entries(selectedProfile.deen || {}).map(([key, value]) => (
-                  <li key={key}>
-                    <strong>{key.replace(/([A-Z])/g, ' $1')}: </strong>
-                    {String(value)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <button className={styles.closeButton} onClick={() => setSelectedProfile(null)}>
-              &times;
-            </button>
-          </div>
+      <div className={styles.modalBody}>
+        {/* Who I Am Section */}
+        <div className={styles.modalSection}>
+          <h4 className={styles.sectionHeading}>Who I Am</h4>
+          <ul className={styles.detailsList}>
+            <li>
+              <strong>Where From:</strong> {selectedProfile.bio?.from || "Not Specified"}
+            </li>
+            <li>
+              <strong>Revert:</strong> {selectedProfile.bio?.revert ? "Yes" : "No"}
+            </li>
+            <li>
+              <strong>Occupation:</strong> {selectedProfile.bio?.occupation || "Not Specified"}
+            </li>
+            <li>
+              <strong>Education:</strong> {selectedProfile.bio?.education || "Not Specified"}
+            </li>
+            <li>
+              <strong>Cultural Background:</strong> {selectedProfile.bio?.culturalBackground || "Not Specified"}
+            </li>
+            <li>
+              <strong>Hobbies and Interests:</strong> {selectedProfile.bio?.hobbies || "Not Specified"}
+            </li>
+            <li>
+              <strong>Description:</strong> {selectedProfile.description || "Not Specified"}
+            </li>
+          </ul>
         </div>
-      )}
-      <ToastContainer />
+
+        {/* Who I Want Section */}
+        <div className={styles.modalSection}>
+          <h4 className={styles.sectionHeading}>Who I Want</h4>
+          <ul className={styles.detailsList}>
+            {selectedProfile.preferences?.ageRange && (
+              <li>
+                <strong>Age Range:</strong> {selectedProfile.preferences.ageRange}
+              </li>
+            )}
+            {selectedProfile.preferences?.locationPreference && (
+              <li>
+                <strong>Location Preference:</strong> {selectedProfile.preferences.locationPreference}
+              </li>
+            )}
+            {selectedProfile.preferences?.educationOrWork && (
+              <li>
+                <strong>Education Level:</strong> {selectedProfile.preferences.educationOrWork}
+              </li>
+            )}
+            {selectedProfile.preferences?.religiousPractice && (
+              <li>
+                <strong>Religious Practice:</strong> {selectedProfile.preferences.religiousPractice}
+              </li>
+            )}
+            {selectedProfile.preferences?.hijabPreference && (
+              <li>
+                <strong>Modesty (Hijab):</strong> {selectedProfile.preferences.hijabPreference}
+              </li>
+            )}
+            {selectedProfile.preferences?.familyOriented && (
+              <li>
+                <strong>Family-Oriented:</strong> {selectedProfile.preferences.familyOriented}
+              </li>
+            )}
+            {selectedProfile.preferences?.personalityTraits && (
+              <li>
+                <strong>Personality Traits:</strong> {selectedProfile.preferences.personalityTraits}
+              </li>
+            )}
+              <button className={styles.closeButton} onClick={() => setSelectedProfile(null)}>
+                &times;
+              </button>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
-};
+}
+
 
 export default AllProfilesPage;

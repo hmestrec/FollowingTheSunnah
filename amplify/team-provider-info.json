@@ -68,7 +68,7 @@
         },
         "EmailServiceFunction": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/EmailServiceFunction-50386248545855477973-build.zip"
+          "s3Key": "amplify-builds/EmailServiceFunction-722b3757673077414553-build.zip"
         },
         "PollyLambda": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",

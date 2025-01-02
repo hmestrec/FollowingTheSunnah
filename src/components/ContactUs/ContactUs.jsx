@@ -102,15 +102,16 @@ const ContactUs = () => {
       </p>
 
       <div className={styles.tabs}>
-        {["Bug Report", "Feature Request", "General Message"].map((tab) => (
-          <button
-            key={tab}
-            className={`${styles.tab} ${activeTab === tab ? styles.activeTab : ""}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </button>
-        ))}
+      {["Bug Report", "Feature Request", "General Message", "Set Up Meeting"].map((tab) => (
+        <button
+          key={tab}
+          className={`${styles.tab} ${activeTab === tab ? styles.activeTab : ""}`}
+          onClick={() => setActiveTab(tab)}
+        >
+          {tab}
+        </button>
+      ))}
+
       </div>
 
       <form onSubmit={sendMail} className={styles.form}>
@@ -139,6 +140,73 @@ const ContactUs = () => {
           required
           className={styles.input}
         />
+
+        {activeTab === "Set Up Meeting" && (
+          <>
+            <label htmlFor="brotherName" className={styles.label}>
+              Brother's Name:
+            </label>
+            <input
+              type="text"
+              id="brotherName"
+              value={formData.brotherName || ""}
+              onChange={handleChange}
+              placeholder="Brother's name"
+              required
+              className={styles.input}
+            />
+
+            <label htmlFor="waliName" className={styles.label}>
+              Wali's Name:
+            </label>
+            <input
+              type="text"
+              id="waliName"
+              value={formData.waliName || ""}
+              onChange={handleChange}
+              placeholder="Wali's name"
+              required
+              className={styles.input}
+            />
+
+            <label htmlFor="masjidLocation" className={styles.label}>
+              Masjid Location:
+            </label>
+            <input
+              type="text"
+              id="masjidLocation"
+              value={formData.masjidLocation || ""}
+              onChange={handleChange}
+              placeholder="Masjid location"
+              required
+              className={styles.input}
+            />
+
+            <label htmlFor="proposedDateTime" className={styles.label}>
+              Proposed Date/Time:
+            </label>
+            <input
+              type="datetime-local"
+              id="proposedDateTime"
+              value={formData.proposedDateTime || ""}
+              onChange={handleChange}
+              required
+              className={styles.input}
+            />
+
+            <label htmlFor="additionalNotes" className={styles.label}>
+              Additional Notes:
+            </label>
+            <textarea
+              id="additionalNotes"
+              value={formData.additionalNotes || ""}
+              onChange={handleChange}
+              placeholder="Any additional details"
+              className={styles.textarea}
+            ></textarea>
+          </>
+        )}
+
 
         <label htmlFor="subject" className={styles.label}>
           Subject:

@@ -37,11 +37,22 @@ const verifyCaptcha = async (captchaToken) => {
 };
 
 
-// Route to handle sending emails
 app.post("/send-email", async (req, res) => {
-  const { name, email, subject, message, type, captchaToken } = req.body;
+  const {
+    name,
+    email,
+    subject,
+    message,
+    type,
+    captchaToken,
+    brotherName,
+    waliName,
+    masjidLocation,
+    proposedDateTime,
+    additionalNotes,
+  } = req.body;
 
-  if (!name || !email || !subject || !message || !type || !captchaToken) {
+  if (!name || !email || !subject || !type || !captchaToken) {
     return res.status(400).json({ error: "All fields are required, including reCAPTCHA." });
   }
 
@@ -55,11 +66,29 @@ app.post("/send-email", async (req, res) => {
     "Bug Report": "bug.report@followingsunnah.net",
     "Feature Request": "feature.request@followingsunnah.net",
     "General Message": "general.message@followingsunnah.net",
+    "Set Up Meeting": "meeting.request@followingsunnah.net",
   };
 
   const sourceEmail = sourceEmailMap[type];
   if (!sourceEmail) {
     return res.status(400).json({ error: "Invalid message type." });
+  }
+
+  // Prepare email body based on type
+  let emailBody = `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`;
+  if (type === "Set Up Meeting") {
+    if (!brotherName || !waliName || !masjidLocation || !proposedDateTime) {
+      return res.status(400).json({ error: "All fields are required for Set Up Meeting." });
+    }
+    emailBody = `
+      Name: ${name}
+      Email: ${email}
+      Brother's Name: ${brotherName}
+      Wali's Name: ${waliName}
+      Masjid Location: ${masjidLocation}
+      Proposed Date/Time: ${proposedDateTime}
+      Additional Notes: ${additionalNotes || "None"}
+    `;
   }
 
   // Prepare email parameters
@@ -71,7 +100,7 @@ app.post("/send-email", async (req, res) => {
     Message: {
       Subject: { Data: `[${type}] ${subject}` },
       Body: {
-        Text: { Data: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}` },
+        Text: { Data: emailBody },
       },
     },
   };
@@ -85,6 +114,7 @@ app.post("/send-email", async (req, res) => {
     return res.status(500).json({ error: "Failed to send email." });
   }
 });
+
 
 // Route to handle newsletter subscription
 app.post("/subscribe-newsletter", async (req, res) => {

@@ -1,21 +1,16 @@
 {
-  "name": "followingTheSunnah",
+  "whyContinueWithGen1": "I am a current Gen 1 user",
+  "projectName": "FollowingTheSunnah",
   "version": "3.1",
-  "private": true,
-  "dependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-scripts": "5.0.1"
-  },
-  "devDependencies": {
-    "javascript-obfuscator": "^4.0.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && npm run obfuscate",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "obfuscate": "javascript-obfuscator build --output build --config obfuscator-config.json"
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react",
+    "config": {
+      "SourceDir": "src",
+      "DistributionDir": "build",
+      "BuildCommand": "npm.cmd run-script build",
+      "StartCommand": "npm.cmd run-script start"
+    }
   },
   "providers": [
     "awscloudformation"

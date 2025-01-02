@@ -226,7 +226,7 @@ main {
 /* Centering Content on Smaller Screens */
 @media (max-width: 768px) {
     .container {
-        padding: 15px;
+        padding:5px;
     }
 
     header, footer {

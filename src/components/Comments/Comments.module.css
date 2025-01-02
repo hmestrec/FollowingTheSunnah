@@ -1,263 +1,201 @@
-/* Main Comments Page */
-/* Ensure the outer container doesn't add extra padding or background */
+/* General Layout */
 .commentsPage {
-    margin: 0 auto;
-    max-width: 800px; /* Adjust as needed */
-    padding: 20px; /* Add controlled spacing */
-    background: none; /* Remove background */
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 2rem;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
-  /* Section Header */
-  h2 {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--primary-color);
-  }
-  
-  /* Sign Out Button */
-  .signOutButton {
-    display: block;
-    margin: 10px auto 30px;
-    padding: 10px 20px;
-    background: var(--primary-color);
-    color: var(--button-text);
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s;
-  }
-  
-  .signOutButton:hover {
-    background: var(--accent-color);
-    transform: scale(1.05);
-  }
-  
-/* Remove or streamline the background/padding from child sections */
+
+/* Page Title */
+.pageTitle {
+  font-size: clamp(2rem, 2.5vw, 3rem);
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+}
+
+/* Comment Form */
 .commentForm {
-    margin-bottom: 20px; /* Space between form and list */
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for emphasis */
-    background: var(--card-bg);
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--card-bg), var(--highlight-bg));
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.formLabel {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.inputField,
+.commentEditor {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.inputField:focus,
+.commentEditor:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 8px var(--accent-color);
+}
+
+.addCommentButton {
+  background: linear-gradient(135deg, var(--button-bg), var(--add-button-bg));
+  color: var(--button-text);
+  padding: 0.8rem 1.8rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.addCommentButton:hover {
+  background: linear-gradient(135deg, var(--button-hover-bg), var(--add-button-hover-bg));
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Comments List */
+.commentsList {
+  flex-grow: 1;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--card-bg), var(--highlight-bg));
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
   
-  .commentForm label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: var(--secondary-color);
-  }
-  
-  .commentForm input,
-  .commentForm .quillEditor {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid var(--input-border);
-    border-radius: 8px;
-    background-color: var(--input-bg);
-    color: var(--text-color);
-    font-size: 1rem;
-  }
-  
-  .commentForm input:focus,
-  .commentForm .quillEditor:focus {
-    border-color: var(--primary-color);
-    outline: none;
-  }
-  
-  .addCommentButton {
-    padding: 10px 20px;
-    background: var(--success-color);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s;
-  }
-  
-  .addCommentButton:hover {
-    background: #16a34a;
-    transform: scale(1.05);
-  }
-  
-  /* Comments List */
-  .commentsList {
-    padding: 0; /* Remove any extra padding */
-    background: none; /* Ensure background matches parent */
+.sectionTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
 }
-  
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: var(--primary-color);
-  }
-  
-  .commentItem {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .commentItem p {
-    margin: 8px 0;
-  }
-  
-  .commentItem strong {
-    color: var(--primary-color);
-  }
-  
-  .deleteCommentButton {
-    margin-top: 10px;
-    padding: 8px 15px;
-    background-color: var(--delete-button-bg);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: transform 0.2s, background-color 0.3s;
-  }
-  
-  .deleteCommentButton:hover {
-    background-color: var(--delete-button-hover-bg);
-    transform: scale(1.05);
-  }
-  
-  /* Replies */
+
+/* Individual Comment */
+.commentItem {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.commentItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.commentItem p {
+  margin: 0.8rem 0;
+  font-size: 1rem;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.commentItem strong {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+/* Buttons */
+.deleteCommentButton {
+  background: linear-gradient(135deg, var(--delete-button-bg), var(--delete-button-hover-bg));
+  color: var(--button-text);
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.deleteCommentButton:hover {
+  background: linear-gradient(135deg, var(--delete-button-hover-bg), var(--button-bg));
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+}
+
 /* Replies Section */
 .replies {
-    margin-top: 10px;
-    padding-left: 20px;
-    border-left: 3px solid var(--accent-color);
+  margin-top: 1.5rem;
+  padding-left: 1.5rem;
+  border-left: 4px solid var(--primary-color);
+}
+
+.replyItem {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: var(--highlight-bg);
+  border-radius: 10px;
+  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.replyItem p {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  line-height: 1.4;
+}
+
+.replyForm {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, var(--input-bg), var(--highlight-bg));
+  border-radius: 12px;
+}
+
+.replyEditor {
+  margin-bottom: 1rem;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--input-border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.addReplyButton {
+  background: linear-gradient(135deg, var(--add-button-bg), var(--add-button-hover-bg));
+  color: var(--button-text);
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.addReplyButton:hover {
+  background: linear-gradient(135deg, var(--add-button-hover-bg), var(--button-bg));
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .commentsPage {
+    padding: 0;
   }
-  
-  .replyItem {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-  }
-  
-  .replyForm {
-    margin-top: 15px;
-  }
-  
-  .replyEditor {
-    width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid var(--input-border);
-    border-radius: 8px;
-    background-color: var(--input-bg);
-    color: var(--text-color);
-    font-size: 0.9rem;
-  }
-  
-  .addReplyButton {
-    padding: 8px 15px;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .addReplyButton:hover {
-    background-color: var(--button-hover-bg);
-    transform: scale(1.05);
-  }
-  
 
-/* Editor Toolbar */
-.ql-toolbar {
-    background-color: #2563eb !important; /* Bright blue background */
-    border: 1px solid #6b7280 !important; /* Muted gray border */
-    border-radius: 8px !important;
-    padding: 5px !important;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
-
-/* Toolbar Buttons */
-.ql-toolbar .ql-picker,
-.ql-toolbar button {
-    color: #ffffff !important; /* White icons */
-    background: transparent !important; /* Clean background */
-    border: none !important;
-    transition: color 0.3s ease, transform 0.2s ease;
-}
-
-.ql-toolbar button:hover,
-.ql-toolbar .ql-picker:hover {
-    color: #38bdf8 !important; /* Light cyan on hover */
-    transform: scale(1.1) !important; /* Slight zoom on hover */
-}
-
-/* Active Toolbar Buttons */
-.ql-toolbar button.ql-active {
-    color: #f59e0b !important; /* Orange for active buttons */
-    font-weight: bold !important;
-}
-
-/* Editor Container */
-.ql-container {
-    background-color: #f9f9f9 !important; /* Light background */
-    border: 1px solid #d1d5db !important; /* Light gray border */
-    border-radius: 8px !important;
-    color: #1f2937 !important; /* Dark text */
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-/* Editor Focus State */
-.ql-container:focus-within {
-    border-color: #2563eb !important; /* Bright blue border on focus */
-    box-shadow: 0 0 10px #2563eb !important; /* Glow effect */
-}
-
-/* Quill Toolbar Dropdowns */
-.ql-picker-label {
-    color: #ffffff !important; /* White text */
-}
-
-.ql-picker-options {
-    background-color: #2563eb !important; /* Dropdown background */
-    border: 1px solid #6b7280 !important;
-    border-radius: 5px !important;
-}
-
-.ql-picker-options .ql-picker-item:hover {
-    background-color: #38bdf8 !important; /* Highlight dropdown items */
-    color: #ffffff !important;
-}
-
-
-  
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .commentsPage {
-      padding: 20px;
-    }
-  
-    h2 {
-      font-size: 1.8rem;
-    }
-  
-    h3 {
-      font-size: 1.4rem;
-    }
-  
-    .commentForm {
-      padding: 15px;
-    }
-  }
-  
