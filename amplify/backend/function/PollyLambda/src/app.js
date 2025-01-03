@@ -24,7 +24,7 @@ app.post('/polly-synthesize', async (req, res) => {
     Text: text,
     VoiceId: voiceId, // Use dynamic voiceId passed from frontend or default to Stephen
     OutputFormat: "mp3",
-    Engine: "neural", // You can choose "standard" if needed
+    Engine: "generative", // You can choose "standard" if needed
   };
 
   try {

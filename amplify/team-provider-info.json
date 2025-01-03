@@ -72,7 +72,7 @@
         },
         "PollyLambda": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
-          "s3Key": "amplify-builds/PollyLambda-4b31343235724f587762-build.zip"
+          "s3Key": "amplify-builds/PollyLambda-765938696476766e4947-build.zip"
         },
         "followingthesunnaha2b3202bDefineAuthChallenge": {
           "deploymentBucketName": "amplify-followingthesunnah-prd-647c3-deployment",
