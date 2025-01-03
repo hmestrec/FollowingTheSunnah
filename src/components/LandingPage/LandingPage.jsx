@@ -1,31 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; // Ensure useState and useEffect are imported
 import { useNavigate } from 'react-router-dom';
 import { Auth } from '@aws-amplify/auth';
 import LoginWindow from '../LoginWindow/LoginWindow';
 import awsconfig from '../../aws-exports'; // Ensure this is correctly imported at the top
-import styles from "./LandingPage.module.css";
+import styles from './LandingPage.module.css';
 
 Auth.configure(awsconfig);
 
-const LoginPage = () => {
+const LandingPage = ({ setUser }) => {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
+    const [user, setLocalUser] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
                 const currentUser = await Auth.currentAuthenticatedUser();
-                setUser(currentUser);
+                setLocalUser(currentUser);
+                setUser(currentUser); // Update global user state
                 checkIfAdmin(currentUser);
             } catch (error) {
-                console.error('Error fetching current user:', error);
+                setLocalUser(null);
                 setUser(null);
             }
         };
 
         fetchCurrentUser();
-    }, []);
+    }, [setUser]);
 
     const checkIfAdmin = async (currentUser) => {
         try {
@@ -41,7 +42,8 @@ const LoginPage = () => {
     const handleSignOut = async () => {
         try {
             await Auth.signOut();
-            setUser(null);
+            setLocalUser(null);
+            setUser(null); // Update global user state
             setIsAdmin(false);
         } catch (error) {
             console.error('Sign-out error:', error);
@@ -53,7 +55,8 @@ const LoginPage = () => {
             <div className={styles.loginContainer}>
                 <LoginWindow
                     onLoginSuccess={(currentUser) => {
-                        setUser(currentUser);
+                        setLocalUser(currentUser);
+                        setUser(currentUser); // Update global user state
                         checkIfAdmin(currentUser);
                     }}
                 />
@@ -96,4 +99,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default LandingPage;

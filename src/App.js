@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/AuthContext';
 import ThemeProvider from './components/ThemeContext'; // Correct default import
@@ -10,7 +10,7 @@ import JourneyPage from "./components/TopicsPage/JourneyPage";
 import FundamentalsPage from "./components/TopicsPage/FundamentalsPage";
 import PathwaysPage from "./components/TopicsPage/PathwaysPage";
 import FormPage from './components/FormPage';
-import LoginPage from './components/LandingPage/LandingPage';
+import LandingPage from './components/LandingPage/LandingPage';
 import ContentPage from './components/TopicsPage/ContentPage';
 import HomePage from './components/HomePage/HomePage';
 import EditingPage from './components/EditingPage/EditingPage';
@@ -27,13 +27,18 @@ import ContactUs from './components/ContactUs/ContactUs';
 import ReCAPTCHA from "react-google-recaptcha";
 import './App.css';
 import { ToastContainer } from 'react-toastify';
+import SessionManager from './components/SessionManager/SessionManager'; // Ensure this path is correct
 
 
 function App() {
+  const [user, setUser] = useState(null); // Global user state
+
+  
   return (
     <AuthProvider>
       <ThemeProvider> {/* Wrap the app with ThemeProvider */}
-        <Router>
+      <SessionManager user={user} setUser={setUser}>
+      <Router>
           <div id="root">
             <Header />
             <main className="main-content">
@@ -52,7 +57,7 @@ function App() {
                 <Route path="/create-profile" element={<CreateProfile />} />
                 <Route path="/all-profiles" element={<AllProfilesPage />} />
                 <Route path="/settings" element={<Settings />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/login" element={<LandingPage setUser={setUser} />} />
                 <Route path="/comments" element={<Comments />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms-of-service" element={<TermsOfService />} />
@@ -63,7 +68,8 @@ function App() {
             <Footer />
           </div>
           {<ToastContainer />}
-        </Router>
+          </Router>
+        </SessionManager>
       </ThemeProvider>
     </AuthProvider>
   );

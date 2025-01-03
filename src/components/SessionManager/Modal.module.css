@@ -1,0 +1,66 @@
+.modalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+  }
+  
+  .modal {
+    background: linear-gradient(145deg, #1f1f1f, #333333);
+    color: #f2f2f2;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    border: 2px solid #ff0000;
+  }
+  
+  .modal h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ff4500;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+  }
+  
+  .modal p {
+    font-size: 1rem;
+    color: #cccccc;
+    margin-bottom: 20px;
+  }
+  
+  .stayLoggedInButton {
+    background: linear-gradient(145deg, #00ff00, #00cc00);
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.6);
+  }
+  
+  .stayLoggedInButton:hover {
+    background: linear-gradient(145deg, #00cc00, #009900);
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 255, 0, 0.8);
+  }
+  
+  .stayLoggedInButton:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 10px rgba(0, 255, 0, 0.5);
+  }
+  

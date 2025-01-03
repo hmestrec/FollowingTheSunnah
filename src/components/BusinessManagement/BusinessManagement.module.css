@@ -40,17 +40,21 @@
 .buttonContainer {
   display: flex;
   gap: 10px;
+  justify-content: flex-start;
 }
 
 .button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 1rem;
   font-weight: bold;
   color: var(--button-text);
   background-color: var(--button-bg);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  min-width: 80px;
+  text-align: center;
 }
 
 .button:hover {
@@ -83,6 +87,8 @@
   background-color: var(--card-bg);
   margin-bottom: 10px;
   transition: transform 0.2s ease, background-color 0.3s ease;
+  overflow: hidden; /* Prevent content from overflowing */
+  word-wrap: break-word; /* Ensure text wraps properly */
 }
 
 .listItem:hover {
@@ -93,6 +99,26 @@
 .actions {
   display: flex;
   gap: 10px;
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+.button {
+  padding: 8px 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--button-text);
+  background-color: var(--button-bg);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  min-width: 80px;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: var(--button-hover-bg);
+  transform: scale(1.05);
 }
 
 .deleteButton {
@@ -103,9 +129,29 @@
   background-color: var(--delete-button-hover-bg);
 }
 
-.subTitle {
-  font-size: 1.5rem;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  color: var(--secondary-color);
+.editButton {
+  background-color: var(--edit-button-bg);
+  color: var(--button-text);
+}
+
+.editButton:hover {
+  background-color: var(--edit-button-hover-bg);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .listItem {
+    flex-direction: column; /* Stack content vertically on smaller screens */
+    align-items: flex-start; /* Align items to the left */
+  }
+
+  .actions {
+    justify-content: flex-start; /* Align buttons to the left */
+    width: 100%; /* Make buttons take up full width */
+  }
+
+  .button {
+    width: 100%; /* Ensure buttons are full-width for better visibility */
+    font-size: 0.9rem;
+  }
 }

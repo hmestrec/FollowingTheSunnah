@@ -16,7 +16,7 @@
     "@aws-amplify/ui-react": "^6.5.4",
     "@emailjs/browser": "^4.4.1",
     "@react-google-maps/api": "^2.20.3",
-    "aws-amplify": "^6.10.2",
+    "aws-amplify": "^6.12.0",
     "aws-sdk": "^2.1692.0",
     "aws-serverless-express": "^3.4.0",
     "axios": "^1.7.7",
